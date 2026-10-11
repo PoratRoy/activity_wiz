@@ -6,7 +6,7 @@
 
 הכיוון החדש הוא Next.js ו־Cloudflare, במקום יישום React הישן ותשתית Firebase שלו. Next.js עצמו מבוסס על React; אין כאן בחירה להימנע מ־React. נבנה פרויקט חדש מאפס, תוך שימוש במקור הישן לעיון ולשימור ידע ומידע בלבד.
 
-לא נבחרו TypeScript לעומת JavaScript, שירותי Cloudflare המסוימים, שירות מסד נתונים, סכמה, ספריית הזדהות, אחסון או רכיבי תשתית נוספים. אין להוסיף קובצי תצורה או שלד יישום כתוצאה מתיעוד הכיוון.
+The four core product tables are now accepted: users, personal activities, public categories and public activities. The [English data model](data-model.md) defines their conceptual relationships and proposes detailed field representations. Next.js with TypeScript on Cloudflare Workers, D1 and R2 is a proposed stack, not full architecture approval. Physical schema, adapter, auth library and auxiliary auth/session storage remain open. This remains documentation only.
 
 ## שימור מידע וזהויות
 
@@ -32,7 +32,7 @@
 
 | נושא | מה עדיין פתוח |
 | --- | --- |
-| שפה ותשתית | TypeScript/JavaScript, שירותי Cloudflare, מסד נתונים וסכמה, אחסון וספריית auth |
+| Architecture and storage | TypeScript/Workers/D1/R2 are proposed. Four core product tables are accepted; physical schema, adapter, auth library and auxiliary auth storage remain open. See [data model](data-model.md). |
 | זהות ומעבר | מיפוי זהויות Google למשתמשים קיימים, ייבוא והשלמת שינויים, אימות וחזרה לאחור |
 | AI | גרסת Gemini, בחינת איכות עברית ועלות, נוסחי תבניות ומימוש מתאם הספק |
 | עיצוב | פריסה מפורטת, גופן, tokens, אייקונים ואיורים; הכיוון הכללי בלבד מאושר |
@@ -42,3 +42,7 @@
 | הרשאת מנהל | בעל המוצר יזין בעצמו כתובת מורשית; אין כתובת אישית במסמכים |
 
 הדיון הבא הוא העמקה בארכיטקטורה ובעיצוב. עצם רישום נושא פתוח אינו אישור להרחבת היקף. אין לחדש דיון בשדות או בזרימות שכבר הוכרעו כדי להציע חלופות שלא התבקשו.
+
+## Source-grounded migration detail
+
+The [data model](data-model.md) now records pinned remote-source evidence, identity mapping, offset-free legacy date handling, field preservation and relationship anomalies. No production export has been supplied. Firebase UID must not be assumed to equal Google subject, and email alone must not merge accounts. Detailed mapping supplements the preservation and owner-responsibility requirements above.

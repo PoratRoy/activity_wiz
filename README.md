@@ -6,6 +6,10 @@ Activity Wiz מסייע למדריכים בתנועות נוער בישראל ל
 
 החוויה חינמית, מהירה ומיועדת קודם כול לטלפון: הכנה בערב, קריאת הפעולה בזמן ההדרכה והעתקה ל־WhatsApp. הממשק בעברית בלבד וב־RTL קבוע, ללא החלפת שפה או תשתית רב־לשונית. פרסומות הן מקור ההכנסה היחיד שאושר.
 
+## Data-model update
+
+The [English data model and migration contract](docs/data-model.md) adds the accepted four core product tables, durable single-group defaults, field dictionaries, independent-copy mapping and source-grounded migration rules. Field representations and concurrency mechanisms are labeled proposals. TypeScript on Workers, D1 and R2 remain proposed; Next.js and Cloudflare are the accepted direction. Existing Hebrew product documentation remains in place.
+
 ## מסמכי האפיון
 
 | מסמך | תוכן |

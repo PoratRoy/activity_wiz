@@ -47,3 +47,9 @@
 - שינוי כותרת אינו משנה תאריך או סדר, ושגיאת שמירה מוצגת למשתמש.
 - שתי שמירות של אותו מקור ציבורי יוצרות שני עותקים עצמאיים.
 - מחיקה אישית מסתירה מיד את הפריט ושומרת את המידע למפעיל באמצעות דגל מחיקה.
+
+## Accepted group-default and ownership clarification
+
+Each account, whether imported or newly registered, has exactly one durable set of group defaults. These prefill creation and remain unchanged until explicitly edited. Browser cache is secondary; guest defaults are temporary. There is no groups table or multiple-group management. The [data model](data-model.md) recommends retaining actual generation inputs as per-activity snapshots so later default changes do not alter historical context.
+
+Every personal activity has exactly one authenticated owner; guest drafts do not create nullable-owner database rows. Public saves always create new independent personal records with fresh IDs and copy creation timestamps, without any public-source ID, backlink, provenance linkage or category membership. Repeated deliberate saves remain independent duplicates. Field names, content representation and concurrency mechanisms in the data-model document remain proposed implementation details.

@@ -27,3 +27,9 @@
 ## עמודי מידע קיימים
 
 תוכן אודות, שאלות נפוצות, יצירת קשר, פרטיות ושאר העמודים הטכניים והבירוקרטיים יועתק ללא שינוי. בעל המוצר יערוך אותו בהמשך. הרשימה המדויקת והטקסטים ייבדקו במקור בקריאה בלבד לפני ההעתקה; אין כאן ניסוח חלופי או טענה שהתכנים כבר הועתקו.
+
+## Accepted data relationships and copy boundary
+
+The [English data model](data-model.md) records the accepted four-table structure. Every public activity belongs to exactly one public category; every personal activity belongs to exactly one user. The legacy generation-type field named `category` is a different concept from public-category membership. Personal copies retain no public-source ID, backlink or provenance relation and have no public-category ownership constraint.
+
+Public and personal content fields are proposed to share the same representation. Manual public prose may have no generation context; copying must preserve that absence instead of inserting the recipient's defaults. Category deletion removes public children while leaving personal copies intact. Public/category physical deletion semantics and historical category/order reconciliation remain open. R2 for category images is only a proposal.
