@@ -4,62 +4,62 @@ Status: authoritative product requirements, 12 October 2026. Audience: product, 
 
 This document defines what Activity Wiz provides and the rules that govern it. [User flows](user-flows.md) defines screen states and transitions using the requirement IDs below. Together these two documents specify the product without requiring archived research or source code. Sections explicitly labeled **Proposed** or **Open** are not approved requirements. English is the documentation language; the product interface and generated activities are Hebrew.
 
-## 1. Purpose and users
+## 1. Product concept and counselor journey
 
-Activity Wiz helps Israeli youth-movement counselors prepare an educational activity for their group, then read and use it while guiding. The primary audience is counselors roughly in grades 9–12, with Scouts a major audience. Counselors' ages do not restrict the grades available for their participants.
+Activity Wiz is a preparation and reading tool for Israeli youth-movement counselors. A counselor leads a group of children or teenagers and needs an activity suited to that group, a topic, an available place and a duration. The counselor typically prepares on a phone in the evening, then opens the activity again while guiding. The primary audience is counselors roughly in grades 9–12, with Scouts a major audience; participant grades are selected separately.
 
-The product supports two equally valid starting points: generate a personalized activity with AI, or choose a prewritten activity from a public library. The main use context is a phone, often during evening preparation and later in the field. Content must be readable during facilitation and easy to copy into WhatsApp.
+For example, a counselor preparing a half-hour outdoor activity first identifies their movement and group, then chooses the kind of activity and its topic. Activity Wiz generates a Hebrew text they can read, edit and copy into WhatsApp. Alternatively, the counselor browses a category of ready-made activities and saves one into their own collection. That saved copy becomes their own normal activity, independent of the public text.
 
-**P01 — Product scope.** Provide a fast, free, mobile-first Hebrew experience with fixed right-to-left direction. There is no language selector or multilingual product infrastructure. Advertising is the only approved revenue source. No subscription or payment journey is included.
-
-Planning context is approximately 5,000 registered accounts, 50–100 daily visitors and 100–300 AI generations per day. These estimates are not service-level objectives, quotas or permission to impose a usage limit.
-
-## 2. Scope and exclusions
-
-| Included | Excluded |
+| Concept | Product meaning |
 | --- | --- |
-| Guided AI creation with one set of group defaults | Multiple groups, group switching or group management |
-| Public category browsing and a popular-activities list | Free-text public search, recommendations or a new ranking system |
-| Google sign-in and a fixed guest trial | Passwords, alternative login providers, sliding trials |
-| Personal activities, detail editing and autosave | List-row title editing, manual save, advanced formatting |
-| Independent personal copies of public activities | Source backlinks, synchronization or source-based deduplication |
-| Personal deletion and operator retention | Recycle bin, archive, restore, version history or 30-day retention UI |
-| Manual admin creation and deletion | AI in admin, editing existing public/category records, moderation dashboards |
-| Youthful illustrated visual language | Points, streaks, gamification or tutorial mascots |
-| Information pages and established advertising/measurement | Affiliated training/quiz tools, links to those tools or new analytics products |
+| Account and group details | A Google-authenticated counselor and their one reusable set of movement, participant grade, group size and gender composition. |
+| Activity details | Type, subject, place, duration, equipment, grouping/competition, Sabbath adaptation and additional notes. These describe the activity, not the counselor's group. |
+| Activity text and name | The instructions the counselor reads and the title identifying the activity in their collection. |
+| Personal activity | An activity owned by one registered user, created by AI or copied from the public library. It stores activity details, text, name and ownership/lifecycle information, without group details. |
+| Public category | An ordered browsing category containing ready-made public activities. It is different from the activity type used during creation. |
+| Public activity | A manually authored activity with all normal activity-detail fields, a name/text and exactly one public category. |
+| Admin | An authorized Google user who publishes/deletes public content and controls the order of categories. |
 
-The initial scope is these behaviors. Database fields, APIs, physical storage, deployment configuration and implementation sequencing belong to later technical specifications.
+The main journey is Home → Group details → Activity details → Generate → Read. A registered user's result enters their personal collection automatically; a guest's result is temporary. The alternative journey is Home → Public categories → Public activity → Save a new personal copy → Read. Editing is an explicit mode of the personal/current activity detail screen, not another creation step.
+
+**P01 — Product scope.** Provide a fast, free, mobile-first Hebrew experience with fixed right-to-left direction. Advertising funds the service. The product centers on AI creation, public category browsing and a personal collection for signed-in counselors.
+
+Planning context is approximately 5,000 registered accounts, 50–100 daily visitors and 100–300 AI generations per day. These are sizing estimates, not service-level objectives or usage quotas.
+
+## 2. Specification responsibilities
+
+This specification owns product concepts, permissions, input choices and feature rules. [User flows](user-flows.md) owns screen behavior, transitions and acceptance checks. The product is focused on youth activities; affiliated training/quiz products and their promotional links are not part of its navigation.
+
+The following files are **planned and not yet created**: `architecture.md` for framework/service integration, `data-model.md` for physical fields and storage rules, `api-contracts.md` for request/response and authorization contracts, `ai-generation.md` for templates/provider behavior, `design-system.md` for visual components and layout, `operations.md` for configuration and production procedures, `migration-plan.md` for data/domain transition, and `implementation-plan.md` for delivery sequencing. These names are planning references, not links or dependencies on missing documents.
 
 ## 3. Roles and access
 
 **P02 — Identity.** Google is the only sign-in method. Registered users retain a valid session. If a recognized account's session cannot be restored, Google sign-in is required to continue protected use; session failure does not grant a fresh guest trial. Successful authentication returns the user to the intended destination.
 
-**P03 — Guest access.** A cookie records a 72-hour trial starting at the first visit. Later visits do not extend it. During the trial a guest may generate, browse/read public content and edit the current generated activity temporarily. A guest has no personal collection, durable personal save or public-copy Save control. The cookie is a browser-level mechanism, not a guarantee of identity across cookie clearing, devices or browsers.
+**P03 — Guest access and trial clock.** Guests can browse public content and fill creation forms before starting a trial. The 72-hour cookie trial begins on the **first valid attempt to generate an AI activity**: submitting a completed form to start a generation request. Visiting the site, browsing the library, opening forms or failing required-field validation does not start it. A valid submitted attempt starts the clock even if generation subsequently fails. Later requests, retries and visits do not extend or restart the clock.
 
-Once the trial expires, Home remains accessible. The next entry into creation or public-library content requires Google sign-in. Expiry must not interrupt generation already in progress or erase current open content. Reading/editing that open guest activity remains temporary; no new generation or library entry is granted by keeping it open. Exact expiry at a boundary and transitions are specified in F02–F04.
+Before the clock starts and while it remains active, a guest may generate, browse/read public content and temporarily edit the current generated activity. Guests have no personal collection or public-copy Save control. The cookie is browser-bound; it cannot guarantee recognition after cookie clearing or on another device.
+
+After expiry, Home and informational pages remain accessible, but the next creation or public-library entry requires Google sign-in. There is no renewed guest continuation or reset trial. An already-running generation may finish and its result/current open content must not be erased or interrupted. This protection of work in progress does not grant a new request or library entry. A recognized registered account whose session restoration fails must sign in, not silently become a guest.
 
 **P04 — Ownership.** Personal activities belong to exactly one registered user and are accessible only to that owner. A guest draft does not become an ownerless personal record. Public activities each belong to exactly one public category. The four core conceptual sets are users, personal activities, public categories and public activities. Authentication may require technical storage beyond these product sets; no schema is selected here.
 
-| Capability | Guest within trial | Guest after trial | Signed-in user | Authorized admin |
-| --- | --- | --- | --- | --- |
-| Home and informational pages | Yes | Yes | Yes | Yes |
-| Start creation / enter public library | Yes | Sign-in required | Yes | Yes |
-| Continue already open guest content | Yes, temporary | Yes, temporary | Registration transfer rules apply | Same account rules |
-| Read/edit own personal content | No collection | No collection | Yes | Own content only |
-| Save a public activity as personal copy | No control | No control | Yes | Yes |
-| Delete personal content | No persisted personal content | No persisted personal content | Own content only | Own content only |
-| Admin category/activity creation/deletion | No | No | No, unless authorized | Yes |
-| Edit public original | No | No | No | Not a v1 feature |
+| Role/state | Available work |
+| --- | --- |
+| Guest before first generation or within the trial | Browse public categories, create an AI activity and temporarily edit the current result. |
+| Guest after trial expiry | Home, informational pages and preservation of already-open work; Google sign-in is required for further creation/library entry. |
+| Signed-in counselor | Generate and automatically retain activities, manage their personal collection, and save independent public copies. |
+| Authorized admin | Counselor capabilities plus public publication/deletion, category creation/deletion and category reordering. |
 
-Admin authorization does not create a product feature for browsing other users' personal activities. Operator analysis of retained deleted records is separate from the specified admin content interface.
+Personal content remains owner-only. Retention of soft-deleted personal activities for operator analysis is not a public-content admin screen.
 
 ## 4. Home, navigation and creation inputs
 
-**P05 — Navigation.** Home's main action area shows a Google sign-in button followed by a Create button for guests. For signed-in users it shows Create without the guest sign-in button. Bottom navigation provides Home, Create and Public library; Personal library is present only when signed in. Layout may be restyled but must preserve the defined sequence and destinations.
+**P05 — Navigation.** Home's main action area shows a Google sign-in button followed by a Create button for guests. For signed-in users it shows Create without the guest sign-in button. Bottom navigation provides Home, Create and Public library; Personal library is present only when signed in. Every screen includes the global navigation bar. For signed-in users it contains their Google profile photo displayed as a circle. The placement of the avatar and navigation items is defined in the planned `design-system.md`; this does not prescribe a second bar. Proposed guest/fallback appearance: a neutral avatar when no signed-in photo is available, without implying extra avatar actions.
 
 **P06 — Creation sequence.** Home → Group details → Activity details → Generating → Activity detail in Read mode. Returning to an earlier step must preserve available entries rather than require avoidable re-entry. A type can represent one component of a movement's larger meeting; generation must not automatically expand every request into a complete meeting.
 
-**P07 — One set of group defaults.** Each registered account has one durable set: movement, participant grade, participant amount and gender composition. It prefills creation and remains unchanged until explicitly edited by the user. Browser cache is secondary to account data. Guest defaults are temporary. Browsing, saving public content or editing an activity must not silently change group defaults. There is no separate multiple-group experience.
+**P07 — One set of group defaults.** Each registered account has one durable set: movement, participant grade, participant amount and gender composition. It prefills creation and remains unchanged until explicitly edited by the user. Browser cache is secondary to account data. Guest defaults are temporary. Browsing, saving public content or editing an activity must not silently change group defaults. Group details belong to the user account and are not copied into personal or public activities. During generation, combine the current account group details (or temporary guest group details) with the current activity request. Activities do not retain a group snapshot.
 
 **P08 — Input contract.** Use the exact ordered choices below, including overlapping amount ranges and the gap before `60+`. Do not “correct” labels, add values, translate stored choices into different meanings or replace range choices with exact-number inputs. All four group fields are required. Activity type, subject, place and duration are required; a valid first type is selected for the chosen movement when no current valid selection exists. The optional section begins collapsed and contains equipment, grouping/competition, Sabbath adaptation and free notes. Optional fields can remain unselected; an absent choice is not necessarily an explicit “no preference.” No additional questions are required for generation.
 
@@ -111,11 +111,17 @@ Field lengths, validation message wording and any topic-suggestion assistance ar
 
 A low-cost Gemini model is intended; the exact model requires Hebrew-quality and cost evaluation. Provider integration and pedagogical templates should remain separate. No model version, usage allowance, timeout or automatic multi-call retry policy is selected by this specification.
 
-**P10 — Successful and failed results.** A registered user's successfully generated activity is automatically persisted, even when the user dislikes its quality. It opens in Read mode. There is no separate Save action for this result. A guest receives the current temporary activity in Read mode. Generation failure retains the filled form, shows a short error and provides a retry/refresh-generation action; it must not create an empty personal activity. Poor quality alone is not generation failure.
+**P10 — Successful and failed results.** A registered user's successfully generated activity is automatically persisted, even when the user dislikes its quality. It opens in Read mode. There is no separate Save action for this result. A guest receives the current temporary activity in Read mode. Generation failure retains the filled form, shows a short error and offers Retry generation or Contact support; it must not create an empty personal activity. Poor quality alone is not generation failure.
 
-**P11 — Registration transfer.** Registration saves the current open guest-generated activity, including its current title/body edits. It does not recover prior guest sessions or turn previously browsed public activities into personal copies. Authentication must not erase available inputs or content. Transfer failure must not be reported as successful persistence; recovery details are proposed in F02.
+**P11 — Authentication and the guest draft.** When a guest registers a **new account**, save the current open guest-generated activity with its activity-specific details and latest title/body edits. Do not import older guest sessions or automatically save browsed public content. Transfer failure is not successful persistence.
 
-**Proposed, not yet approved:** preserve each generated activity's input context as a snapshot so later changes to account defaults do not reinterpret the activity. Public prose can have no generation context. Do not fabricate group data when creating a personal copy of such prose. Exact content structure and title derivation are technical/content-design decisions, not an additional model call requirement.
+When Google authentication identifies an **existing registered account**, delete the temporary guest activity draft instead of importing it. Load that account's durable group details and personal collection. This automatic cleanup is part of the login transition, not a user-requested content deletion requiring a popup. Authentication cancellation/failure does not trigger cleanup. A failed registered-session restoration is an authentication fault requiring login, never an intentional guest fallback.
+
+### Activity information boundary
+
+Personal and public activities contain activity type, subject, place, duration, equipment, grouping/competition, Sabbath adaptation and additional notes, together with name/text and applicable ownership/category/lifecycle information. They do not contain movement, participant grade, participant amount or gender composition. Public admin creation exposes the same activity-specific fields; optional fields may be left unselected, but they are part of the form and copy contract. A public Save copies all these activity details and the name/text into a normal personal activity without inserting the recipient's group details.
+
+Exact content encoding and title derivation are specified in the planned `data-model.md` and `ai-generation.md`; they do not add a model call. Group changes affect subsequent requests, not a stored group snapshot, because no such snapshot exists.
 
 ## 6. Reading, editing and personal library
 
@@ -123,33 +129,35 @@ A low-cost Gemini model is intended; the exact model requires Hebrew-quality and
 
 Content must remain unobstructed and readable while guiding, and support copying into WhatsApp. No direct-message sending integration, new share workflow or prescribed clipboard button layout is approved.
 
-**P13 — Autosave.** Changed personal content is saved automatically every few seconds, not on every keystroke. Show saving, saved and error feedback. A “saved” state must mean the relevant edits were acknowledged, not merely entered. There is no manual Save button. Guest changes remain temporary until registration and must not be presented as durable personal saves. Pending-save navigation and concurrent-edit recovery are explicitly proposed in F06, not silently treated as final decisions.
+**P13 — Autosave.** Changed personal content is saved automatically every few seconds, not on every keystroke. Show saving, saved and error feedback. A “saved” state must mean the relevant edits were acknowledged, not merely entered. There is no manual Save button. Guest changes remain temporary until registration and must not be presented as durable personal saves. F06 labels the remaining low-level save-recovery recommendations; the planned `api-contracts.md` and `implementation-plan.md` will specify concurrency and retry mechanics.
 
-**P14 — Personal list.** List owned, non-deleted activities newest-created first. A row's informational content consists only of title and creation date; it also provides the delete action. There are no type labels, likes, manual ordering or archive controls. Changing the title updates the list without changing the creation timestamp or ordering. Editing the body also leaves creation order unchanged.
+**P14 — Personal list.** List owned, non-deleted activities newest-created first. A row's informational content consists only of title and creation date; it also provides the delete action. The list is ordered by creation, not by edits or user-defined positions. Changing the title updates the list without changing the creation timestamp or ordering. Editing the body also leaves creation order unchanged.
 
-**P15 — Personal deletion.** Delete is available from both list and detail. On deletion the activity immediately leaves the user's visible collection and cannot be accessed through a stale detail link. Preserve the record with a soft-deletion boolean for operator analysis. Do not request a deletion reason or claim to infer why the user deleted it. No restoration, version history, recycle bin or retention countdown is part of the user experience. A confirmation-dialog policy has not been selected; server failure must not be hidden behind a false success state.
+**P15 — Personal deletion.** Delete is available from both list and detail. On deletion the activity immediately leaves the user's visible collection and cannot be accessed through a stale detail link. Preserve the record with a soft-deletion boolean for operator analysis only; this retention provides no user-facing archive, recovery or version-history interface. Do not request a deletion reason or claim to infer why the user deleted it. Every user-initiated deletion first displays a simple confirmation popup. Cancel leaves the activity unchanged; Confirm performs soft deletion. Server failure must not be hidden behind a false success state.
 
 ## 7. Public library and copies
 
-**P16 — Discovery.** Users browse public categories, then activities, then activity detail. No free-text search is provided. The library includes a popular list of up to ten activities across categories, ordered by descending recorded view count. It uses viewing popularity, not likes or a new recommendation score. No time window, unique-view identity rule or new analytics system is introduced. Ties and the precise view-count event contract require implementation clarification; they must not be resolved by inventing a new ranking product. Category order remains open.
+**P16 — Public browsing and order.** Browse public categories, then their activities, then an activity detail. Each category has an explicit numeric position, and both the public library and admin overview show categories in that order. Admins can reorder categories. New activities appear first within their category; admins do not reorder activities within a category. Discovery uses category browsing without search, popularity ranking, like counters or view counters. Clarity remains the site-level integration described in P23.
 
-Newly published activities appear first in their category. Available category/activity content is managed independently of personal copies. An empty category or library is a valid state, not a load error.
+An empty category/library is a valid state, distinct from a loading error. Public content is managed independently of personal copies.
 
 **P17 — Independent copy.** Only a signed-in user sees the public activity's Save action. Every deliberate Save creates a new, fully independent personal activity with the current user's ownership, a fresh ID and a new copy-creation timestamp. Repeat saves create separate copies even when the source and content are identical. The public original is unchanged. There is no source-public identifier, foreign key, backlink, provenance relationship, synchronization or source-based deduplication retained for the copy, including for analytics. Personal copies need no public-category membership.
 
-Copy title/body and any actual available context; preserve absent context rather than filling it from the user's defaults. After successful persistence, go directly to the new personal detail in Read mode. Editing is a subsequent explicit action. A failed copy remains on the public detail with an error and a way to try again; do not navigate to a nonexistent copy or claim it was saved.
+Copy the name/text and every activity-specific field listed in P11, including unselected optional values. Never add group details from the recipient's account. After successful persistence, go directly to the new personal detail in Read mode. Editing is a subsequent explicit action. A copy-storage/network failure remains on an available public detail with an error and a way to try again; do not navigate to a nonexistent copy or claim it was saved.
 
 ## 8. Administration
 
-**P18 — Admin access.** `/admin` and all administrative mutations require a Google-authenticated user whose verified email is in a server-side allowlist. Check authorization on the server for both routes and writes. Unauthorized access, including an authenticated non-admin, redirects to `/login`; rejected writes must not change content. The initial configured address will be supplied by the owner server-side, with later secret-based configuration. No personal email is part of this specification.
+**P18 — Admin authorization and configuration.** `/admin` and every administrative mutation require Google authentication and a verified email in the configured allowlist. The allowlist is a string containing a valid JSON array of email addresses, stored in local `.env` configuration for development and as a Cloudflare secret in deployment. It supports multiple admins and is not hardcoded in source. A syntactic example using non-user addresses is `["admin-one@example.com","admin-two@example.com"]`. The exact variable name belongs in the planned `operations.md` and `architecture.md`; no environment file or secret is created by this specification.
 
-**P19 — Admin browsing and publication.** The admin interface mirrors public category/activity browsing, with two add actions—Create activity and Create category—and delete controls for categories and activities. It does not introduce an analytics dashboard, moderation queue, comments or version management.
+Check authorization server-side on routes and writes. Unauthorized access, including a signed-in non-admin, redirects to `/login`; unauthorized mutations change nothing. Missing, malformed or invalid allowlist configuration grants nobody access (fail closed), rather than bypassing the check.
 
-At `/admin/activity`, provide a title field, an existing-category selector, an editor for manually typed/pasted content and an explicit Add/Publish action. There is no AI generation in admin. The selected category, title and content are required for a usable published activity. Publication is explicit, not autosave. On success the activity appears first in its category. V1 supports creating and deleting records, not editing existing public activities or categories.
+**P19 — Admin browsing and publication.** The admin overview mirrors the public category/activity structure and its numeric category order. It provides Create activity, Create category, category reorder controls and Delete for categories/activities. Reordering categories updates their numeric positions and the public display order; it must not move activities between categories or change the newest-first activity order. The exact reorder gesture and persistence UI belong in `design-system.md` and `api-contracts.md` (planned).
 
-**P20 — Category creation.** The form accepts a category name and an optional JPG uploaded from the user's computer. If no image is supplied, use a shared default image. The precise upload size limits, storage provider, crop treatment and final image asset remain undecided. Reject an invalid upload without discarding the name or falsely claiming creation.
+At `/admin/activity`, enter a name/title, choose an existing public category, enter all normal activity-specific details from P11 and type/paste the activity text. Name/title, text, category, type, subject, place and duration are required; equipment, grouping/competition, Sabbath adaptation and notes remain optional with the exact choices in §4. No group fields are collected. Activity type and public category are separate selections. Publication uses an explicit Add/Publish action and does not use AI. A new activity appears first in its category. V1 public-content operations are creation/deletion and category reordering; title/content editing of existing public entries is not an admin operation.
 
-**P21 — Public deletion.** Deleting a public activity removes it from public/admin browsing and prevents new copies. Deleting a category removes the category and its public activities. Neither operation affects any personal copy. Public/category physical deletion may be hard or soft; this is open and must not automatically inherit personal soft deletion. Confirmation behavior is also open. Partial failures must not be represented as a completed deletion.
+**P20 — Category creation.** Enter a category name and optionally upload a JPG from the computer; otherwise use a shared default image. Each category receives a numeric position and can subsequently be reordered. Proposed default for a new category: append it after current categories. Upload limits, storage and image treatment belong in the planned `design-system.md`, `architecture.md` and `api-contracts.md`. Invalid upload feedback preserves the entered name and does not falsely claim creation.
+
+**P21 — Public deletion.** Every Delete action shows a simple confirmation popup. Cancel changes nothing. Confirm hard-deletes the selected public activity, or hard-deletes the selected category together with all its public activities. The category popup states the child-activity consequence and that personal copies remain unaffected. Completed deletion removes public content from browsing and prevents further copies; personal copies remain intact. Partial failures must not be shown as completion. These hard-deletion rules do not change personal soft deletion.
 
 ## 9. Presentation, content and release constraints
 
@@ -157,23 +165,21 @@ At `/admin/activity`, provide a title field, an existing-category selector, an e
 
 **P23 — Advertising and measurement.** Preserve the configured advertising provider and every established placement, size and format. Design screens to accommodate these slots. Retain Clarity, activated with the production-domain transition, and do not introduce another analytics integration. An owner-approved placement/configuration inventory is a release input still to be supplied; never invent provider identifiers or embed secrets in documentation. This outstanding configuration does not require agents to copy an archived implementation.
 
-**P24 — Informational content.** Provide About, FAQ, Contact, Privacy and required technical/administrative pages. Their supplied page text is transferred verbatim for owner revision later. Navigation and promotional links must not introduce excluded training/quiz products. If the supplied prose itself contains such links or conflicting claims, flag the specific passage for an owner decision before release rather than silently rewriting it. The exact page-content package is a release input, not a license to author substitute legal text or implement an unrequested contact form.
-
-**P25 — Continuity.** Preserve existing accounts, group defaults, public content and each user's saved/edited personal activities. The same Google identity must retrieve the correct history without duplicate accounts or mixed ownership. Excluding a product/language from the UI does not authorize deleting information. The new product replaces the public experience at the same domain only after verification. The owner controls exports, changes to the prior service, domain transition and shutdown. Operational migration research is not part of these product flows; no migration or infrastructure action is authorized by this document.
+**P24 — Informational content.** Provide About, FAQ, Contact, Privacy and required technical/administrative pages. These pages receive a new visual design consistent with the product. Only their supplied text is preserved verbatim for owner revision later; prior layout and styling are not retained. Navigation and promotional links must not introduce excluded training/quiz products. If the supplied prose itself contains such links or conflicting claims, flag the specific passage for an owner decision before release rather than silently rewriting it. The exact page-content package is a release input, not a license to author substitute legal text or implement an unrequested contact form.
 
 Next.js and Cloudflare are the accepted technology direction. TypeScript, Workers deployment details/adapter, D1, R2, auth library and exact Gemini version remain proposals or open choices. These product requirements do not select them.
 
-## 10. Acceptance and unresolved decisions
+## 10. Error handling and acceptance
 
-Acceptance is behavioral. The final matrix in [User flows](user-flows.md) connects requirements to concrete checks. A product review must verify permissions, draft preservation, truthful persistence feedback, independent copies, immutable creation ordering, valid empty/error states and admin isolation, in addition to the happy paths.
+**P26 — Missing data and generation errors.** If a screen cannot function because required route/creation-flow state or its requested activity/category is missing, redirect to Home with appropriate feedback. Do not substitute invented data. Invalid or expired authentication follows P02 to `/login`, rather than this missing-flow-data redirect. This is also distinct from an incomplete visible form: required-field validation remains on that form and preserves entered values. A generation failure keeps the filled form and offers Retry generation or Contact support, without creating an empty personal activity. The support destination uses the configured contact channel; it does not introduce a support-ticket system.
 
-| ID | Decision or input still needed | Boundary while open |
-| --- | --- | --- |
-| O01 | Leaving a detail screen with pending/failed autosave; concurrent edits and session expiry during a write | Follow the explicitly proposed loss-avoidance flow for review; do not claim guaranteed save or add manual Save. |
-| O02 | Confirmation policy for personal, public and category deletion | Do not invent a mandatory modal or silently present a proposed policy as approved. All confirmed outcomes and failure rules remain fixed. |
-| O03 | Category order; equal-view tie handling and exact count event contract | Preserve view-count ranking and the ten-item popular scope; no likes or new ranking formula. |
-| O04 | Login by an already-registered account while a guest draft is open | Preserve available draft; automatic transfer is explicitly approved for registration, not yet generalized to every existing-account login. |
-| O05 | Supplied informational text containing excluded-product links or conflicting statements | Escalate exact conflicts for editorial resolution; do not silently rewrite approved text. |
-| O06 | Final ad-slot/content packages and visual design | Treat as release inputs; do not reconstruct missing requirements from archives or invent values. |
+The [User flows](user-flows.md) acceptance matrix covers the trial-start event, exact inputs, account/group separation, sign-in draft handling, copy independence, mandatory deletion confirmations, category ordering and admin authorization. Loading failures are not empty collections; save/delete failures are not success.
 
-Proposed minor flow defaults are explicitly named in User flows. These are reviewable design recommendations, not new product approvals. None reopens the fixed form choices, single-group rule, four conceptual sets or no-source-link copying decision.
+### Remaining design inputs
+
+- Choose the admin presentation of activity-type labels without asking for a group or movement. The underlying types remain `content`, `pointOfView`, `survival` and `playTime`; the movement-dependent counselor labels in §4 are unchanged. This label presentation belongs in the planned `design-system.md`.
+- Define precise pending-save navigation/concurrency recovery in the planned `api-contracts.md` and `implementation-plan.md`; F06 gives reviewable loss-avoidance recommendations without inventing a manual Save button.
+- Supply final advertising placements, support destination and informational text. Any embedded link/statement that conflicts with the youth-activity scope needs a focused editorial decision before release. Only text, not prior styling, is preserved.
+- Finalize typography, assets and component geometry in the planned `design-system.md`. Proposed new-category placement and minor flow defaults remain labeled recommendations.
+
+The migration/domain transition is outside this product specification; the README assigns it explicitly to the planned `migration-plan.md` and `operations.md` without making archived implementation a prerequisite for these behaviors.
