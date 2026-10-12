@@ -1,30 +1,24 @@
-# Activity Wiz — אפיון המוצר
+# Activity Wiz
 
-מאגר תיעוד בעברית של ההחלטות שאושרו ל־Activity Wiz, נכון ל־11 באוקטובר 2026. זהו בסיס לסוכן פיתוח עתידי: בשלב הנוכחי מתעדים בלבד, ובהמשך מעמיקים בארכיטקטורה ובעיצוב לפני מימוש.
+Activity Wiz is a free, mobile-first Hebrew product for Israeli youth-movement counselors to generate personalized educational activities or choose prewritten public activities, then read and adapt their own content while guiding.
 
-Activity Wiz מסייע למדריכים בתנועות נוער בישראל ליצור פעילויות חינוכיות מותאמות לקבוצה, ולבחור פעילויות מוכנות מספרייה ציבורית. המדריכים הם בעיקר בגילי כיתות ט–יב; לפי נתוני השימוש שסיפק בעל המוצר, חלק מרכזי מהקהל הוא מדריכי צופים. גיל המדריכים אינו מגביל את אפשרויות כיתות החניכים בטופס.
+## Authoritative specifications
 
-החוויה חינמית, מהירה ומיועדת קודם כול לטלפון: הכנה בערב, קריאת הפעולה בזמן ההדרכה והעתקה ל־WhatsApp. הממשק בעברית בלבד וב־RTL קבוע, ללא החלפת שפה או תשתית רב־לשונית. פרסומות הן מקור ההכנסה היחיד שאושר.
-
-## Data-model update
-
-The [English data model and migration contract](docs/data-model.md) adds the accepted four core product tables, durable single-group defaults, field dictionaries, independent-copy mapping and source-grounded migration rules. Field representations and concurrency mechanisms are labeled proposals. TypeScript on Workers, D1 and R2 remain proposed; Next.js and Cloudflare are the accepted direction. Existing Hebrew product documentation remains in place.
-
-## מסמכי האפיון
-
-| מסמך | תוכן |
+| Document | Responsibility |
 | --- | --- |
-| [מוצר ותהליכי שימוש](docs/product-and-flows.md) | מסכים, הזדהות, ניסיון אורח, עריכה וספרייה אישית |
-| [שדות ואפשרויות קיימים](docs/legacy-fields.md) | אפשרויות מדויקות שנבדקו בקריאה בלבד במקור הישן |
-| [יצירת תוכן ב־AI](docs/ai-generation.md) | בחירת תבניות, מידע לקלט, ספק וכישלון יצירה |
-| [ספרייה ציבורית וניהול](docs/content-and-admin.md) | עותקים אישיים, הרשאות מנהל ופרסום ידני |
-| [כיוון חזותי](docs/visual-direction.md) | השפה שאושרה והגבול בין השראה לעיצוב סופי |
-| [מעבר, תפעול והחלטות פתוחות](docs/migration-and-decisions.md) | שימור מידע, אחריות, פרסומות, ארכיטקטורה ונושאים להכרעה |
+| [Product specification](docs/product-spec.md) | Scope, roles, exact input choices, feature rules, content and visual constraints, acceptance boundaries and open decisions |
+| [User flows](docs/user-flows.md) | Screen/access contract, end-to-end transitions, loading/empty/error states, persistence outcomes and traceable acceptance checks |
 
-## מעמד ההחלטות וגבולות העבודה
+These English documents define the current product together. Hebrew strings inside them are exact product labels/values. Approved requirements are distinct from explicitly labeled proposals and open decisions. The two specifications are standalone: archived documents and prior source code are not prerequisites for understanding the current product behavior.
 
-הדרישות במסמכים מחייבות כאשר הן מסומנות כהחלטות מאושרות. דברים שסומנו כפתוחים אינם בחירה טכנולוגית או אישור לתכונה חדשה. התנהגות ישנה שאינה תואמת את ההחלטות כאן אינה גוברת עליהן. אין להסיק מצילום מסך או מקוד ישן אישור להרחבת המוצר.
+Only these two files belong to the active `docs` directory at this stage. Architecture, detailed data model, API contracts, design system, AI implementation, operations and implementation planning are future documentation work, not empty templates or implicit implementation tasks.
 
-המאגר החדש נבנה מאפס. [המאגר הישן](https://github.com/PoratEyal/Training-content-AI) הוא מקור לקריאה בלבד: אין לשנות בו קוד, תשתית או נתונים. מוצרי האימון והחידונים וקישורים אליהם אינם חלק מהמוצר החדש. הסרתם מהממשק אינה הרשאה למחיקת המידע הישן.
+## Historical archive
 
-במאגר זה יש Markdown בלבד. אין קוד אפליקציה, שלד פרויקט, תלויות, תצורת תשתית, נכסי תמונה, נתוני משתמשים או סודות. היצירה והפרסום של התיעוד אינם ביצוע מיגרציה, החלפת דומיין או השבתת המערכת הישנה.
+[Archived documentation snapshot — 12 October 2026](archive/2026-10-12/README.md) preserves the previous README and every prior document without content changes, including Hebrew notes and English schema/migration research. The archive is **non-authoritative historical reference**. Its proposals, technical choices and links must not override the current specifications or become build/runtime dependencies.
+
+## Repository scope
+
+This repository currently contains Markdown documentation only. It does not contain or authorize application implementation, dependencies, database creation, infrastructure configuration or migration execution. Next.js and Cloudflare are the accepted technical direction; more specific stack choices remain unapproved proposals.
+
+Existing service data and user ownership must be preserved. Prior systems are read-only research sources; the owner controls exports, changes to those systems, domain transition and shutdown. No private exports, credentials or personal administrator addresses belong in this public repository.
