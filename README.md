@@ -7,16 +7,17 @@ Activity Wiz helps Israeli youth-movement counselors prepare an activity for the
 1. [Product specification](docs/product-spec.md): understand the counselor use case, product concepts, roles, exact form choices and feature rules.
 2. [User flows](docs/user-flows.md): start with the overall journey diagram, then read the screen contract, detailed transitions and acceptance checks.
 
-These two English documents are the authoritative specification for the current product. Exact Hebrew labels/values remain Hebrew. Explicitly labeled proposals are recommendations, not approved requirements. No chat history, prior code or archived document is needed to understand the current behavior. The concept overview and journey diagram provide orientation without a separate duplicate overview document.
+3. [Production architecture](docs/architecture.md): accepted stack, runtime boundaries, generation admission/cancellation, security, data consistency and deployment approval gates.
+
+These three English documents are the authoritative specification for the current product. Exact Hebrew labels/values remain Hebrew. Explicitly labeled proposals are recommendations, not approved requirements. No chat history, prior code or archived document is needed to understand the current behavior. The concept overview and journey diagram provide orientation without a separate duplicate overview document.
 
 ## Planned documentation
 
-Only the two specifications above currently exist in `docs`. The following filenames are **planned, not yet created**:
+The three specifications above currently exist in `docs`. The following filenames are **planned, not yet created**:
 
 | Planned file | Responsibility |
 | --- | --- |
 | `design-system.md` | Components, typography, assets, global navigation/avatar placement and reorder interaction |
-| `architecture.md` | Application/service boundaries, auth integration and deployment adapter |
 | `data-model.md` | Storage representation, user-owned group data, activity-only details, position and deletion constraints |
 | `api-contracts.md` | Requests/responses, authorization, validation, autosave/retry and ordering contracts |
 | `ai-generation.md` | Template mapping, prompt construction, provider/model evaluation and generation errors |
@@ -24,7 +25,9 @@ Only the two specifications above currently exist in `docs`. The following filen
 | `migration-plan.md` | Data preservation, identity mapping, validation, final reconciliation, domain transition and rollback |
 | `implementation-plan.md` | Sequenced implementation and verification work |
 
-Next.js and Cloudflare are the accepted technical direction. TypeScript, Workers deployment details, D1, R2, auth library and exact model version remain proposals/open choices. The admin allowlist's JSON-array configuration in local `.env` and deployed Cloudflare secret is a current requirement; no actual environment file or secret is created here.
+The accepted stack is one actual Next.js + TypeScript project for frontend/server/admin, Cloudflare Workers, one production D1 database, R2, and Auth.js/NextAuth with Google only. There is one production environment, without staging or cloud branch deployments. Architecture recommends OpenNext; exact versions and runtime compatibility remain to be tested. The Gemini model remains open. Admin email allowlisting uses a JSON-array string in local `.env` and a deployed Cloudflare secret; no actual configuration or secret is created here.
+
+Development uses feature branches with one PR per branch and mandatory typecheck/build/relevant tests before merge. Documentation-only Markdown updates have standing authorization for GitHub publication through a feature branch and PR. They may merge only after required checks pass and it is verified that the merge will not deploy the application. If deployment would run or its absence is unverified, leave the published PR open. Code or mixed changes require explicit approval before GitHub publication and separate approval before merge; code merge approval includes the configured production deployment. Never direct-push main or treat documentation permission as deployment authorization.
 
 ## Migration responsibility
 
@@ -32,7 +35,7 @@ The planned `migration-plan.md` must preserve all existing users, group details,
 
 ## Historical reference
 
-[Archived snapshot — 12 October 2026](archive/2026-10-12/README.md) preserves earlier documentation unchanged. It is non-authoritative research/history: its proposals and superseded behavior must not override the current two specifications or become runtime/build dependencies. Migration research may consult it separately.
+[Archived snapshot — 12 October 2026](archive/2026-10-12/README.md) preserves earlier documentation unchanged. It is non-authoritative research/history: its proposals and superseded behavior must not override the current specifications or become runtime/build dependencies. Migration research may consult it separately.
 
 ## Repository boundary
 

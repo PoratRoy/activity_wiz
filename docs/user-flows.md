@@ -1,6 +1,6 @@
 # Activity Wiz — User flows and screen behavior
 
-Authoritative flows for [Product specification](product-spec.md), 12 October 2026. Read the product concepts first, then the overview below, then the detailed flows. English action names describe intent; interface copy is Hebrew and RTL. **Proposed** behavior is a reviewable implementation recommendation, not an additional approved feature.
+Authoritative flows for [Product specification](product-spec.md), 13 October 2026. Read the product concepts first, then the overview below, then the detailed flows. English action names describe intent; interface copy is Hebrew and RTL. **Proposed** behavior is a reviewable implementation recommendation, not an additional approved feature.
 
 ## Overall journey
 
@@ -11,7 +11,7 @@ flowchart TD
     H[Home] --> G[Group details]
     G --> A[Activity details]
     A --> Q{Generation access}
-    Q -->|Guest first valid attempt starts 72h clock| AI[Generate]
+    Q -->|Guest first accepted attempt starts 72h clock| AI[Generate]
     Q -->|Active trial or signed in| AI
     Q -->|Expired trial or invalid registered session| L[Google sign-in]
     L -->|Resume intended permitted destination| A
@@ -28,26 +28,26 @@ flowchart TD
     U --> R
 ```
 
-Access checks also apply to public-library entry and direct links. Browsing or completing forms does not start the trial; submitting a valid generation attempt does. Trial expiry blocks new creation/library entry without erasing open work or interrupting an in-progress generation. Authentication distinguishes new-account registration from login to an existing account as defined in F02.
+Public-library entry and direct category/activity links are always readable, even after trial expiry or session failure. Browsing and completing forms do not start the trial; the first accepted valid generation attempt does. Expiry gates further generation only. Accepted generation remains subject to its 60-second deadline and open-page requirement. Authentication distinguishes new registration from existing-account login as defined in F02.
 
 Every screen includes the global navigation bar. Bottom destinations are Home, Create and Public library, plus Personal library when signed in. A signed-in user's circular Google profile photo appears in that navigation. Avatar placement and any neutral guest/fallback appearance belong in the planned `design-system.md`; no second navigation bar or avatar menu is assumed.
 
 ## Screen and route contract
 
-Only `/login`, `/admin` and `/admin/activity` are fixed paths. Other screen names below are identities, not prescribed URLs. Route shapes belong in the planned `architecture.md` and `api-contracts.md`. Editing/loading may be states of an existing route.
+Only `/login`, `/admin` and `/admin/activity` are fixed paths. Other screen names below are identities, not prescribed URLs. Route shapes belong in [Architecture](architecture.md) and the planned `api-contracts.md`. Editing/loading may be states of an existing route.
 
 | Screen | Access and content | Main transition |
 | --- | --- | --- |
 | Home | All visitors; guest Google sign-in then Create, signed-in Create in that area | Group details, public library or own personal library |
 | Login — `/login` | Google sign-in with pending/error feedback and intended destination | F02 account-specific transition |
-| Group details | Guest before trial/within trial or signed-in; four group fields | Activity details; Back to Home |
+| Group details | All visitors may fill forms; four group fields; generation submission is gated | Activity details; Back to Home |
 | Activity details | Valid creation state; type/subject/place/duration plus collapsed optional section | Submit generation; Back to Group details |
 | Generating | Valid authorized submitted request | Read result or input-preserving generation error |
 | Current guest activity | Temporary generated text/name and activity details | Read/Edit; new registration can save it |
 | Personal library | Valid signed-in user; own titles/dates and Delete | Own personal Read detail |
 | Personal detail | Valid owner; available non-deleted activity | Read/Edit, autosave, confirmed Delete |
-| Public library/category | Guest before trial/within trial or signed-in; numeric category order, then newest-first activities | Category or public detail |
-| Public detail | Same access gate; name/text and normal activity details | Signed-in Save to new personal Read detail; Back to category |
+| Public library/category | All visitors; numeric category order, then newest-first activities | Category or public detail |
+| Public detail | All visitors; name/text and normal activity details | Signed-in Save to new personal Read detail; Back to category |
 | Admin overview — `/admin` | Authorized admin; categories and activities, two Create actions, category reorder, Delete | Admin creation forms or confirmed deletion |
 | Admin activity creation — `/admin/activity` | Title, existing category, all activity-specific fields, editable pasted/typed text | Explicit publication |
 | Admin category creation | Name, optional local JPG | Explicit creation and position assignment |
@@ -64,7 +64,7 @@ Only `/login`, `/admin` and `/admin/activity` are fixed paths. Other screen name
 | Inaccessible personal record | Do not reveal another owner's content; return Home with appropriate feedback. |
 | Load/network failure | Distinguish from empty or proven missing data, retain available state and allow retry/navigation. |
 | Generation failure | Keep form values; offer Retry generation or Contact support; create no empty activity. |
-| Mutation pending | Show progress, not completion. Proposed: suppress duplicate clicks while the same deliberate operation is pending. |
+| Mutation pending | Show progress, not completion. Disable duplicate submission while the same deliberate operation is pending. |
 | Mutation failure | Show truthful failure/unconfirmed status; preserve available data and do not navigate to a fabricated result. |
 | Invalid session | Require Google sign-in for protected continuation, not guest downgrade; F02 determines guest-draft handling only after successful account resolution. |
 
@@ -77,7 +77,7 @@ Requirements: P01–P05, P22–P24.
 1. Restore a valid registered session when available and show its circular Google photo and Personal navigation.
 2. Otherwise, distinguish a genuine guest from a recognized registered account requiring login. Do not intentionally substitute a guest session for a failed registered session.
 3. For a guest, read any existing trial start. Do not create a trial start merely because Home, the library or a form was opened. Show Google sign-in followed by Create.
-4. Before the first generation attempt or during an active trial, allow Create and Public library. After expiry, these entries go through `/login`, retaining the intended destination.
+4. Public library always remains readable. Generation is available before/during the trial; after expiry require `/login` before accepting another generation, retaining available inputs and intended destination.
 5. Home and informational pages remain accessible. Cookie clearing/another device may limit account recognition; do not promise universal identity detection or a cross-device guest clock.
 
 ## F02 — Google sign-in and account-specific draft handling
@@ -92,7 +92,7 @@ Requirements: P02–P04, P11, P18.
 4. On successful **existing-account login**, discard the temporary guest activity draft. Do not save it into that account. Load that account's existing group defaults and personal collection; temporary guest group values must not overwrite account defaults automatically.
 5. Return to the intended permitted destination. A newly transferred activity opens as personal Read detail. If existing-account login discarded the draft that was the intended destination, the required data no longer exists: return Home with appropriate feedback.
 
-A registered user's unsaved edits to an owned personal activity are not a guest draft. Reauthentication must not use the guest-discard rule to erase those edits; authorization still depends on the resolved account owning the activity.
+A registered user's owned edits are not a guest draft. Retained edits can only be submitted for the same owner; normal departure still discards locally unsent edits under F06, including navigation away to login. Never promise recovery after departure.
 
 **Registration succeeds but transfer persistence fails:** do not claim the draft is saved. Proposed recovery: retain the authenticated session and available draft, show the error and retry persistence without regeneration or adding manual Save. Exact retry/idempotency mechanics belong in the planned `api-contracts.md`.
 
@@ -116,12 +116,13 @@ Requirements: P03, P06, P08–P10, P26.
 
 1. Show type, subject, place and duration, then the initially collapsed optional section containing equipment, grouping/competition, Sabbath adaptation and notes. Restore available valid in-progress activity entries. Optional fields remain optional; collapsing the section does not delete entered values.
 2. Back returns to Group details with available activity inputs retained. A missing underlying group context is a missing-data error and redirects Home; normal required-field validation stays on the form.
-3. Generate validates the completed form. Validation failures do not initiate a request or start the trial.
-4. Check authentication/trial eligibility. For the guest's first valid generation submission, record the trial start at that attempt before issuing the generation request. A subsequent provider failure still consumes elapsed trial time. For later attempts, read the same original start; never slide/reset it. If expired, require Google login before the new request.
-5. Combine the current account/temporary guest group with current activity details for one generation request. Group values are request inputs only, not fields saved with the result.
-6. Show Generating. On success, follow F05. On failure, keep the filled form and offer Retry generation or Contact support. Retry repeats the request with retained values unless edited and still respects the original trial expiry. Contact support opens the configured contact destination without discarding the retry inputs; it does not create an automatic support ticket.
+3. Validate required fields and AI-bound text server-side under P28. Invalid values remain on the form with feedback and do not start the trial.
+4. Atomically verify session/trial eligibility and the 30-second interval since this principal's last accepted start. The first accepted guest attempt starts the fixed 72-hour clock, even if it fails. Never slide/reset the clock. Expiry requires login for a new attempt. Proposed: validation/auth/rate-limit rejection does not consume an accepted-start slot.
+5. Combine current group and activity details for one Gemini call; do not persist group snapshots. Show loading, disable duplicate submission and display no streamed text.
+6. Complete and finalize within 60 seconds from acceptance. On success follow F05. On failure/timeout keep the form and offer Retry generation or Contact support. Retry respects trial eligibility and any remainder of the 30-second interval; it is a new accepted attempt and does not silently call multiple models.
+7. Leaving or closing abandons generation. No background completion or resumable job is offered. Cancel provider work best effort and prevent finalization after known cancellation/deadline. A commit immediately before the server recognizes departure can already exist; do not claim browser-close detection or provider billing cancellation is infallible.
 
-Do not interrupt a request because its trial expires while running. Finish and retain/open the result, while still gating subsequent protected entry. Proposed pending-request safeguard: suppress accidental repeated submissions until the current operation resolves. Timeout/cancellation mechanics belong in the planned `ai-generation.md` and `api-contracts.md`.
+Trial expiry alone does not cancel an accepted attempt. Contact support uses the configured destination without an automatic ticket and retains inputs while their page remains available. [Architecture](architecture.md) explains admission, cancellation and commit races.
 
 ## F05 — Read the generated result
 
@@ -129,7 +130,7 @@ Requirements: P09–P13.
 
 For a registered user, automatically persist the activity-specific details, name/text and ownership/lifecycle information, and open Read detail. Keep even a successful result the user considers poor. Group fields are not persisted on the activity. For a guest, show the current temporary result in Read mode; subsequent authentication follows F02.
 
-If generation succeeds but personal persistence fails, retain the result and distinguish the save failure from generation failure. Proposed recovery: retry persistence where feasible, including after required reauthentication, without replacing the text through another generation or adding manual Save. Do not claim a stored detail destination exists before persistence succeeds.
+If the provider succeeds but persistence fails, do not claim a stored activity exists. Any finalization retry must remain within the original deadline and active attempt; after failure, expiry or abandonment there is no deferred save of that result. Keep form values and offer Retry generation or Contact support. A lost acknowledgement of an already committed result is an uncertain outcome to reconcile, not permission to insert a duplicate or resume expired work.
 
 Read mode favors unobstructed Hebrew content and copying into WhatsApp. Edit explicitly enters F06 on the same screen. There is no separate manual Save action for generated personal results.
 
@@ -143,7 +144,9 @@ Requirements: P12–P14.
 4. Title changes update the personal row without changing creation date/order. Editing does not change the user's group defaults, public original or another copy.
 5. Guest edits remain temporary. New registration saves the current edits; successful existing-account login discards that guest draft under F02.
 
-**Proposed loss-avoidance mechanics for the planned `api-contracts.md` and `implementation-plan.md`:** try pending saves on an intentional in-app exit and retain available local text until acknowledged; show clear failure before discarding unsaved personal edits; preserve owned edits through required reauthentication; reject stale writes rather than silently overwrite newer content; never let delayed autosave resurrect a deleted record. Precise conflict/navigation UI remains to be designed. No browser-close recovery guarantee or manual Save button is implied.
+**Exit behavior for personal detail:** leaving or closing does not force a save, display a blocking unsaved-change prompt or delay navigation. Discard locally unsent personal edits. The temporary guest draft instead survives the intentional Google authentication handoff until F02 resolves new versus existing account; that handoff does not force a personal autosave. Switching browser tabs while the page remains open preserves its draft; an already sent write may finish. Finish editing does not flush edits and periodic autosave continues while the detail is open.
+
+**Proposed concurrency mechanics:** serialize saves with expected revisions; reject stale writes, keep newer local edits pending despite an older acknowledgement, and never resurrect a deleted record. Retry only while the detail remains open and ownership is valid; do not schedule exit/background recovery.
 
 A missing record redirects Home; a known network/save error is not treated as proof that the record is missing. Never submit a retained personal edit under a different account's ownership after login.
 
@@ -161,13 +164,13 @@ Proposed successful detail-delete destination: Personal library. If deletion fai
 
 Requirements: P03, P16, P26.
 
-1. Apply the guest/session gate to index, category and detail entry, including direct links. Before the first generation attempt, browsing does not start the trial.
+1. Permit every visitor to read index, category and detail, including direct links, expired trials and invalid sessions. Browsing does not start the trial. Render public content server-side with metadata and indexing under P27.
 2. Show categories by numeric position controlled by admins. A genuinely empty library shows an empty state; loading/network failure shows its own state.
 3. Open a category and list its activities newest-first. There is no activity-reorder interaction, ranking list or per-activity counting.
 4. Open a public activity to read its text/name and normal activity details. Back returns to its category; proposed fallback when no referring route exists is the available category.
 5. If the requested category/activity no longer exists or required route data is missing, redirect Home with feedback. A valid empty category stays visible as empty.
 
-Expiry does not erase already-open content; new protected entry requires login. Viewing content must not write like/view counters. Category browsing has no free-text search.
+Trial expiry never gates public browsing; copying still requires valid login. Viewing content must not write like/view counters. Category browsing has no free-text search.
 
 ## F09 — Copy a public activity
 
@@ -201,7 +204,7 @@ Requirements: P18–P20.
 
 **Create:** enter a name, optionally select a JPG from the computer, then submit explicitly. Without an upload, use the shared default image. Missing visible name/invalid upload stays on the form with feedback and retained inputs. On success assign a numeric position; proposed initial placement is after existing categories. Proposed destination: admin category overview.
 
-An upload/create failure must not appear successful or silently replace a failed chosen upload with the default image. The user can remove their selection intentionally. Upload limits/asset handling belong in the planned `architecture.md`, `design-system.md` and `api-contracts.md`.
+An upload/create failure must not appear successful or silently replace a failed chosen upload with the default image. The user can remove their selection intentionally. Upload limits/asset handling belong in [Architecture](architecture.md) and the planned `design-system.md` and `api-contracts.md`.
 
 **Reorder:** in the admin overview, change category order through the reorder control. Persist the numeric positions so both public and admin category lists reflect the same order. Reordering categories does not reorder activities inside them or move activities to a different category. Indicate pending/failure truthfully; a failed reorder must not be presented as saved. The exact gesture, position normalization and concurrent-reorder behavior are defined in the planned `design-system.md` and `api-contracts.md`.
 
@@ -227,12 +230,12 @@ Keep configured advertising placements readable and retain Clarity for productio
 
 | Check | Requirements / flows | Expected outcome |
 | --- | --- | --- |
-| A01 — Trial start | P03; F01/F04 | Site visits, browsing, form opening and invalid submissions do not start the clock. First valid generation attempt does, even if it fails; retries do not reset it. |
-| A02 — Trial/session enforcement | P02–P03; F01/F02/F04 | Expired protected entry requires Google; running generation/open content survives; recognized session failure never silently becomes guest use. |
+| A01 — Trial start | P03; F01/F04 | Site visits, browsing, form opening and invalid submissions do not start the clock. First accepted valid generation attempt does, even if it subsequently fails; retries do not reset it. |
+| A02 — Trial/session enforcement | P02–P03; F01/F02/F04 | Expiry gates new generation only; public reads stay accessible. Accepted work observes its deadline/open-page requirement. Invalid recognized sessions do not become guest generation. |
 | A03 — Group boundary | P07–P09/P11; F03–F05 | One durable user group set, temporary guest group, exact options, current group used for the request but absent from saved activity fields. |
 | A04 — Errors | P10/P26; F04/F05 | Missing underlying data returns Home; visible form validation stays; generation error keeps values and offers Retry or Contact support; no empty activity. |
 | A05 — Authentication draft handling | P11; F02 | New registration saves current guest draft/details/edits; existing-account login discards it and loads account defaults; failed login does not discard it. |
-| A06 — Edit/autosave | P12–P14; F06 | Explicit modes, title/body only, minimal formatting, truthful periodic autosave, no manual Save, immutable creation order. |
+| A06 — Edit/autosave | P12–P14; F06 | Explicit modes, title/body only, minimal formatting, truthful periodic autosave, no manual Save or exit flush/blocking; unsent edits discarded on departure, tab switching retains draft; immutable creation order. |
 | A07 — Personal delete | P15; F07 | Both controls confirm; Cancel unchanged; Confirm soft-deletes and hides; stale detail returns Home; no reason prompt. |
 | A08 — Category order | P16/P19; F08/F11 | Numeric positions control public/admin category order; admin reorder persists; activities stay newest-first and cannot be manually reordered. |
 | A09 — Complete independent copies | P11/P17; F09 | All activity-specific values and text/name copied, no group fields/source relation; repeated saves produce distinct owned records; failed storage does not claim success. |
@@ -241,6 +244,8 @@ Keep configured advertising placements readable and retain Clarity for productio
 | A12 — Public delete | P21; F12 | Confirmation required, Cancel unchanged, Confirm hard-deletes; category deletion includes public children and never personal copies. |
 | A13 — Navigation and discovery | P05/P16; F01/F08 | Every screen has global navigation; signed-in circular Google photo; role-appropriate bottom destinations; category browsing without ranking or counters. |
 | A14 — Information pages | P22–P24; F13 | New visual design/global navigation, supplied text unchanged, readable configured ads, Clarity retained. |
-| A15 — Save recovery recommendations | P13; F06 | When finalized: retained personal edits remain owner-bound after reauthentication and delayed writes cannot resurrect deleted content. |
+| A15 — Save recovery recommendations | P13; F06 | Proposed revision checks keep retained edits owner-bound and prevent stale writes or resurrection; no departure recovery guarantee. |
+| A16 — Generation bounds | P09–P10; F04/F05 | Atomic starts ≥30 seconds apart, failures consume interval, 60-second finalization deadline, one non-streamed call, no background resume or late save after known cancellation/expiry. |
+| A17 — Public SEO and validation | P27–P28; F04/F08 | Indexable public SSR, correct metadata/invalidation, no private cache leaks; server plain-text/no-link validation and empty initial blacklist. |
 
 The planned `design-system.md`, `api-contracts.md` and `implementation-plan.md` will finalize the explicitly proposed gestures, destinations and low-level save/retry behavior. This does not reopen trial timing, account-only group data, guest-draft disposal, complete independent copying, numeric category order or mandatory confirmation and deletion semantics.
