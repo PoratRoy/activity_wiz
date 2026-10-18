@@ -15,11 +15,11 @@ export function TextField({ label, endSlot, id, ...rest }: FieldProps & InputHTM
   );
 }
 
-export function TextArea({ label, id, ...rest }: FieldProps & TextareaHTMLAttributes<HTMLTextAreaElement>) {
+export function TextArea({ label, id, className, ...rest }: FieldProps & TextareaHTMLAttributes<HTMLTextAreaElement>) {
   return (
     <label className={styles.wrap} htmlFor={id}>
       {label && <span className={styles.label}>{label}</span>}
-      <textarea id={id} className={`${styles.input} ${styles.textarea}`} {...rest} />
+      <textarea id={id} className={`${styles.input} ${styles.textarea} ${className ?? ""}`} {...rest} />
     </label>
   );
 }
