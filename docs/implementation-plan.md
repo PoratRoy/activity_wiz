@@ -38,10 +38,13 @@ Each step ends with `npm run typecheck && npm run build`, then a commit and push
 - `lib/validate.ts`, shared by the client and server.
 - `/create/generating` is a temporary page that shows the stored request until step 8.
 
-## ☐ 6. Guest cookie and trial gate
+## ☑ 6. Guest cookie and trial gate
 - `lib/guest/cookie.ts` (sign/verify, HMAC).
 - A server check on `/create/*` that renders `SignInGate` when the trial has expired.
 - The Create tab and landing button go to the gated route.
+- The locked "הפעולות שלי" tab opens the same `SignInGate` in its non-blocking form ("לא עכשיו").
+- "חזרה" goes back only within the app (`canGoBackInApp`), otherwise to `/`.
+- The trial *start* is written by `generateActivity` in step 8; until then no real guest reaches the gate.
 
 ## ☐ 7. Rate limiter Durable Object
 - `src/worker/rate-limiter.ts`, the binding and migration in `wrangler.jsonc`, the export from `worker.ts`.

@@ -3,8 +3,9 @@
 import { BookOpen, Home, ListChecks, Lock, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
 import { useViewer } from "@/components/AppShell/viewer";
-import { signInWithGoogle } from "@/lib/auth/actions";
+import { SignInGate } from "@/components/SignInGate/SignInGate";
 import styles from "./BottomNav.module.css";
 
 const tabs = [
@@ -14,12 +15,14 @@ const tabs = [
   { href: "/my", label: "הפעולות שלי", Icon: ListChecks, match: (p: string) => p.startsWith("/my") || (p.startsWith("/activity/") && p !== "/activity/draft") },
 ];
 
-/** Fixed bottom tabs. Guests see "הפעולות שלי" locked; tapping it starts Google sign-in. */
+/** Fixed bottom tabs. Guests see "הפעולות שלי" locked; tapping it opens the sign-in popup. */
 export function BottomNav() {
   const pathname = usePathname();
   const { signedIn } = useViewer();
+  const [prompt, setPrompt] = useState(false);
 
   return (
+    <>
     <nav className={styles.nav} aria-label="ניווט ראשי">
       {tabs.map(({ href, label, Icon, match }) => {
         const active = match(pathname);
@@ -35,7 +38,7 @@ export function BottomNav() {
         );
         if (locked) {
           return (
-            <button key={href} type="button" className={styles.tab} onClick={() => signInWithGoogle("/my")}>
+            <button key={href} type="button" className={styles.tab} onClick={() => setPrompt(true)}>
               {content}
             </button>
           );
@@ -47,5 +50,12 @@ export function BottomNav() {
         );
       })}
     </nav>
+    <SignInGate
+      open={prompt}
+      onClose={() => setPrompt(false)}
+      redirectTo="/my"
+      text="התחברו כדי לשמור את הפעולות שלכם"
+    />
+    </>
   );
 }

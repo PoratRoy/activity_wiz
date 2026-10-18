@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { BottomNav } from "@/components/BottomNav/BottomNav";
 import { ToastHost } from "@/components/Toast/Toast";
+import { NavigationTracker } from "./history";
 import { ViewerProvider, type Viewer } from "./viewer";
 import styles from "./AppShell.module.css";
 
@@ -8,6 +9,7 @@ import styles from "./AppShell.module.css";
 export function AppShell({ viewer, children }: { viewer: Viewer; children: ReactNode }) {
   return (
     <ViewerProvider viewer={viewer}>
+      <NavigationTracker />
       <ToastHost>
         <div className={styles.content}>{children}</div>
         <BottomNav />
