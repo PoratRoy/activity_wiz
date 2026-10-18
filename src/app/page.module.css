@@ -1,20 +1,87 @@
 .main {
   display: flex;
   flex-direction: column;
+  gap: var(--space-6);
+  padding: var(--space-5) var(--space-4) var(--space-6);
+}
+
+.hero {
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
   gap: var(--space-2);
-  min-height: calc(100dvh - var(--tabbar-h) - var(--topbar-h));
-  padding: var(--space-4);
   text-align: center;
 }
 
-.main h1 {
-  color: var(--green);
-  font-size: 36px;
+.art {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+}
+
+.name {
+  color: var(--green-dark);
+  font-size: clamp(30px, 9vw, 36px);
+  letter-spacing: -0.5px;
 }
 
 .pitch {
   margin: 0;
+  font-size: var(--fs-h2);
+  font-weight: 700;
+}
+
+.sub {
+  max-width: 32ch;
+  margin: 0;
   color: var(--text-muted);
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.stepNum {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--yellow);
+  font-weight: 700;
+}
+
+.stepTitle {
+  display: block;
+  font-weight: 700;
+}
+
+.stepText {
+  color: var(--text-muted);
+  font-size: var(--fs-small);
 }
