@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { Sparkles } from "lucide-react";
+import { Sparkles, Trees } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 import { ButtonLink } from "@/components/Button/Button";
-import { Campfire } from "@/components/illustrations/Campfire";
-import { Mascot } from "@/components/illustrations/Mascot";
-import { TopBar } from "@/components/TopBar/TopBar";
+import { AvatarMenu } from "@/components/AvatarMenu/AvatarMenu";
 import { getViewer } from "@/lib/auth/session";
 import { getSiteUrl } from "@/lib/site";
 import { GoogleSignInButton } from "./GoogleSignInButton";
@@ -37,26 +37,39 @@ export default async function HomePage() {
   };
 
   return (
-    <>
-      <TopBar />
+    <div className={styles.home}>
+      <header className={styles.header}>
+        <Link href="/" className={styles.brand} aria-label="ActivityWiz — בית">
+          <Trees size={30} strokeWidth={1.8} aria-hidden />
+          <span dir="ltr">ActivityWiz</span>
+        </Link>
+        <AvatarMenu />
+      </header>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
       <main className={styles.main}>
-        <section className={styles.hero}>
-          <div className={styles.art} aria-hidden>
-            <Campfire size={96} />
-            <Mascot size={120} />
+        <section className={styles.hero} aria-labelledby="home-title">
+          <div className={styles.intro}>
+            <h1 id="home-title">בונים פעולה?</h1>
+            <p className={styles.subtitle}>מותאם, פשוט ומהיר</p>
+            <p className={styles.pitch}>פעולה מוכנה לשבט בדקה</p>
+            <div className={styles.actions}>
+              <ButtonLink href="/create/group" icon={<Sparkles size={22} aria-hidden />}>
+                יצירת פעולה עם AI
+              </ButtonLink>
+              {!signedIn && <GoogleSignInButton />}
+            </div>
           </div>
-          <h1 className={styles.name}>ActivityWiz</h1>
-          <p className={styles.pitch}>פעולה מוכנה לשבט בדקה</p>
-          <p className={styles.sub}>יוצרים פעולות לתנועות נוער בעזרת AI, מותאמות לקבוצה שלכם.</p>
+          <Image
+            src="/illustrations/home-woodland.webp"
+            width={960}
+            height={640}
+            sizes="(max-width: 480px) 100vw, 480px"
+            unoptimized
+            preload
+            alt=""
+            className={styles.landscape}
+          />
         </section>
-
-        <div className={styles.actions}>
-          {!signedIn && <GoogleSignInButton />}
-          <ButtonLink href="/create/group" icon={<Sparkles size={20} aria-hidden />}>
-            יצירת פעולה עם AI
-          </ButtonLink>
-        </div>
 
         <ol className={styles.steps} aria-label="איך זה עובד">
           {STEPS.map((s) => (
@@ -71,7 +84,10 @@ export default async function HomePage() {
             </li>
           ))}
         </ol>
+        <div className={styles.adArea}>
+          <div className={styles.adSlot} role="region" aria-label="פרסומת">פרסומת</div>
+        </div>
       </main>
-    </>
+    </div>
   );
 }
