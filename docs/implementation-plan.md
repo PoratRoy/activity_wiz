@@ -22,9 +22,9 @@ Each step ends with `npm run typecheck && npm run build`, then a commit and push
 - `AppShell`, `TopBar`, `BottomNav`, `AvatarMenu` (guest version for now), `Button`, `Tile`/`TileGroup`, `PickerSheet`, `TextField`/`TextArea`, `Collapsible`, `Chip`, `Modal`, `Toast`/`ToastHost`, `EmptyState`, `AdSlot`, and the `Mascot` plus illustrations.
 - A temporary page at `/dev/ui` showing every component. Delete it in step 13.
 
-## ☐ 4. Auth
+## ☑ 4. Auth
 - Auth.js v5 config with Google and JWT, upserting the user in the `jwt` callback.
-- `SessionProvider`. `AvatarMenu` signed-in/guest states with sign in, sign out and the admin link.
+- A server-side `getViewer()` in the layout feeds the shell. `AvatarMenu` signed-in/guest states with sign in, sign out and the admin link. Until step 6, the locked tab goes straight to Google sign-in.
 - `lib/auth/admin.ts`.
 - **Owner setup:**
   1. Create a Google OAuth client.

@@ -4,6 +4,7 @@ import { BookOpen, Home, ListChecks, Lock, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useViewer } from "@/components/AppShell/viewer";
+import { signInWithGoogle } from "@/lib/auth/actions";
 import styles from "./BottomNav.module.css";
 
 const tabs = [
@@ -13,8 +14,8 @@ const tabs = [
   { href: "/my", label: "הפעולות שלי", Icon: ListChecks, match: (p: string) => p.startsWith("/my") || (p.startsWith("/activity/") && p !== "/activity/draft") },
 ];
 
-/** Fixed bottom tabs. Guests see "הפעולות שלי" locked; tapping it calls onLockedTap (sign-in popup). */
-export function BottomNav({ onLockedTap }: { onLockedTap?: () => void }) {
+/** Fixed bottom tabs. Guests see "הפעולות שלי" locked; tapping it starts Google sign-in. */
+export function BottomNav() {
   const pathname = usePathname();
   const { signedIn } = useViewer();
 
@@ -34,7 +35,7 @@ export function BottomNav({ onLockedTap }: { onLockedTap?: () => void }) {
         );
         if (locked) {
           return (
-            <button key={href} type="button" className={styles.tab} onClick={onLockedTap}>
+            <button key={href} type="button" className={styles.tab} onClick={() => signInWithGoogle("/my")}>
               {content}
             </button>
           );

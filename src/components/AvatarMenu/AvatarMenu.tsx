@@ -2,17 +2,15 @@
 
 import { LogIn, LogOut, Shield, UserRound } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useViewer } from "@/components/AppShell/viewer";
+import { signInWithGoogle, signOutAction } from "@/lib/auth/actions";
 import styles from "./AvatarMenu.module.css";
 
-type Props = {
-  onSignIn?: () => void;
-  onSignOut?: () => void;
-};
-
-export function AvatarMenu({ onSignIn, onSignOut }: Props) {
+export function AvatarMenu() {
   const viewer = useViewer();
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -52,13 +50,13 @@ export function AvatarMenu({ onSignIn, onSignOut }: Props) {
                   ניהול
                 </Link>
               )}
-              <button type="button" role="menuitem" className={styles.item} onClick={() => onSignOut?.()}>
+              <button type="button" role="menuitem" className={styles.item} onClick={() => signOutAction()}>
                 <LogOut size={18} aria-hidden />
                 התנתקות
               </button>
             </>
           ) : (
-            <button type="button" role="menuitem" className={styles.item} onClick={() => onSignIn?.()}>
+            <button type="button" role="menuitem" className={styles.item} onClick={() => signInWithGoogle(pathname)}>
               <LogIn size={18} aria-hidden />
               התחברות עם Google
             </button>

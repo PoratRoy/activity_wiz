@@ -23,7 +23,7 @@
 ```
 src/
   app/
-    layout.tsx               # <html lang="he" dir="rtl">, font, SessionProvider, AppShell
+    layout.tsx               # <html lang="he" dir="rtl">, font, getViewer() → AppShell
     globals.css              # tokens + base
     page.tsx                 # landing
     create/
@@ -83,7 +83,8 @@ drizzle.config.ts
   - `session({ session, token })`: `session.user.id = token.uid`.
 - `lib/auth/session.ts`: `getUserId()` → `string | null`.
 - `lib/auth/admin.ts`: `isAdmin(email)` parses `ADMIN_EMAILS` (a JSON string array) on each call and compares emails lowercased. If the value is missing or invalid, nobody is an admin. `requireAdmin()` redirects to `/` when the check fails.
-- The client uses `SessionProvider`/`useSession` for the avatar and the tab-bar lock, so public pages stay cache-neutral SSR.
+- The root layout reads the session on the server (`getViewer()`) and passes `{ signedIn, name, image, isAdmin }` to the client shell through `ViewerProvider`. Every page is rendered per request with no caching, so nothing leaks between users. There is no `SessionProvider`.
+- Config is lazy (`NextAuth(() => config)`), with secrets read from the Cloudflare env on each request. The admin check also requires Google's `email_verified`.
 - Sign-in uses `signIn('google', { redirectTo })`. The draft page passes `/activity/draft?claim=1`.
 
 ## Guest identity
