@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Rubik } from "next/font/google";
 import { AppShell } from "@/components/AppShell/AppShell";
 import { getViewer } from "@/lib/auth/session";
+import { getSiteUrl } from "@/lib/site";
 import "./globals.css";
 
 const rubik = Rubik({
@@ -11,17 +12,17 @@ const rubik = Rubik({
   display: "swap",
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
-
-export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl),
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+  metadataBase: new URL(getSiteUrl()),
   title: {
     default: "ActivityWiz – פעולות לתנועות נוער",
     template: "%s | ActivityWiz",
   },
   description: "יוצרים פעולה מוכנה לתנועת הנוער בדקה, בעזרת AI, ומאגר פעולות מוכנות למדריכים.",
   openGraph: { locale: "he_IL", siteName: "ActivityWiz", type: "website" },
-};
+  };
+}
 
 export const viewport: Viewport = {
   themeColor: "#58CC02",

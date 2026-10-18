@@ -131,6 +131,16 @@ export async function listCategories() {
   return getDb().select().from(publicCategory).orderBy(asc(publicCategory.createdAt));
 }
 
+/** Categories oldest first, with their public activity counts. */
+export async function listCategoriesWithCounts() {
+  return getDb()
+    .select({ id: publicCategory.id, title: publicCategory.title, createdAt: publicCategory.createdAt, count: count(publicActivity.id) })
+    .from(publicCategory)
+    .leftJoin(publicActivity, eq(publicActivity.categoryId, publicCategory.id))
+    .groupBy(publicCategory.id)
+    .orderBy(asc(publicCategory.createdAt));
+}
+
 export async function getCategory(id: string) {
   return (await getDb().select().from(publicCategory).where(eq(publicCategory.id, id)).get()) ?? null;
 }

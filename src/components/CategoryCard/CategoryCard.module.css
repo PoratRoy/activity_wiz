@@ -1,0 +1,31 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  aspect-ratio: 1;
+  padding: var(--space-4);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 4px 0 rgb(0 0 0 / 0.15);
+  transition: transform 80ms ease, box-shadow 80ms ease;
+}
+
+.card:active {
+  transform: translateY(4px);
+  box-shadow: none;
+}
+
+.icon {
+  opacity: 0.9;
+}
+
+.title {
+  font-size: var(--fs-h2);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.count {
+  font-size: var(--fs-small);
+  font-weight: 500;
+  opacity: 0.9;
+}

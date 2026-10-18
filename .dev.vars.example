@@ -1,6 +1,6 @@
 # Copy to .dev.vars (wrangler) and .env.local (next dev). Never commit real values.
 NEXTJS_ENV=development
-NEXT_PUBLIC_SITE_URL=http://localhost:3000
+SITE_URL=http://localhost:3000
 NEXT_PUBLIC_ADS_ENABLED=false
 AUTH_SECRET=
 AUTH_GOOGLE_ID=

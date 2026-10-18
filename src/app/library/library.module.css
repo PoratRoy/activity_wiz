@@ -1,0 +1,27 @@
+.main {
+  padding: var(--space-4) var(--space-4) var(--space-6);
+}
+
+.heading {
+  margin-bottom: var(--space-4);
+  font-size: var(--fs-h2);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-3);
+}
+
+.full {
+  grid-column: 1 / -1;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
