@@ -2,9 +2,9 @@
 
 Each step ends with `npm run typecheck && npm run build`, then a commit and push to `main`. From step 1 onward, each push deploys to production. Mark steps ☑ when done.
 
-## ☐ 1. Scaffold and deploy a "hello world"
+## ☑ 1. Scaffold and deploy a "hello world"
 - Create a Next.js app (TypeScript, App Router, `src/`, no Tailwind, no ESLint prompts).
-- Add `@opennextjs/cloudflare` and `wrangler`, then set up `open-next.config.ts`, `wrangler.jsonc`, `worker.ts` and the npm scripts (`dev`, `build`, `preview`, `deploy`, `typecheck`, `db:generate`, `db:migrate:local`).
+- Add `@opennextjs/cloudflare` and `wrangler`, then set up `open-next.config.ts` (no incremental cache), `wrangler.jsonc` and the npm scripts (`dev`, `build`, `typecheck`, `cf:build`, `preview`, `deploy`, `cf-typegen`). `cacheComponents` is off. The custom `worker.ts` entry comes in step 7, and the DB scripts in step 2.
 - In `layout.tsx`: `lang="he" dir="rtl"`, the Rubik font, `globals.css` with all tokens from `design.md`, and the centered phone column.
 - `.gitignore`, `.dev.vars.example`.
 - **Owner setup:**
