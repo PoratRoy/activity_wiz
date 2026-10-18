@@ -1,8 +1,20 @@
-import { ComingSoon } from "@/components/ComingSoon/ComingSoon";
+import type { Metadata } from "next";
+import { redirect } from "next/navigation";
+import { TopBar } from "@/components/TopBar/TopBar";
+import { getUserId } from "@/lib/auth/session";
+import { listActivities } from "@/lib/db/queries";
+import { MyList } from "./MyList";
 
-// Placeholder until step 11 of docs/implementation-plan.md.
-export const metadata = { title: "הפעולות שלי", robots: { index: false } };
+export const metadata: Metadata = { title: "הפעולות שלי", robots: { index: false } };
 
-export default function Page() {
-  return <ComingSoon title="הפעולות שלי" />;
+export default async function MyActivitiesPage() {
+  const userId = await getUserId();
+  if (!userId) redirect("/");
+  const items = await listActivities(userId);
+  return (
+    <>
+      <TopBar title="הפעולות שלי" />
+      <MyList items={items} />
+    </>
+  );
 }

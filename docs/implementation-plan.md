@@ -70,7 +70,7 @@ Each step ends with `npm run typecheck && npm run build`, then a commit and push
 - Autosave every 2 seconds through `updateActivity`, with the status indicator. Drafts save to localStorage.
 - `deleteActivity` with a confirmation modal, then a redirect to `/my` and a toast.
 
-## ☐ 11. My activities
+## ☑ 11. My activities
 - `/my` list, newest first, with date format, delete from the ⋯ menu, empty state, and the guest redirect and tab lock.
 
 ## ☐ 12. Public library and SEO
