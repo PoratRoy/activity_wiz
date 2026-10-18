@@ -116,7 +116,7 @@ drizzle.config.ts
 | `NEXT_PUBLIC_SITE_URL` | var | Canonical URLs and sitemap (`https://<app>.workers.dev` until there's a domain) |
 | `NEXT_PUBLIC_ADS_ENABLED` | var | `true` shows `AdSlot` placeholders |
 
-Locally, use `.dev.vars` for Wrangler and `.env.local` for `next dev`. `initOpenNextCloudflareForDev()` in `next.config.ts` exposes the local D1 and Durable Object bindings to `next dev`. Both files are gitignored, and `.dev.vars.example` lists the names.
+Locally, use `.dev.vars` for Wrangler and `.env.local` for `next dev`. Under `next dev` the rate limiter uses process memory instead of the Durable Object; use `npm run preview` to exercise the real one. `initOpenNextCloudflareForDev()` in `next.config.ts` exposes the local D1 and Durable Object bindings to `next dev`. Both files are gitignored, and `.dev.vars.example` lists the names.
 
 ## Wrangler config (`wrangler.jsonc`) essentials
 

@@ -46,9 +46,9 @@ Each step ends with `npm run typecheck && npm run build`, then a commit and push
 - "חזרה" goes back only within the app (`canGoBackInApp`), otherwise to `/`.
 - The trial *start* is written by `generateActivity` in step 8; until then no real guest reaches the gate.
 
-## ☐ 7. Rate limiter Durable Object
+## ☑ 7. Rate limiter Durable Object
 - `src/worker/rate-limiter.ts`, the binding and migration in `wrangler.jsonc`, the export from `worker.ts`.
-- A `rateLimit(key)` helper in `lib/`.
+- A `hitRateLimit(key)` helper in `lib/rate-limit.ts`. Under `next dev` it uses an in-memory fallback, because Wrangler's platform proxy can't host our own DO class. `npm run preview` and production use the real DO.
 
 ## ☐ 8. AI generation
 - `lib/ai/schema.ts` (response schema + type guard), `lib/ai/gemini.ts` (client, safety settings, timeout).
