@@ -37,7 +37,7 @@ All screens share the app shell from [Design](design.md): a top bar (back arrow 
 - Two big buttons:
   - Guest: **התחברות עם Google** (secondary) and **יצירת פעולה עם AI** (primary).
   - Signed in: only **יצירת פעולה עם AI**.
-- A "from the library" strip: up to 6 category cards from the library plus a "to the library" link. This gives the page indexable content.
+- A short "how it works" list (3 steps). No library strip (owner decision, 2026-10-19); the library is reached from the bottom tabs.
 - Has its own metadata for SEO.
 
 ## Group page `/create/group`

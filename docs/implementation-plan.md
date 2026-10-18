@@ -73,24 +73,25 @@ Each step ends with `npm run typecheck && npm run build`, then a commit and push
 ## ☑ 11. My activities
 - `/my` list, newest first, with date format, delete from the ⋯ menu, empty state, and the guest redirect and tab lock.
 
-## ☐ 12. Public library and SEO
+## ☑ 12. Public library and SEO
 - `lib/slug.ts`.
 - `/library`, `/library/[cat]` and `/library/[cat]/[act]`, with `CategoryCard`, `ActivityCard`, `AdSlot` placement, canonical redirects, `generateMetadata` and JSON-LD.
 - `copyPublicActivity` and the "save to my activities" button.
 - `sitemap.ts`, `robots.ts`, and `noindex` on private routes.
 
-## ☐ 13. Admin
+## ☑ 13. Admin
 - `/admin` (category list, + category modal, delete with a cascade warning and count).
 - `/admin/category/[id]` (activities, delete).
 - `/admin/activity/new` (category select, title, Markdown textarea with live preview, publish).
 - Every page and action calls `requireAdmin()`.
 - Remove `/dev/ui`.
 
-## ☐ 14. Landing page and polish
+## ☑ 14. Landing page and polish
 - `/` hero, mascot, buttons (by sign-in state), library strip, metadata.
 - Go through every screen at 360px and 480px widths and on desktop: RTL details, safe-area padding, focus states, reduced motion, Hebrew copy review.
 
-## ☐ 15. Production check
+## ☑ 15. Production check
+- Done 2026-10-19 as a guest on the live URL (19/19): full create flow, 90-minute generation, copy, draft edit, rate limit, trial cookie, guards, 404s, sitemap and robots. Signed-in flows (draft claim, autosave/delete, library copy, admin) were verified locally with test sessions; the owner confirms them once on production with a real Google login.
 - Run through it on the live URL:
   1. Guest generation.
   2. Draft claim through sign-in.

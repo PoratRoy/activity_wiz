@@ -68,7 +68,7 @@ Google is the only sign-in method.
 ### Admin
 - **R22.** Admins are the emails in the `ADMIN_EMAILS` secret, a JSON string array. This is checked on the server for every admin page and admin action. A non-admin trying to open `/admin` is redirected to `/`.
 - **R23.** Admins can add a category (title only) and delete a category. Deleting a category also deletes its public activities and shows a warning first. Personal copies are unaffected.
-- **R24.** Admins can add a public activity and delete one. It has the same shape as an AI activity:
+- **R24.** Admins can add a public activity and delete one. It has the same shape as an AI activity (the admin subject allows up to 60 characters, so longer topic names can be pasted):
   - category, title, and pasted Markdown body
   - type, subject, place and duration (required)
   - equipment, teams, Shabbat and notes (optional)
