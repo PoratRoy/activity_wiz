@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { TopBar } from "@/components/TopBar/TopBar";
 import { DraftView } from "./DraftView";
 
@@ -8,7 +9,9 @@ export default function DraftPage() {
   return (
     <>
       <TopBar title="הפעולה" back="/create/activity" />
-      <DraftView />
+      <Suspense>
+        <DraftView />
+      </Suspense>
     </>
   );
 }

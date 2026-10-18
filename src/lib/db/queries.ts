@@ -21,7 +21,8 @@ export type ActivityDetails = {
   notes?: string | null;
 };
 
-export type ActivityContent = Partial<ActivityDetails> & { title: string; bodyMd: string };
+/** Personal activities may have no details (e.g. claimed drafts with unknown values). */
+export type ActivityContent = { [K in keyof ActivityDetails]?: string | null } & { title: string; bodyMd: string };
 
 // ---------- users ----------
 

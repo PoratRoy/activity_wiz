@@ -58,9 +58,9 @@ Each step ends with `npm run typecheck && npm run build`, then a commit and push
 - `/create/generating` with the loading animation, tips, the AI notice, and all outcome states (ok, refused, rate-limited, busy, error, trial expired).
 - **Owner setup:** set `GEMINI_API_KEY` (done). `GEMINI_MODEL` is `gemini-3.5-flash-lite` in `wrangler.jsonc`, because Google no longer offers `gemini-2.5-flash-lite` to new users.
 - The SDK's default 5 retries are disabled (`retryOptions.attempts: 1`) so each attempt is one call (R9).
-- `/activity/draft` and `/activity/[id]` are minimal plain-text views until step 9.
 
-## ☐ 9. Activity view, copy and share
+
+## ☑ 9. Activity view, copy and share
 - `lib/markdown/render.ts` (sanitized), `toWhatsApp.ts`, `toPlain.ts`, and the share button (`navigator.share` with a `wa.me` fallback).
 - The `ActivityView` and `ActionBar` components.
 - `/activity/[id]` (owner check) and `/activity/draft` (localStorage, sign-in banner, `?claim=1` → `claimDraft`).

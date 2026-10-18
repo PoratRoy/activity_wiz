@@ -1,3 +1,6 @@
+export const TITLE_MAX = 120;
+export const BODY_MAX = 20_000;
+
 // The guest's generated activity, kept in localStorage['aw.draft'] (docs/data-model.md).
 export type Draft = {
   title: string;
