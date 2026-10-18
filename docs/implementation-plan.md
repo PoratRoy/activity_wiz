@@ -8,10 +8,10 @@ Each step ends with `npm run typecheck && npm run build`, then a commit and push
 - In `layout.tsx`: `lang="he" dir="rtl"`, the Rubik font, `globals.css` with all tokens from `design.md`, and the centered phone column.
 - `.gitignore`, `.dev.vars.example`.
 - **Owner setup:**
-  1. `npx wrangler login`.
-  2. Create the D1 database `activitywiz` and put its ID in `wrangler.jsonc`.
-  3. Connect Workers Builds to the repo.
-  4. Push and confirm the `*.workers.dev` URL loads.
+  1. ☑ `npx wrangler login`.
+  2. ☑ Create the D1 database `activitywiz` (done in step 2).
+  3. ☐ Connect Workers Builds to the repo (build `npm run cf:build`, deploy `npm run deploy`).
+  4. ☐ Confirm the `*.workers.dev` URL loads.
 
 ## ☑ 2. Database
 - Drizzle schema for the 4 tables (`data-model.md`), `drizzle.config.ts`, and the first migration.
