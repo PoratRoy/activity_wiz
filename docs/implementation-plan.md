@@ -65,8 +65,8 @@ Each step ends with `npm run typecheck && npm run build`, then a commit and push
 - The `ActivityView` and `ActionBar` components.
 - `/activity/[id]` (owner check) and `/activity/draft` (localStorage, sign-in banner, `?claim=1` → `claimDraft`).
 
-## ☐ 10. Edit, autosave and delete
-- `ActivityEditor` (Tiptap, dynamic import, bold/underline/lists, Markdown in/out, 3000-character limit).
+## ☑ 10. Edit, autosave and delete
+- `ActivityEditor`: Tiptap v3 + `@tiptap/markdown`, dynamic import, bold/underline/lists, and a 3000-character limit via `CharacterCount` (an over-limit paste is trimmed to fit, with a warning). Underline is stored as `++text++`, and render/copy/share handle it.
 - Autosave every 2 seconds through `updateActivity`, with the status indicator. Drafts save to localStorage.
 - `deleteActivity` with a confirmation modal, then a redirect to `/my` and a toast.
 

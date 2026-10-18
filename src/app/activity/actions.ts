@@ -2,7 +2,7 @@
 
 import { DURATIONS, EQUIPMENT, GENERIC_TYPE_LABELS, NOTES_MAX, PLACES, SHABBAT, SUBJECT_MAX, TEAMS } from "@/data/options";
 import { getUserId } from "@/lib/auth/session";
-import { insertActivity } from "@/lib/db/queries";
+import { deleteActivity, insertActivity, updateActivity } from "@/lib/db/queries";
 import { BODY_MAX, TITLE_MAX, type Draft } from "@/lib/draft";
 
 const str = (v: unknown) => (typeof v === "string" ? v : "");
@@ -31,4 +31,21 @@ export async function claimDraft(draft: Draft): Promise<{ id: string } | null> {
     notes: str(draft.notes).trim().slice(0, NOTES_MAX) || null,
   });
   return { id };
+}
+
+/** Autosave of a personal activity (R15). Only the owner's row is touched; last write wins. */
+export async function saveActivity(id: string, content: { title: string; bodyMd: string }): Promise<boolean> {
+  const userId = await getUserId();
+  if (!userId) return false;
+  const title = str(content?.title).trim().slice(0, TITLE_MAX);
+  const bodyMd = str(content?.bodyMd).slice(0, BODY_MAX);
+  if (!title) return false;
+  return updateActivity(str(id), userId, { title, bodyMd });
+}
+
+/** Hard delete (R18). Only the owner's row is touched. */
+export async function removeActivity(id: string): Promise<boolean> {
+  const userId = await getUserId();
+  if (!userId) return false;
+  return deleteActivity(str(id), userId);
 }

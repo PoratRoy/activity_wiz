@@ -3,6 +3,7 @@
 export function stripInline(line: string): string {
   return line
     .replace(/<\/?u>/gi, "")
+    .replace(/\+\+(.+?)\+\+/g, "$1")
     .replace(/\*\*(.+?)\*\*/g, "$1")
     .replace(/__(.+?)__/g, "$1")
     .replace(/(^|[^*])\*(?!\s)(.+?)\*/g, "$1$2")

@@ -6,6 +6,7 @@ import { stripInline } from "./toPlain";
 function inlineToWhatsApp(line: string): string {
   return line
     .replace(/<\/?u>/gi, "")
+    .replace(/\+\+(.+?)\+\+/g, "$1")
     .replace(/\*\*(.+?)\*\*/g, "\u0000$1\u0000")
     .replace(/__(.+?)__/g, "\u0000$1\u0000")
     .replace(/(^|[^*\u0000])\*(?!\s)(.+?)\*/g, "$1_$2_")

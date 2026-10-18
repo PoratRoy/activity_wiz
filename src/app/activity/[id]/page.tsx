@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
-import { ActionBar } from "@/components/ActionBar/ActionBar";
-import { ActivityView } from "@/components/ActivityView/ActivityView";
 import { TopBar } from "@/components/TopBar/TopBar";
 import { typeLabel } from "@/data/options";
 import { getAccountGroup, getUserId } from "@/lib/auth/session";
 import { getActivity } from "@/lib/db/queries";
+import { PersonalActivity } from "./PersonalActivity";
 
 export const metadata: Metadata = { title: "הפעולה שלי", robots: { index: false } };
 
@@ -19,12 +18,12 @@ export default async function PersonalActivityPage({ params }: { params: Promise
   return (
     <>
       <TopBar title="הפעולה" back="/my" />
-      <ActivityView
+      <PersonalActivity
+        id={activity.id}
         title={activity.title}
         bodyMd={activity.bodyMd}
         chips={[typeLabel(group?.movement, activity.type), activity.place, activity.duration]}
       />
-      <ActionBar title={activity.title} bodyMd={activity.bodyMd} />
     </>
   );
 }

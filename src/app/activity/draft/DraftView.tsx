@@ -2,8 +2,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState, useTransition } from "react";
-import { ActionBar } from "@/components/ActionBar/ActionBar";
-import { ActivityView } from "@/components/ActivityView/ActivityView";
+import { EditableActivity } from "@/components/EditableActivity/EditableActivity";
 import { useViewer } from "@/components/AppShell/viewer";
 import { Mascot } from "@/components/illustrations/Mascot";
 import { useToast } from "@/components/Toast/Toast";
@@ -88,13 +87,18 @@ export function DraftView() {
 
   return (
     <>
-      <ActivityView
-        title={draft.title}
-        bodyMd={draft.bodyMd}
+      <EditableActivity
+        initial={{ title: draft.title, bodyMd: draft.bodyMd }}
         chips={[typeLabel(movement, draft.type), draft.place, draft.duration]}
         before={banner}
+        onSave={async (c) => {
+          // Guest edits stay in this browser until sign-in (R15).
+          const latest = { ...(draftStore.load() ?? draft), ...c };
+          draftStore.save(latest);
+          setDraft(latest);
+          return true;
+        }}
       />
-      <ActionBar title={draft.title} bodyMd={draft.bodyMd} />
     </>
   );
 }
