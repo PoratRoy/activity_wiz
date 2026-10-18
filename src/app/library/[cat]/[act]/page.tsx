@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound, permanentRedirect } from "next/navigation";
 import { ActivityView } from "@/components/ActivityView/ActivityView";
 import { TopBar } from "@/components/TopBar/TopBar";
-import { typeLabel } from "@/data/options";
+import { activityChips, typeLabel } from "@/data/options";
 import { getCategory, getPublicActivity } from "@/lib/db/queries";
 import { excerpt } from "@/lib/markdown/excerpt";
 import { getSiteUrl } from "@/lib/site";
@@ -68,7 +68,7 @@ export default async function PublicActivityPage({ params }: Props) {
       <ActivityView
         title={activity.title}
         bodyMd={activity.bodyMd}
-        chips={[typeLabel(null, activity.type), activity.place, activity.duration]}
+        chips={activityChips(typeLabel(null, activity.type), activity.place, activity.duration)}
       />
       <PublicActions publicId={activity.id} title={activity.title} bodyMd={activity.bodyMd} />
     </>

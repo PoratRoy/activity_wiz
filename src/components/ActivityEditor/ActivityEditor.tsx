@@ -17,10 +17,12 @@ export default function ActivityEditor({
   title,
   bodyMd,
   onChange,
+  belowTitle,
 }: {
   title: string;
   bodyMd: string;
   onChange: (next: { title: string; bodyMd: string }) => void;
+  belowTitle?: React.ReactNode;
 }) {
   // Tiptap keeps the first onUpdate closure, so read the latest title through a ref.
   const titleRef = useRef(title);
@@ -98,6 +100,7 @@ export default function ActivityEditor({
         aria-label="כותרת"
         onChange={(e) => onChange({ title: e.target.value, bodyMd: editor?.getMarkdown() ?? bodyMd })}
       />
+      {belowTitle}
       <div className={styles.toolbar} role="toolbar" aria-label="עיצוב טקסט">
         {tool("מודגש", <Bold size={20} />, state?.bold, () => editor?.chain().focus().toggleBold().run())}
         {tool("קו תחתון", <Underline size={20} />, state?.underline, () => editor?.chain().focus().toggleUnderline().run())}

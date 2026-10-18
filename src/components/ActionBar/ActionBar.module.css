@@ -50,3 +50,7 @@
 .accent:active:not(:disabled) {
   box-shadow: 0 0 0 var(--green-dark);
 }
+
+.danger {
+  color: var(--danger-dark);
+}

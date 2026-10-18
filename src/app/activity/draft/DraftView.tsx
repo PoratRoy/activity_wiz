@@ -6,7 +6,7 @@ import { EditableActivity } from "@/components/EditableActivity/EditableActivity
 import { useViewer } from "@/components/AppShell/viewer";
 import { Mascot } from "@/components/illustrations/Mascot";
 import { useToast } from "@/components/Toast/Toast";
-import { typeLabel } from "@/data/options";
+import { activityChips, typeLabel } from "@/data/options";
 import { signInWithGoogle } from "@/lib/auth/actions";
 import type { Draft } from "@/lib/draft";
 import { draftStore, groupStore } from "@/lib/guest/storage";
@@ -89,7 +89,7 @@ export function DraftView() {
     <>
       <EditableActivity
         initial={{ title: draft.title, bodyMd: draft.bodyMd }}
-        chips={[typeLabel(movement, draft.type), draft.place, draft.duration]}
+        chips={activityChips(typeLabel(movement, draft.type), draft.place, draft.duration)}
         before={banner}
         onSave={async (c) => {
           // Guest edits stay in this browser until sign-in (R15).

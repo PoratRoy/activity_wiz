@@ -30,16 +30,23 @@ export function ActionButton({
   label,
   onClick,
   accent,
+  danger,
   disabled,
 }: {
   icon: ReactNode;
   label: string;
   onClick: () => void;
   accent?: boolean;
+  danger?: boolean;
   disabled?: boolean;
 }) {
   return (
-    <button type="button" className={`${styles.action} ${accent ? styles.accent : ""}`} onClick={onClick} disabled={disabled}>
+    <button
+      type="button"
+      className={`${styles.action} ${accent ? styles.accent : ""} ${danger ? styles.danger : ""}`}
+      onClick={onClick}
+      disabled={disabled}
+    >
       {icon}
       <span>{label}</span>
     </button>

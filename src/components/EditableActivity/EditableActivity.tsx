@@ -1,6 +1,6 @@
 "use client";
 
-import { EllipsisVertical, Pencil, Trash2 } from "lucide-react";
+import { Pencil, Trash2 } from "lucide-react";
 import dynamic from "next/dynamic";
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { ActionBar, ActionButton } from "@/components/ActionBar/ActionBar";
@@ -24,7 +24,7 @@ type SaveStatus = "idle" | "saving" | "saved" | "error";
 
 /**
  * Read / edit modes of a draft or personal activity (R15). Changes autosave AUTOSAVE_DELAY_MS after
- * typing stops via `onSave` (last write wins). `onDelete` adds the ⋯ menu with a confirmed delete.
+ * typing stops via `onSave` (last write wins). `onDelete` adds a delete button (with confirmation).
  */
 export function EditableActivity({
   initial,
@@ -42,7 +42,6 @@ export function EditableActivity({
   const [content, setContent] = useState<Content>(initial);
   const [editing, setEditing] = useState(false);
   const [status, setStatus] = useState<SaveStatus>("idle");
-  const [menuOpen, setMenuOpen] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const pending = useRef<Content | null>(null);
@@ -95,8 +94,7 @@ export function EditableActivity({
     return (
       <>
         <div className={viewStyles.article}>
-          <ChipRow items={chips} />
-          <ActivityEditor title={content.title} bodyMd={content.bodyMd} onChange={onChange} />
+          <ActivityEditor title={content.title} bodyMd={content.bodyMd} onChange={onChange} belowTitle={<ChipRow items={chips} />} />
         </div>
         <div className={barStyles.bar}>
           <span className={`${styles.status} ${status === "error" ? styles.statusError : ""}`} role="status">
@@ -113,27 +111,7 @@ export function EditableActivity({
       <ActivityView title={content.title} bodyMd={content.bodyMd} chips={chips} before={before} />
       <ActionBar title={content.title} bodyMd={content.bodyMd}>
         <ActionButton icon={<Pencil size={20} aria-hidden />} label="עריכה" onClick={() => setEditing(true)} />
-        {onDelete && (
-          <div className={styles.menuWrap}>
-            <ActionButton icon={<EllipsisVertical size={20} aria-hidden />} label="עוד" onClick={() => setMenuOpen((v) => !v)} />
-            {menuOpen && (
-              <div className={styles.menu} role="menu">
-                <button
-                  type="button"
-                  role="menuitem"
-                  className={styles.menuItem}
-                  onClick={() => {
-                    setMenuOpen(false);
-                    setConfirmOpen(true);
-                  }}
-                >
-                  <Trash2 size={18} aria-hidden />
-                  מחיקה
-                </button>
-              </div>
-            )}
-          </div>
-        )}
+        {onDelete && <ActionButton icon={<Trash2 size={20} aria-hidden />} label="מחיקה" onClick={() => setConfirmOpen(true)} danger />}
       </ActionBar>
       {onDelete && (
         <ConfirmModal

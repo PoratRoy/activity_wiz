@@ -51,4 +51,13 @@ export function typeLabel(movementKey: string | null | undefined, typeKey: strin
   );
 }
 
+/** Chips shown under an activity's title, e.g. "זמן: חצי שעה". Missing values are skipped. */
+export function activityChips(type: string | null, place: string | null | undefined, duration: string | null | undefined): string[] {
+  return [
+    type ? `סוג: ${type}` : null,
+    place ? `מקום: ${place}` : null,
+    duration ? `זמן: ${duration}` : null,
+  ].filter((c): c is string => !!c);
+}
+
 export const asOptions = (values: string[]) => values.map((v) => ({ value: v, label: v }));

@@ -1,6 +1,6 @@
 "use client";
 
-import { EllipsisVertical, Trash2 } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import { useState } from "react";
 import { ActivityCard, formatDate } from "@/components/ActivityCard/ActivityCard";
 import { ButtonLink } from "@/components/Button/Button";
@@ -12,11 +12,10 @@ import styles from "./MyList.module.css";
 
 type Item = { id: string; title: string; createdAt: number };
 
-/** Newest first (R17). Delete from the ⋯ menu with confirmation (R18). */
+/** Newest first (R17). Delete via the trash icon, with confirmation (R18). */
 export function MyList({ items: initial }: { items: Item[] }) {
   const toast = useToast();
   const [items, setItems] = useState(initial);
-  const [menuFor, setMenuFor] = useState<string | null>(null);
   const [confirm, setConfirm] = useState<Item | null>(null);
   const [deleting, setDeleting] = useState(false);
 
@@ -44,33 +43,9 @@ export function MyList({ items: initial }: { items: Item[] }) {
               title={item.title}
               subtitle={formatDate(item.createdAt)}
               aside={
-                <div className={styles.menuWrap}>
-                  <button
-                    type="button"
-                    className={styles.more}
-                    aria-label={`אפשרויות עבור ${item.title}`}
-                    aria-expanded={menuFor === item.id}
-                    onClick={() => setMenuFor((v) => (v === item.id ? null : item.id))}
-                  >
-                    <EllipsisVertical size={20} aria-hidden />
-                  </button>
-                  {menuFor === item.id && (
-                    <div className={styles.menu} role="menu">
-                      <button
-                        type="button"
-                        role="menuitem"
-                        className={styles.menuItem}
-                        onClick={() => {
-                          setMenuFor(null);
-                          setConfirm(item);
-                        }}
-                      >
-                        <Trash2 size={18} aria-hidden />
-                        מחיקה
-                      </button>
-                    </div>
-                  )}
-                </div>
+                <button type="button" className={styles.trash} aria-label={`מחיקת ${item.title}`} onClick={() => setConfirm(item)}>
+                  <Trash2 size={20} aria-hidden />
+                </button>
               }
             />
           </li>

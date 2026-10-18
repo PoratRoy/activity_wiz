@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { TopBar } from "@/components/TopBar/TopBar";
-import { typeLabel } from "@/data/options";
+import { activityChips, typeLabel } from "@/data/options";
 import { getAccountGroup, getUserId } from "@/lib/auth/session";
 import { getActivity } from "@/lib/db/queries";
 import { PersonalActivity } from "./PersonalActivity";
@@ -22,7 +22,7 @@ export default async function PersonalActivityPage({ params }: { params: Promise
         id={activity.id}
         title={activity.title}
         bodyMd={activity.bodyMd}
-        chips={[typeLabel(group?.movement, activity.type), activity.place, activity.duration]}
+        chips={activityChips(typeLabel(group?.movement, activity.type), activity.place, activity.duration)}
       />
     </>
   );

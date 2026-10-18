@@ -16,12 +16,6 @@ export const metadata: Metadata = {
   alternates: { canonical: "/" },
 };
 
-const STEPS = [
-  { n: "1", title: "מספרים על הקבוצה", text: "תנועה, כיתה וגודל הקבוצה" },
-  { n: "2", title: "בוחרים נושא", text: "סוג הפעולה, מקום ומשך" },
-  { n: "3", title: "מקבלים פעולה מוכנה", text: "לקרוא, לערוך ולשלוח בוואטסאפ" },
-];
-
 export default async function HomePage() {
   const { signedIn } = await getViewer();
   const jsonLd = {
@@ -71,19 +65,6 @@ export default async function HomePage() {
           />
         </section>
 
-        <ol className={styles.steps} aria-label="איך זה עובד">
-          {STEPS.map((s) => (
-            <li key={s.n} className={styles.step}>
-              <span className={styles.stepNum} aria-hidden>
-                {s.n}
-              </span>
-              <span>
-                <strong className={styles.stepTitle}>{s.title}</strong>
-                <span className={styles.stepText}>{s.text}</span>
-              </span>
-            </li>
-          ))}
-        </ol>
         <div className={styles.adArea}>
           <div className={styles.adSlot} role="region" aria-label="פרסומת">פרסומת</div>
         </div>

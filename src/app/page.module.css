@@ -91,27 +91,6 @@
   mask-image: linear-gradient(to bottom, transparent, black 18%);
 }
 
-.steps {
-  display: grid;
-  gap: 16px;
-  margin: 0;
-  padding: 28px 24px;
-  list-style: none;
-}
-.step { display: flex; align-items: center; gap: 16px; }
-.stepNum {
-  display: grid;
-  place-items: center;
-  flex-shrink: 0;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: var(--green-light);
-  color: var(--green-dark);
-  font-weight: 700;
-}
-.stepTitle { display: block; font-weight: 500; }
-.stepText { display: block; color: var(--text-muted); font-size: 14px; }
 .adArea { padding: 0 20px 24px; }
 .adSlot {
   display: flex;
@@ -136,7 +115,7 @@
 }
 
 @media (max-width: 359px) {
-  .header, .intro, .steps, .adArea { padding-inline: 16px; }
+  .header, .intro, .adArea { padding-inline: 16px; }
 }
 @media (max-height: 550px) {
   .intro { padding-top: 24px; }
