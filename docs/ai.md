@@ -18,7 +18,7 @@
 ## Model
 
 - `@google/genai` SDK, `models.generateContent`, not streamed.
-- The model comes from `GEMINI_MODEL`. The default is the cheapest current Gemini Flash-Lite model; check the exact model ID when implementing.
+- The model comes from `GEMINI_MODEL`, currently `gemini-3.5-flash-lite`. Google no longer offers `gemini-2.5-flash-lite` to new users.
 - `temperature: 0.9` (creative variety). Set `maxOutputTokens` to fit an hour and a half of content (about 4000).
 - `responseMimeType: 'application/json'` plus `responseSchema` (below).
 - Safety: all four harm categories set to `BLOCK_LOW_AND_ABOVE`.

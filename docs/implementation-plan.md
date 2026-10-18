@@ -50,13 +50,15 @@ Each step ends with `npm run typecheck && npm run build`, then a commit and push
 - `src/worker/rate-limiter.ts`, the binding and migration in `wrangler.jsonc`, the export from `worker.ts`.
 - A `hitRateLimit(key)` helper in `lib/rate-limit.ts`. Under `next dev` it uses an in-memory fallback, because Wrangler's platform proxy can't host our own DO class. `npm run preview` and production use the real DO.
 
-## ☐ 8. AI generation
+## ☑ 8. AI generation
 - `lib/ai/schema.ts` (response schema + type guard), `lib/ai/gemini.ts` (client, safety settings, timeout).
 - `src/prompts/{system,structure,build}.ts` (one shared prompt builder: English instructions, Hebrew output).
 - `lib/markdown/fromAi.ts`.
 - The `generateActivity` action implementing every step in `ai.md`.
 - `/create/generating` with the loading animation, tips, the AI notice, and all outcome states (ok, refused, rate-limited, busy, error, trial expired).
-- **Owner setup:** set `GEMINI_API_KEY` and `GEMINI_MODEL`.
+- **Owner setup:** set `GEMINI_API_KEY` (done). `GEMINI_MODEL` is `gemini-3.5-flash-lite` in `wrangler.jsonc`, because Google no longer offers `gemini-2.5-flash-lite` to new users.
+- The SDK's default 5 retries are disabled (`retryOptions.attempts: 1`) so each attempt is one call (R9).
+- `/activity/draft` and `/activity/[id]` are minimal plain-text views until step 9.
 
 ## ☐ 9. Activity view, copy and share
 - `lib/markdown/render.ts` (sanitized), `toWhatsApp.ts`, `toPlain.ts`, and the share button (`navigator.share` with a `wa.me` fallback).

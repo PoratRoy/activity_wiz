@@ -1,0 +1,20 @@
+// The guest's generated activity, kept in localStorage['aw.draft'] (docs/data-model.md).
+export type Draft = {
+  title: string;
+  bodyMd: string;
+  type: string;
+  subject: string;
+  place: string;
+  duration: string;
+  equipment: string | null;
+  teams: string | null;
+  shabbat: string | null;
+  notes: string | null;
+  createdAt: number;
+};
+
+export type GenerateResult =
+  | { status: "ok"; id: string }
+  | { status: "ok"; draft: Draft }
+  | { status: "rate_limited"; retryInSec: number }
+  | { status: "trial_expired" | "invalid" | "refused" | "busy" | "error" };

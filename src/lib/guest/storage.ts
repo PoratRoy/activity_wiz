@@ -1,5 +1,6 @@
 "use client";
 
+import type { Draft } from "@/lib/draft";
 import type { ActivityInput, GroupInput } from "@/lib/validate";
 
 // Browser storage helpers (docs/data-model.md "Not in D1"). Every access is guarded:
@@ -53,4 +54,10 @@ export const requestStore = {
   load: () => read<GenerationRequest>(session, KEYS.request),
   save: (r: GenerationRequest) => write(session, KEYS.request, r),
   clear: () => remove(session, KEYS.request),
+};
+
+export const draftStore = {
+  load: () => read<Draft>(local, "aw.draft"),
+  save: (d: Draft) => write(local, "aw.draft", d),
+  clear: () => remove(local, "aw.draft"),
 };
