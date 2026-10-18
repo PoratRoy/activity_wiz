@@ -4,12 +4,13 @@
 
 1. **Identify the caller.** Signed in: key `u:{userId}`, with the group read from the `users` row. Guest: read or create the `aw_guest` cookie, then key `g:{guestId}`, with the group taken from the request and validated.
 2. **Check the trial (guests).** If `trialStart` is set and older than 72 hours, return `{ status: 'trial_expired' }`.
-3. **Validate.** Every select value must be in its allowed list, and the type must belong to the movement. Subject must be 1–300 characters and notes 0–1000. Neither free-text field may contain links: reject `http(s)://`, `www.`, and `word.tld` patterns after NFKC normalization and zero-width-character stripping. On failure, return `{ status: 'invalid', field }`.
+3. **Validate.** Every select value must be in its allowed list, and the type must belong to the movement. Subject must be 1–21 characters and notes 0–1000. Neither free-text field may contain links: reject `http(s)://`, `www.`, and `word.tld` patterns after NFKC normalization and zero-width-character stripping. On failure, return `{ status: 'invalid', field }`.
 4. **Rate limit.** Call the `RateLimiter` Durable Object for the key. If fewer than 30 seconds have passed since the last attempt, return `{ status: 'rate_limited', retryInSec }`. Otherwise it records "now" and admits the attempt (R7, R8).
 5. **Start the trial.** For a guest without `trialStart`, set it to now in the cookie.
 6. **Call Gemini** once (no SDK retries), with a 60-second `AbortController` timeout.
 7. **Interpret the result.**
    - Blocked by the safety filter, or `refused: true` in the JSON → `{ status: 'refused' }`.
+   - Gemini overloaded (HTTP 503 or 429, or an error message containing "overloaded", "unavailable" or "high demand") → `{ status: 'busy' }` (R28).
    - Timeout, invalid JSON or schema mismatch → `{ status: 'error' }`.
 8. **Convert** the JSON to `{ title, bodyMd }` (see below).
 9. **Persist.** Signed in: insert a row into `activity` with the activity fields → `{ status: 'ok', id }`. Guest: `{ status: 'ok', draft }`.
@@ -118,7 +119,9 @@ export class RateLimiter extends DurableObject {
 
 Each Durable Object instance handles its requests one at a time, which makes the check and the update atomic for each key. Access it with `env.RATE_LIMITER.get(env.RATE_LIMITER.idFromName(key)).hit(30_000)`.
 
-## WhatsApp conversion (`src/lib/markdown/toWhatsApp.ts`)
+## Share text (`src/lib/markdown/toWhatsApp.ts`)
+
+The share button and the `wa.me` fallback both use this format, with `\n\n{NEXT_PUBLIC_SITE_URL}` added at the end.
 
 - `**x**` → `*x*`
 - Headings `#…` → `*text*` on their own line

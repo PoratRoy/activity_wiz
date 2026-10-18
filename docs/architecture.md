@@ -50,7 +50,7 @@ src/
     sitemap.ts
     robots.ts
   components/                # see docs/design.md
-  data/movements.json        # plus options.ts (grades, sizes, genders, places, durations, optional fields)
+  data/movements.json        # plus topic-suggestions.json, options.ts (grades, sizes, genders, places, durations, optional fields)
   lib/
     db/{schema.ts,client.ts,queries.ts}
     auth/{config.ts,session.ts,admin.ts}

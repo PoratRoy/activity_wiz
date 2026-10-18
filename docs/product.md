@@ -6,7 +6,7 @@ ActivityWiz is a free web app for guides (מדריכים) in Israeli youth movem
 
 The app does two things:
 
-1. **Create with AI.** The guide describes their group and the activity they need. Gemini writes a complete activity they can read, edit, copy or send to WhatsApp.
+1. **Create with AI.** The guide describes their group and the activity they need. Gemini writes a complete activity they can read, edit, copy or share (for example to WhatsApp).
 2. **Public library.** Ready-made activities, sorted into categories, that anyone can read and signed-in users can copy into their own list.
 
 Everything is in Hebrew, right-to-left. The look is youthful and simple, in green and yellow, inspired by Duolingo.
@@ -46,9 +46,15 @@ Google is the only sign-in method.
 - **R13.** If a guest signs in from the draft result page, the draft activity is saved to the account that signed in, whether it's new or existing. The user returns to that activity's page.
 
 ### Reading and editing
-- **R14.** Every activity page (draft, personal, public) shows the activity as formatted Markdown, with **copy** (plain text) and **WhatsApp** (opens WhatsApp with the text, converted to WhatsApp formatting).
+- **R14.** Every activity page (draft, personal, public) shows the activity as formatted Markdown, with **copy** (plain text) and **share**. Share opens the phone's share sheet (`navigator.share`) with the activity in WhatsApp-style formatting plus a link to the site. Where the share sheet isn't available (most desktops), it opens `wa.me` with the same text.
 - **R15.** Personal and draft activities can be **edited**: title and body, using bold, underline and lists only. Personal activities autosave 2 seconds after typing stops. The draft saves to localStorage.
 - **R16.** Public activities are read-only.
+- **R29.** The activity body is limited to **3000 characters** in the editor. Typing stops at the limit and a short warning shows. Deleting text always works.
+
+### Old-site features carried over
+- **R26. Topic suggestions.** A ✨ button inside the subject field fills in a random topic from `src/data/topic-suggestions.json` for the selected type: lists for `content`, `survival` and `playTime`, with `pointOfView` using the `content` list. Every tap gives a new topic, and the guide can still edit it.
+- **R27. AI notice.** The loading screen always shows: «שימו לב! התוכן מופק בעזרת בינה מלאכותית ויתכנו טעויות.»
+- **R28. High-demand error.** When Gemini is overloaded (HTTP 503/429 or "overloaded"/"high demand"), show a separate message, «יש עומס כרגע, נסו שוב בעוד רגע», instead of the general error. The 30-second limit still applies.
 
 ### My activities
 - **R17.** Lists the user's activities newest first. Each row shows title and creation date.
@@ -88,7 +94,7 @@ Google is the only sign-in method.
 | Field | Required | Choices |
 | --- | --- | --- |
 | Type (סוג) | Yes | Depends on the movement (below). Defaults to the movement's first type. |
-| Subject (נושא) | Yes | Free text, up to 300 characters |
+| Subject (נושא) | Yes | Free text, up to **21 characters**, with a ✨ suggestion button (R26) |
 | Place (מקום) | Yes | לא משנה, במקום סגור, במקום פתוח |
 | Duration (משך) | Yes | חצי שעה, שעה, שעה וחצי |
 | *Collapsed "more options" section:* | | |

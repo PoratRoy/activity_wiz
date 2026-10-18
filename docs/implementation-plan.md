@@ -34,6 +34,7 @@ Each step ends with `npm run typecheck && npm run build`, then a commit and push
 - `src/data/movements.json` and `options.ts`.
 - `/create/group`: prefill, `saveGroup` action (registered) and localStorage (both).
 - `/create/activity`: type tiles depend on the movement; the optional section; sessionStorage persistence; client validation; navigation to `/create/generating`.
+- `SubjectField` with ✨ suggestions from `src/data/topic-suggestions.json` (already in the repo) and the 21-character limit.
 - `lib/validate.ts`, shared by the client and server.
 
 ## ☐ 6. Guest cookie and trial gate
@@ -50,16 +51,16 @@ Each step ends with `npm run typecheck && npm run build`, then a commit and push
 - `src/prompts/{system,structure,build}.ts` (one shared prompt builder: English instructions, Hebrew output).
 - `lib/markdown/fromAi.ts`.
 - The `generateActivity` action implementing every step in `ai.md`.
-- `/create/generating` with the loading animation, tips and all outcome states (ok, refused, rate-limited, error, trial expired).
+- `/create/generating` with the loading animation, tips, the AI notice, and all outcome states (ok, refused, rate-limited, busy, error, trial expired).
 - **Owner setup:** set `GEMINI_API_KEY` and `GEMINI_MODEL`.
 
-## ☐ 9. Activity view, copy and WhatsApp
-- `lib/markdown/render.ts` (sanitized), `toWhatsApp.ts`, `toPlain.ts`.
+## ☐ 9. Activity view, copy and share
+- `lib/markdown/render.ts` (sanitized), `toWhatsApp.ts`, `toPlain.ts`, and the share button (`navigator.share` with a `wa.me` fallback).
 - The `ActivityView` and `ActionBar` components.
 - `/activity/[id]` (owner check) and `/activity/draft` (localStorage, sign-in banner, `?claim=1` → `claimDraft`).
 
 ## ☐ 10. Edit, autosave and delete
-- `ActivityEditor` (Tiptap, dynamic import, bold/underline/lists, Markdown in/out).
+- `ActivityEditor` (Tiptap, dynamic import, bold/underline/lists, Markdown in/out, 3000-character limit).
 - Autosave every 2 seconds through `updateActivity`, with the status indicator. Drafts save to localStorage.
 - `deleteActivity` with a confirmation modal, then a redirect to `/my` and a toast.
 

@@ -57,11 +57,12 @@ This is a simple first-pass design, meant to be replaced later with a richer one
 | `Button` | Variants `primary` (green), `secondary` (white with border), `accent` (yellow), `danger`. Full width by default, 52px tall, `--radius`, bold text, and `box-shadow: var(--lip) <dark>`. When `:active`, it moves down 4px (`translateY(4px)`) and the shadow disappears. |
 | `Tile` / `TileGroup` | Radio-like tiles in a wrapping grid. Unselected: white with a 2px `--border` and a gray lip. Selected: `--green-light` background with a green border and a green lip. Used for 2–6 options. |
 | `PickerSheet` | A field button that shows the current value. Tapping it slides up a bottom sheet with a scrollable list (one item per row, checkmark on the selected one). Used for movement and grade. Closes when you tap the backdrop or pick an item. |
+| `SubjectField` | A `TextField` with a ✨ (`Sparkles`) icon button on the inline end. Tapping it fills in a random suggestion with a short 300ms spin. |
 | `TextField` / `TextArea` | 2px border, `--radius`, green border on focus. |
 | `Collapsible` | The "עוד אפשרויות" (more options) row with a chevron. |
 | `Chip` | A small pill (`--yellow-light`, 14px) for the type, place and duration. |
 | `ActivityView` | Chips, title and Markdown body, plus the sticky `ActionBar`. Switches to edit mode with `ActivityEditor` (Tiptap, loaded with `next/dynamic` so it only downloads in edit mode). |
-| `ActionBar` | Sticky, sitting directly above the `BottomNav`. A row of icon+label buttons: `Copy`, `MessageCircle` (WhatsApp, green), `Pencil`, `MoreVertical`, `BookmarkPlus`. |
+| `ActionBar` | Sticky, sitting directly above the `BottomNav`. A row of icon+label buttons: `Copy`, `Share2` (share, green), `Pencil`, `MoreVertical`, `BookmarkPlus`. |
 | `Modal` | A centered card on a dimmed backdrop, used for delete confirmations and the admin category form. `blocking` prop: the backdrop doesn't close it (used for the trial popup). |
 | `SignInGate` | The blocking trial popup: mascot, «הניסיון הסתיים 🙂 התחברו כדי להמשיך ליצור פעולות», a Google button, and a "חזרה" (back) text link. |
 | `Toast` / `ToastHost` | Bottom-centered above the bars. A dark pill with white text. Disappears after 2.5 seconds. |

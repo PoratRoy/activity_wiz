@@ -56,7 +56,7 @@ All screens share the app shell from [Design](design.md): a top bar (back arrow 
 - Title: «הפעולה»
 - Fields:
   - Type: tiles, filtered by the movement
-  - Subject: a text input, placeholder «על מה הפעולה? למשל: חברות, חורף, אחריות»
+  - Subject: a text input (max 21 characters), placeholder «על מה הפעולה?». A ✨ button on the inline end fills in a random suggestion for the type (R26). Typing past 21 characters is blocked, and the toast «נושא קצר, עד 21 תווים» appears once.
   - Place: tiles
   - Duration: tiles
   - **עוד אפשרויות** (more options): a collapsible section with equipment, teams, Shabbat (tiles) and notes (textarea)
@@ -71,11 +71,13 @@ All screens share the app shell from [Design](design.md): a top bar (back arrow 
   - a bouncing mascot
   - a progress bar that fills over about 15 seconds and then waits at about 90%
   - rotating Hebrew tips, every 3 seconds
+  - the AI notice line (R27) at the bottom, in small muted text
 - Results:
   - **Success, registered:** clear the request, then `router.replace('/activity/[id]')`.
   - **Success, guest:** save the draft to localStorage, then `router.replace('/activity/draft')`.
   - **Refused (R11):** illustration plus «הנושא הזה לא מתאים לפעולה עם חניכים. נסו נושא אחר 🙂». The **נושא אחר** (another topic) button goes back to `/create/activity` with the values kept.
   - **Rate limited:** «רגע… אפשר ליצור פעולה חדשה בעוד X שניות», with a countdown and then **נסו שוב** (try again).
+  - **High demand (R28):** «יש עומס כרגע, נסו שוב בעוד רגע», with **נסו שוב**.
   - **Error/timeout (R12):** «משהו השתבש», with **נסו שוב** (calls the action again, subject to the rate limit) and **חזרה** (back to the activity page).
 
 ## Activity view: shared layout
@@ -88,13 +90,13 @@ Used by `/activity/draft`, `/activity/[id]` and `/library/[cat]/[act]`:
 4. `<AdSlot>`.
 5. A sticky action bar above the bottom tabs:
    - **העתקה** (copy): copies plain text, then shows the toast «הועתק!».
-   - **וואטסאפ**: opens `https://wa.me/?text=…` with WhatsApp-formatted text.
+   - **שיתוף** (share): `navigator.share({ title, text })`, with the text in WhatsApp format followed by the site link. Falls back to `https://wa.me/?text=…` with the same text.
    - **עריכה** (edit): draft and personal only.
    - **⋯** menu with **מחיקה** (delete): personal only.
    - **שמירה לפעולות שלי** (save to my activities): public only, signed in only.
 
 ### Edit mode (draft and personal)
-- **עריכה** turns the title into an input and the body into a Tiptap editor, with a toolbar for bold, underline, bulleted list and numbered list.
+- **עריכה** turns the title into an input and the body into a Tiptap editor, with a toolbar for bold, underline, bulleted list and numbered list. The body is limited to 3000 characters (R29), with the warning «הגעתם למגבלת 3000 התווים».
 - The action bar becomes **סיום עריכה** (finish editing) plus a status: «שומר…» (saving) / «נשמר ✓» (saved) / «שגיאה בשמירה» (save error). Personal activities autosave 2 seconds after typing stops. Drafts save to localStorage.
 
 ### `/activity/draft`
