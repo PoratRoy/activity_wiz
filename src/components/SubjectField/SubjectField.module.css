@@ -1,0 +1,31 @@
+.magic {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--yellow-light);
+  color: var(--yellow-dark);
+}
+
+.magic:active {
+  background: var(--yellow);
+}
+
+.spin {
+  animation: spin 300ms ease-out;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0) scale(1);
+  }
+  50% {
+    transform: rotate(180deg) scale(1.25);
+  }
+  to {
+    transform: rotate(360deg) scale(1);
+  }
+}

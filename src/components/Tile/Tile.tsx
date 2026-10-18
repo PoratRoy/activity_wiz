@@ -33,7 +33,8 @@ export function TileGroup({ name, label, options, value, onChange, allowClear, c
               className={`${styles.tile} ${selected ? styles.selected : ""}`}
               onClick={() => (selected && allowClear ? onChange("") : onChange(o.value))}
             >
-              {o.label}
+              {/* Labels without Hebrew ("30+", "1-5") render LTR so the sign stays in place. */}
+              <span dir={/[\u0590-\u05FF]/.test(o.label) ? undefined : "ltr"}>{o.label}</span>
             </button>
           );
         })}

@@ -1,0 +1,246 @@
+[
+  {
+    "key": "scout",
+    "label": "צופים",
+    "types": [
+      {
+        "key": "content",
+        "label": "פעולת תוכן"
+      },
+      {
+        "key": "pointOfView",
+        "label": "נקודת מבט"
+      },
+      {
+        "key": "survival",
+        "label": "זמן צופיות"
+      },
+      {
+        "key": "playTime",
+        "label": "זמן משחק"
+      }
+    ]
+  },
+  {
+    "key": "oved",
+    "label": "הנוער העובד והלומד",
+    "types": [
+      {
+        "key": "content",
+        "label": "מתודה מרכזית"
+      },
+      {
+        "key": "playTime",
+        "label": "משחק פתיחה"
+      },
+      {
+        "key": "pointOfView",
+        "label": "מתודת הצפה"
+      }
+    ]
+  },
+  {
+    "key": "akiva",
+    "label": "בני עקיבא",
+    "types": [
+      {
+        "key": "content",
+        "label": "פעולה ערכית"
+      },
+      {
+        "key": "playTime",
+        "label": "משחקי גיבוש"
+      }
+    ]
+  },
+  {
+    "key": "maccabi",
+    "label": "מכבי צעיר",
+    "types": [
+      {
+        "key": "content",
+        "label": "פעולה ערכית"
+      },
+      {
+        "key": "playTime",
+        "label": "משחקי גיבוש"
+      }
+    ]
+  },
+  {
+    "key": "camps",
+    "label": "המחנות העולים",
+    "types": [
+      {
+        "key": "content",
+        "label": "פעולה ערכית"
+      },
+      {
+        "key": "playTime",
+        "label": "משחקי קבוצה"
+      }
+    ]
+  },
+  {
+    "key": "shomer",
+    "label": "השומר הצעיר",
+    "types": [
+      {
+        "key": "content",
+        "label": "פעולה ערכית"
+      },
+      {
+        "key": "playTime",
+        "label": "משחק קבוצתי"
+      }
+    ]
+  },
+  {
+    "key": "bitar",
+    "label": "נוער לאומי ביתר",
+    "types": [
+      {
+        "key": "content",
+        "label": "פעולה ערכית"
+      },
+      {
+        "key": "playTime",
+        "label": "משחקי גיבוש"
+      }
+    ]
+  },
+  {
+    "key": "hadasha",
+    "label": "הנוער השומר",
+    "types": [
+      {
+        "key": "content",
+        "label": "פעולה ערכית"
+      },
+      {
+        "key": "playTime",
+        "label": "משחקי גיבוש"
+      }
+    ]
+  },
+  {
+    "key": "netzach",
+    "label": "נצח ישראל",
+    "types": [
+      {
+        "key": "content",
+        "label": "פעולה ערכית"
+      },
+      {
+        "key": "playTime",
+        "label": "משחקי גיבוש"
+      }
+    ]
+  },
+  {
+    "key": "medtchim",
+    "label": "ארגון המד״צים",
+    "types": [
+      {
+        "key": "content",
+        "label": "פעולה ערכית"
+      },
+      {
+        "key": "playTime",
+        "label": "משחקי קבוצה"
+      }
+    ]
+  },
+  {
+    "key": "meshachim",
+    "label": "מדריכי של״ח צעירים",
+    "types": [
+      {
+        "key": "content",
+        "label": "פעילות תוכן"
+      },
+      {
+        "key": "playTime",
+        "label": "משחק שטח"
+      }
+    ]
+  },
+  {
+    "key": "sayarut",
+    "label": "חוגי סיירות",
+    "types": [
+      {
+        "key": "content",
+        "label": "פעילות שטח"
+      },
+      {
+        "key": "survival",
+        "label": "הישרדות"
+      },
+      {
+        "key": "playTime",
+        "label": "משחק"
+      }
+    ]
+  },
+  {
+    "key": "noam",
+    "label": "נוע״ם",
+    "types": [
+      {
+        "key": "content",
+        "label": "פעולה ערכית"
+      },
+      {
+        "key": "playTime",
+        "label": "משחק קבוצתי"
+      }
+    ]
+  },
+  {
+    "key": "agricultural",
+    "label": "האיחוד החקלאי",
+    "types": [
+      {
+        "key": "content",
+        "label": "פעולה ערכית"
+      },
+      {
+        "key": "playTime",
+        "label": "משחק קבוצתי"
+      }
+    ]
+  },
+  {
+    "key": "shinshin",
+    "label": "שינשינים",
+    "types": [
+      {
+        "key": "content",
+        "label": "פעילות תוכן"
+      },
+      {
+        "key": "playTime",
+        "label": "משחק גיבוש"
+      }
+    ]
+  },
+  {
+    "key": "other",
+    "label": "אחר",
+    "types": [
+      {
+        "key": "content",
+        "label": "פעילות"
+      },
+      {
+        "key": "playTime",
+        "label": "משחק"
+      },
+      {
+        "key": "survival",
+        "label": "הישרדות"
+      }
+    ]
+  }
+]

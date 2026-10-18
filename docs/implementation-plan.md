@@ -30,12 +30,13 @@ Each step ends with `npm run typecheck && npm run build`, then a commit and push
   1. Create a Google OAuth client.
   2. Set `AUTH_SECRET`, `AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET` and `ADMIN_EMAILS` as secrets in Cloudflare and in `.dev.vars`/`.env.local`.
 
-## ☐ 5. Create flow: group and activity pages
+## ☑ 5. Create flow: group and activity pages
 - `src/data/movements.json` and `options.ts`.
 - `/create/group`: prefill, `saveGroup` action (registered) and localStorage (both).
 - `/create/activity`: type tiles depend on the movement; the optional section; sessionStorage persistence; client validation; navigation to `/create/generating`.
 - `SubjectField` with ✨ suggestions from `src/data/topic-suggestions.json` (already in the repo) and the 21-character limit.
 - `lib/validate.ts`, shared by the client and server.
+- `/create/generating` is a temporary page that shows the stored request until step 8.
 
 ## ☐ 6. Guest cookie and trial gate
 - `lib/guest/cookie.ts` (sign/verify, HMAC).
