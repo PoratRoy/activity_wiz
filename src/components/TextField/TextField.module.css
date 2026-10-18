@@ -1,0 +1,51 @@
+.wrap {
+  display: block;
+}
+
+.label {
+  display: block;
+  margin-block-end: var(--space-2);
+  font-weight: 700;
+}
+
+.control {
+  position: relative;
+  display: block;
+}
+
+.input {
+  width: 100%;
+  min-height: 52px;
+  padding: var(--space-3) var(--space-4);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  outline: none;
+  transition: border-color 120ms ease;
+}
+
+.control:has(.end) .input {
+  padding-inline-end: 52px;
+}
+
+.input:focus {
+  border-color: var(--green);
+}
+
+.input::placeholder {
+  color: var(--text-muted);
+}
+
+.textarea {
+  min-height: 112px;
+  resize: vertical;
+  line-height: 1.6;
+}
+
+.end {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-end: var(--space-2);
+  display: flex;
+  align-items: center;
+}

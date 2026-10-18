@@ -1,0 +1,60 @@
+.button {
+  --btn-bg: var(--green);
+  --btn-fg: #fff;
+  --btn-lip: var(--green-dark);
+  --btn-border: transparent;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 52px;
+  padding: 0 var(--space-5);
+  border: 2px solid var(--btn-border);
+  border-radius: var(--radius);
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  font-weight: 700;
+  font-size: var(--fs-body);
+  box-shadow: var(--lip) var(--btn-lip);
+  transition: transform 80ms ease, box-shadow 80ms ease;
+  user-select: none;
+}
+
+.button:active:not(:disabled) {
+  transform: translateY(4px);
+  box-shadow: 0 0 0 var(--btn-lip);
+}
+
+.button:disabled {
+  --btn-bg: var(--border);
+  --btn-fg: var(--text-muted);
+  --btn-lip: #cfcfcf;
+  cursor: not-allowed;
+}
+
+.block {
+  display: flex;
+  width: 100%;
+}
+
+.primary {
+}
+
+.secondary {
+  --btn-bg: var(--surface);
+  --btn-fg: var(--text);
+  --btn-lip: var(--border);
+  --btn-border: var(--border);
+}
+
+.accent {
+  --btn-bg: var(--yellow);
+  --btn-fg: var(--text);
+  --btn-lip: var(--yellow-dark);
+}
+
+.danger {
+  --btn-bg: var(--danger);
+  --btn-lip: var(--danger-dark);
+}

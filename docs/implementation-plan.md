@@ -18,7 +18,7 @@ Each step ends with `npm run typecheck && npm run build`, then a commit and push
 - `lib/db/client.ts` (`drizzle(env.DB)`) and `queries.ts`.
 - Apply the migration locally. The deploy script applies it remotely.
 
-## ☐ 3. App shell and base components
+## ☑ 3. App shell and base components
 - `AppShell`, `TopBar`, `BottomNav`, `AvatarMenu` (guest version for now), `Button`, `Tile`/`TileGroup`, `PickerSheet`, `TextField`/`TextArea`, `Collapsible`, `Chip`, `Modal`, `Toast`/`ToastHost`, `EmptyState`, `AdSlot`, and the `Mascot` plus illustrations.
 - A temporary page at `/dev/ui` showing every component. Delete it in step 13.
 

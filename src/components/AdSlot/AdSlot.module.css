@@ -1,0 +1,11 @@
+.slot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 250px;
+  margin-block: var(--space-4);
+  border: 2px dashed var(--border);
+  border-radius: var(--radius);
+  color: var(--text-muted);
+  font-size: var(--fs-small);
+}

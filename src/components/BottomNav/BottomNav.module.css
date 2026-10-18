@@ -1,0 +1,63 @@
+.nav {
+  position: fixed;
+  bottom: 0;
+  inset-inline: 0;
+  z-index: 30;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  width: 100%;
+  max-width: var(--column);
+  height: calc(var(--tabbar-h) + env(safe-area-inset-bottom));
+  margin-inline: auto;
+  padding-bottom: env(safe-area-inset-bottom);
+  border-top: 2px solid var(--border);
+  background: var(--surface);
+}
+
+.tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  border: 0;
+  background: none;
+  color: var(--text-muted);
+}
+
+.pill {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 30px;
+  border-radius: var(--radius-pill);
+  transition: background 150ms ease;
+}
+
+.lock {
+  position: absolute;
+  top: 0;
+  inset-inline-end: 8px;
+  padding: 1px;
+  border-radius: 50%;
+  background: var(--surface);
+}
+
+.label {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.active {
+  color: var(--green-dark);
+}
+
+.active .pill {
+  background: var(--green-light);
+}
+
+.active .label {
+  font-weight: 700;
+}

@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Rubik } from "next/font/google";
+import { AppShell } from "@/components/AppShell/AppShell";
 import "./globals.css";
 
 const rubik = Rubik({
@@ -31,7 +32,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="he" dir="rtl" className={rubik.variable}>
       <body>
-        <div className="app">{children}</div>
+        <div className="app">
+          {/* Viewer comes from the Auth.js session in step 4. */}
+          <AppShell viewer={{ signedIn: false }}>{children}</AppShell>
+        </div>
       </body>
     </html>
   );
