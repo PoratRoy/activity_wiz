@@ -53,6 +53,7 @@
   background: none;
   font-weight: 500;
   text-align: start;
+  white-space: nowrap;
 }
 
 .item:hover {
