@@ -8,6 +8,14 @@
     "directory": ".open-next/assets",
     "binding": "ASSETS"
   },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "activitywiz",
+      "database_id": "c31527e6-0a23-4229-a7ed-2872df3884e1",
+      "migrations_dir": "drizzle"
+    }
+  ],
   "observability": {
     "enabled": true
   },

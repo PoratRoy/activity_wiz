@@ -133,7 +133,8 @@ export { RateLimiter } from './src/worker/rate-limiter';
 ## Deployment
 
 - Cloudflare **Workers Builds** is connected to `PoratRoy/activity_wiz`, branch `main`.
-- Build command: `npx opennextjs-cloudflare build`. Deploy command: `npm run deploy`, which runs `wrangler d1 migrations apply DB --remote && opennextjs-cloudflare deploy`.
+- Build command: `npm run cf:build`. Deploy command: `npm run deploy`, which runs `wrangler d1 migrations apply DB --remote && opennextjs-cloudflare deploy`. The D1 database `activitywiz` (`c31527e6-0a23-4229-a7ed-2872df3884e1`, region WEUR) exists, and migration `0000` is applied.
+- After changing `wrangler.jsonc`, run `npm run cf-typegen` to regenerate `cloudflare-env.d.ts`. It's committed so builds can typecheck.
 - One production environment. No previews or staging.
 - Before each push, run `npm run typecheck` and `npm run build` locally. There is no test suite.
 - One-time setup (done by the owner, steps in the implementation plan):

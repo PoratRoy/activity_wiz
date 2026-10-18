@@ -13,7 +13,7 @@ Each step ends with `npm run typecheck && npm run build`, then a commit and push
   3. Connect Workers Builds to the repo.
   4. Push and confirm the `*.workers.dev` URL loads.
 
-## ☐ 2. Database
+## ☑ 2. Database
 - Drizzle schema for the 4 tables (`data-model.md`), `drizzle.config.ts`, and the first migration.
 - `lib/db/client.ts` (`drizzle(env.DB)`) and `queries.ts`.
 - Apply the migration locally. The deploy script applies it remotely.
