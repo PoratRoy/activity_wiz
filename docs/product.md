@@ -56,13 +56,18 @@ Google is the only sign-in method.
 
 ### Public library
 - **R19.** Categories are listed oldest first (creation order). Inside a category, activities are listed newest first.
-- **R20.** Signed-in users see "Save to my activities" on a public activity. Each tap creates a new, independent personal copy (title + body, with no activity fields) and opens it.
+- **R20.** Signed-in users see "Save to my activities" on a public activity. Each tap creates a new, independent personal copy (title, body and **all activity fields**) and opens it.
 - **R21.** The library is fully server-rendered and SEO-optimized. Personal, create and admin pages are `noindex`.
 
 ### Admin
 - **R22.** Admins are the emails in the `ADMIN_EMAILS` secret, a JSON string array. This is checked on the server for every admin page and admin action. A non-admin trying to open `/admin` is redirected to `/`.
 - **R23.** Admins can add a category (title only) and delete a category. Deleting a category also deletes its public activities and shows a warning first. Personal copies are unaffected.
-- **R24.** Admins can add a public activity (category + title + pasted Markdown body) and delete one. There is no editing and no AI.
+- **R24.** Admins can add a public activity and delete one. It has the same shape as an AI activity:
+  - category, title, and pasted Markdown body
+  - type, subject, place and duration (required)
+  - equipment, teams, Shabbat and notes (optional)
+
+  There is no editing and no AI. Type is chosen by key, with generic labels: פעולת תוכן (`content`), נקודת מבט (`pointOfView`), הישרדות (`survival`), משחק (`playTime`).
 
 ### Ads and analytics
 - **R25.** `<AdSlot>` placeholders render nothing unless `NEXT_PUBLIC_ADS_ENABLED=true`. There is no analytics.

@@ -29,7 +29,7 @@ There is one Cloudflare D1 database (binding `DB`) with exactly **4 tables**, de
 | `user_id` | text, not null, FK → `users.id` on delete cascade | Index on `(user_id, created_at)` |
 | `title` | text, not null | |
 | `body_md` | text, not null | Markdown body |
-| `type` | text, nullable | Type key (`content`, `pointOfView`, `survival`, `playTime`). Null for library copies. |
+| `type` | text, nullable | Type key (`content`, `pointOfView`, `survival`, `playTime`) |
 | `subject` | text, nullable | |
 | `place` | text, nullable | |
 | `duration` | text, nullable | |
@@ -58,7 +58,11 @@ Deletes are hard deletes.
 | `category_id` | text, not null, FK → `public_category.id` on delete cascade | Index on `(category_id, created_at)` |
 | `title` | text, not null | |
 | `body_md` | text, not null | |
+| `type`, `subject`, `place`, `duration` | text, not null | Same values as `activity` |
+| `equipment`, `teams`, `shabbat`, `notes` | text, nullable | Same values as `activity` |
 | `created_at` | integer, not null | Sort descending |
+
+`public_activity` has the same content columns as `activity`. A library copy copies every one of them.
 
 D1 enforces foreign keys, so deleting a category cascades to its activities. Slugs are not stored: URLs are `slugify(title)-id`, and only the ID is used for lookup.
 

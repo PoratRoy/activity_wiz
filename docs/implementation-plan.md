@@ -47,7 +47,7 @@ Each step ends with `npm run typecheck && npm run build`, then a commit and push
 
 ## ☐ 8. AI generation
 - `lib/ai/schema.ts` (response schema + type guard), `lib/ai/gemini.ts` (client, safety settings, timeout).
-- `src/prompts/*` (English instructions, Hebrew output).
+- `src/prompts/{system,structure,build}.ts` (one shared prompt builder: English instructions, Hebrew output).
 - `lib/markdown/fromAi.ts`.
 - The `generateActivity` action implementing every step in `ai.md`.
 - `/create/generating` with the loading animation, tips and all outcome states (ok, refused, rate-limited, error, trial expired).

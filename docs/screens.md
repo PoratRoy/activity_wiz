@@ -82,7 +82,7 @@ All screens share the app shell from [Design](design.md): a top bar (back arrow 
 
 Used by `/activity/draft`, `/activity/[id]` and `/library/[cat]/[act]`:
 
-1. Chips: type · place · duration. Only for AI activities that have them.
+1. Chips: type · place · duration.
 2. Title (H1).
 3. Body: rendered Markdown at reading size.
 4. `<AdSlot>`.
@@ -145,5 +145,9 @@ Used by `/activity/draft`, `/activity/[id]` and `/library/[cat]/[act]`:
 
 ## Admin new activity `/admin/activity/new`
 
-- Fields: category (select), title (input), body (a large textarea for pasting Markdown, with a live preview under it).
+- Fields:
+  - category (select) and title (input)
+  - type (tiles with the generic labels), subject, place and duration (tiles), all required
+  - a collapsible "more options" section: equipment, teams, Shabbat and notes
+  - body: a large textarea for pasting Markdown, with a live preview under it
 - **פרסום** (publish) creates the activity and goes to `/admin/category/[id]` with the toast «פורסם».

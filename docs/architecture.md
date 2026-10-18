@@ -60,7 +60,7 @@ src/
     validate.ts              # option allowlists, link detection, lengths
     slug.ts                  # slugify(hebrew) + parseId
     env.ts                   # getCloudflareContext() bindings + typed env
-  prompts/{system.ts,build.ts,types/*.ts}
+  prompts/{system.ts,structure.ts,build.ts}
   worker/rate-limiter.ts     # Durable Object class
 worker.ts                    # custom Worker entry: re-exports OpenNext handler + RateLimiter
 drizzle/                     # SQL migrations
