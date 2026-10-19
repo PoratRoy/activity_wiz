@@ -94,6 +94,7 @@ export function ActivityForm({ accountGroup }: { accountGroup: GroupInput | null
       <TileGroup
         name="type"
         label="סוג"
+        columns={movement.types.length === 3 ? 3 : 2}
         options={movement.types.map((t) => ({ value: t.key, label: t.label }))}
         value={form.type}
         onChange={set("type")}

@@ -67,6 +67,7 @@ Restyled to follow the approved group page; see [page](../src/app/create/activit
 
 - Same forest masthead, centered ivory title **הפעולה**, yellow back control and compass illustration (reused for now; dedicated artwork can replace it later).
 - Because this form scrolls, the 32px rounded ivory seam belongs to the sticky masthead, so fields slide under it instead of showing behind the compass.
+- Type tiles fill one row when the movement has up to 3 types and use a 2 × 2 grid for 4, so no tile sits alone on a second row.
 - Tiles, labels, borders and press feedback match the group composition tiles; tile inline padding is 8px so three-column labels fit on one line where possible.
 - Subject and notes fields use the picker look: white, 2px `#CED7C9` border, 3px lower edge, 18px corners; sage once filled and white with a green edge while focused. The suggestion button is a pale-butter rounded square with a small yellow lower edge.
 - **עוד אפשרויות** is a raised white card whose header matches a picker (chevron on pale butter, sage when open) with a dashed divider above its contents.
