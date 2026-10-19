@@ -29,6 +29,8 @@ This is the accepted form reference: expressive in the header, clean and easy to
 - The top bar is at least 64px high; the title is 24px, reduced to 22px below 360px viewport width. The masthead stays sticky.
 - The ivory form overlaps the header by 24px and has 32px rounded top corners. This transition is the main visual feature.
 - Use the existing transparent [compass illustration](../public/illustrations/group-compass.webp), overlapping the green/ivory seam on the left. It is 132 × 88px, rotated −9°, inset 28px from the inline end, with its bottom extending 30px below the masthead. At viewport heights of 740px or less it becomes 120 × 80px. Keep it decorative (`alt=""`, no pointer interaction) and clear of controls.
+- The header row sits above the compass, so the avatar menu always opens over the artwork. The back control's pressed state is a soft translucent ivory circle, not a light-gray one.
+- Pulling past the top (phone bounce or the desktop frame's scroll bounce) shows the same forest green, so the header never reveals the light backdrop. This applies to both create pages.
 - Do not revert to the rejected alternative with a separate, right-aligned title row and the compass beside it on a lighter green header. Do not return to a detached, centered illustration above the fields.
 
 ### Fields and tactile feedback
