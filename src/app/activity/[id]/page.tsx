@@ -5,6 +5,7 @@ import { activityChips, typeLabel } from "@/data/options";
 import { getAccountGroup, getUserId } from "@/lib/auth/session";
 import { getActivity } from "@/lib/db/queries";
 import { PersonalActivity } from "./PersonalActivity";
+import styles from "./activity.module.css";
 
 export const metadata: Metadata = { title: "הפעולה שלי", robots: { index: false } };
 
@@ -16,7 +17,7 @@ export default async function PersonalActivityPage({ params }: { params: Promise
   if (!activity) redirect("/my");
 
   return (
-    <>
+    <div className={styles.page}>
       <TopBar title="הפעולה" back="/my" />
       <PersonalActivity
         id={activity.id}
@@ -24,6 +25,6 @@ export default async function PersonalActivityPage({ params }: { params: Promise
         bodyMd={activity.bodyMd}
         chips={activityChips(typeLabel(group?.movement, activity.type), activity.place, activity.duration)}
       />
-    </>
+    </div>
   );
 }

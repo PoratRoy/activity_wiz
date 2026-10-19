@@ -46,6 +46,7 @@ export function ActionButton({
       className={`${styles.action} ${accent ? styles.accent : ""} ${danger ? styles.danger : ""}`}
       onClick={onClick}
       disabled={disabled}
+      data-variant={accent ? "accent" : danger ? "danger" : undefined}
     >
       {icon}
       <span>{label}</span>
@@ -75,7 +76,7 @@ export function ActionBar({ title, bodyMd, children }: { title: string; bodyMd: 
   };
 
   return (
-    <div className={styles.bar}>
+    <div className={styles.bar} data-actionbar>
       {children}
       <ActionButton icon={<Share2 size={20} aria-hidden />} label="שיתוף" onClick={onShare} accent />
       <ActionButton icon={<Copy size={20} aria-hidden />} label="העתקה" onClick={onCopy} />

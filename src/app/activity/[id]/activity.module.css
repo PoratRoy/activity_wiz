@@ -1,0 +1,335 @@
+/* Personal activity in the approved forest/ivory look. Reading comes first: no artwork, and every
+   accent (section markers, step times, callouts) helps scan the text while guiding.
+   Route-local palette keeps the shell, toasts and navigation in the home theme. */
+:global(body):has(.page) {
+  --green: #32765b;
+  --green-dark: #255b46;
+  --green-light: #e7efdf;
+  --yellow: #f4d675;
+  --yellow-dark: #a98225;
+  --yellow-light: #fbf2cf;
+  --cream: #faf8f1;
+  --backdrop: #eeefe8;
+  --text: #303a34;
+  --text-muted: #626d65;
+  --border: #dde1d8;
+  --danger: #b8453b;
+  --danger-dark: #92342d;
+  --lip: 0 2px 0;
+  --topbar-h: 64px;
+  --actionbar-h: 60px;
+}
+
+.page {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(var(--app-height) - var(--tabbar-h) - var(--adbar-h) - env(safe-area-inset-bottom));
+  /* Green behind the action bar's rounded corners while the title block sits under it. */
+  background: var(--green-dark);
+  color: var(--text);
+}
+
+/* Edit mode has no title block: the corners round over the ivory editor instead. */
+.page:has(div[data-activity]) { background: var(--cream); }
+
+.page :focus-visible {
+  outline: 3px solid var(--green-dark);
+  outline-offset: 3px;
+}
+
+/* ---- Masthead: top bar and actions on forest green ---- */
+
+.page > header {
+  padding: 8px 16px;
+  border-bottom: 0;
+  background: var(--green-dark);
+}
+
+.page > header h1 {
+  color: var(--cream);
+  font-size: 22px;
+  letter-spacing: -0.4px;
+}
+
+.page > header > div:first-child button,
+.page > header > div:first-child a { color: var(--yellow); }
+
+.page > header :focus-visible,
+.page [data-actionbar] :focus-visible,
+.page [data-activity-head] :focus-visible { outline-color: var(--yellow); }
+
+/* The rounded lower edge blends into the title block at the top and frames the text once it scrolls under. */
+.page [data-actionbar] {
+  height: auto;
+  min-height: var(--actionbar-h);
+  gap: 8px;
+  padding: 2px 16px 14px;
+  border-bottom: 0;
+  border-radius: 0 0 24px 24px;
+  background: var(--green-dark);
+}
+
+.page [data-actionbar] button {
+  flex-direction: row;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1.5px solid rgb(250 248 241 / 0.24);
+  border-radius: 14px;
+  background: rgb(250 248 241 / 0.08);
+  box-shadow: none;
+  color: var(--cream);
+  font-size: 15px;
+  font-weight: 500;
+  transition: background 120ms ease, transform 100ms ease, box-shadow 100ms ease;
+}
+
+.page [data-actionbar] button svg { flex-shrink: 0; }
+
+.page [data-actionbar] button[data-variant="accent"] {
+  border-color: var(--yellow);
+  background: var(--yellow);
+  box-shadow: 0 2px 0 var(--yellow-dark);
+  color: var(--green-dark);
+  font-weight: 700;
+}
+
+.page [data-actionbar] button:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow: none;
+}
+
+.page [data-actionbar] [role="status"] { color: rgb(250 248 241 / 0.78); }
+.page [data-actionbar] [role="status"][data-state="error"] { color: #f6c1b8; }
+
+/* ---- Title block ---- */
+
+.page [data-activity] {
+  flex: 1;
+  gap: 0;
+  padding: 0;
+}
+
+.page article[data-activity] {
+  display: flex;
+  flex-direction: column;
+}
+
+.page [data-activity-head] {
+  gap: 14px;
+  padding: 10px 24px 48px;
+  background: var(--green-dark);
+}
+
+.page [data-activity-head] h1 {
+  color: var(--cream);
+  font-size: clamp(26px, 7.4vw, 32px);
+  line-height: 1.2;
+  letter-spacing: -0.6px;
+  text-wrap: balance;
+}
+
+.page [data-activity-head] > div > span {
+  padding: 5px 12px;
+  border: 1px solid rgb(250 248 241 / 0.2);
+  background: rgb(250 248 241 / 0.1);
+  color: #e3ece2;
+  font-size: 14px;
+}
+
+/* ---- Reading sheet ---- */
+
+.page [data-activity-head] + [data-reading] {
+  position: relative;
+  flex: 1;
+  margin-top: -24px;
+  padding: 32px 24px 40px;
+  border-radius: 28px 28px 0 0;
+  background: var(--cream);
+}
+
+.page [data-reading] {
+  line-height: 1.75;
+}
+
+/* The goal ("**מטרה:** …") opens the body: a butter-yellow note to read before starting. */
+.page [data-reading] > p:first-child:has(> strong:first-child) {
+  margin-bottom: 8px;
+  padding: 14px 16px;
+  border-inline-start: 4px solid var(--yellow);
+  border-radius: 16px;
+  border-start-start-radius: 6px;
+  border-end-start-radius: 6px;
+  background: var(--yellow-light);
+  line-height: 1.65;
+}
+
+.page [data-reading] strong { color: var(--green-dark); }
+
+.page [data-reading] u {
+  text-decoration-color: var(--yellow);
+  text-decoration-thickness: 3px;
+  text-underline-offset: 4px;
+  text-decoration-skip-ink: none;
+}
+
+/* Section headings: forest green with a short butter-yellow marker instead of a full rule. */
+.page [data-reading] h2 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 36px 0 14px;
+  padding: 0;
+  border: 0;
+  color: var(--green-dark);
+  font-size: 21px;
+  letter-spacing: -0.3px;
+}
+
+.page [data-reading] h2::before {
+  content: "";
+  flex-shrink: 0;
+  width: 8px;
+  height: 22px;
+  border-radius: 999px;
+  background: var(--yellow);
+}
+
+.page [data-reading] > :first-child { margin-top: 0; }
+
+/* Steps: dashed dividers between them and the length as a sage time badge. */
+.page [data-reading] h3 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 20px 0 8px;
+  color: var(--text);
+  font-size: 18px;
+  line-height: 1.4;
+}
+
+.page [data-reading] h3:not(h2 + h3) {
+  margin-top: 22px;
+  padding-top: 20px;
+  border-top: 1.5px dashed #d5dccf;
+}
+
+.page [data-reading] [data-minutes] {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--green-light);
+  color: var(--green-dark);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.page [data-reading] [data-minutes]::before {
+  content: "";
+  width: 14px;
+  height: 14px;
+  background: currentColor;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cpath d='M12 6v6l4 2'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+.page [data-reading] ul,
+.page [data-reading] ol { padding-inline-start: 22px; }
+
+.page [data-reading] li { margin-bottom: 6px; }
+.page [data-reading] li::marker { color: var(--green); }
+.page [data-reading] ol > li::marker { color: var(--green-dark); font-weight: 700; }
+
+/* Equipment (the first section, when present): a quiet white checklist card. */
+.page [data-reading] > h2:first-of-type + ul {
+  padding: 8px 16px;
+  padding-inline-start: 36px;
+  border: 2px solid #e3e8de;
+  border-radius: 18px;
+  background: var(--surface);
+}
+
+.page [data-reading] > h2:first-of-type + ul > li { margin: 0; padding-block: 6px; }
+.page [data-reading] > h2:first-of-type + ul > li + li { border-top: 1px dashed #e3e8de; }
+
+/* Leader tips (the last section): a soft sage card. */
+.page [data-reading] > h2:last-of-type + ul {
+  padding: 14px 16px;
+  padding-inline-start: 36px;
+  border-radius: 18px;
+  background: #f1f6ec;
+}
+
+.page [data-reading] > h2:last-of-type + ul > li:last-child { margin-bottom: 0; }
+
+/* ---- Edit mode: the editor in the form field look ---- */
+
+.page div[data-activity] { padding: 24px 16px 32px; }
+
+.page input[aria-label="כותרת"] {
+  min-height: 56px;
+  padding: 10px 16px;
+  border: 2px solid #ced7c9;
+  border-radius: 18px;
+  box-shadow: 0 3px 0 #ced7c9;
+  font-size: 22px;
+  transition: border-color 120ms ease, box-shadow 120ms ease;
+}
+
+.page input[aria-label="כותרת"]:focus {
+  border-color: var(--green);
+  box-shadow: 0 3px 0 var(--green);
+}
+
+.page [role="toolbar"] {
+  border: 2px solid #ced7c9;
+  border-radius: 18px;
+  box-shadow: 0 3px 0 #ced7c9;
+}
+
+.page [role="toolbar"] button { color: var(--green-dark); }
+
+.page [role="toolbar"] button[aria-pressed="true"] {
+  background: var(--green-light);
+}
+
+.page [contenteditable][data-reading] {
+  padding: 16px;
+  border: 2px dashed #ced7c9;
+  border-radius: 18px;
+}
+
+.page [contenteditable][data-reading]:focus {
+  border-style: solid;
+  border-color: var(--green);
+}
+
+/* ---- Navigation in the home theme ---- */
+
+:global(body):has(.page) :global(nav[aria-label="ניווט ראשי"]) {
+  border-top: 1px solid var(--border);
+  border-radius: 22px 22px 0 0;
+  background: var(--cream);
+  box-shadow: 0 -4px 18px rgb(37 91 70 / 0.04);
+}
+
+:global(body):has(.page) :global(nav[aria-label="ניווט ראשי"] a[aria-current="page"] > span:first-child) {
+  border-radius: 12px;
+}
+
+@media (hover: hover) {
+  .page [data-actionbar] button:hover:not(:disabled) { background: rgb(250 248 241 / 0.16); }
+  .page [data-actionbar] button[data-variant="accent"]:hover:not(:disabled) { background: #f7df8e; }
+}
+
+@media (max-width: 359px) {
+  .page > header { padding-inline: 8px; }
+  .page [data-actionbar] { padding-inline: 12px; gap: 6px; }
+  .page [data-actionbar] button { gap: 6px; padding-inline: 8px; font-size: 14px; }
+  .page [data-activity-head] { padding-inline: 16px; }
+  .page [data-activity-head] + [data-reading] { padding-inline: 16px; }
+}

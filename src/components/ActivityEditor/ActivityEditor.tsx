@@ -52,7 +52,7 @@ export default function ActivityEditor({
     content: bodyMd,
     contentType: "markdown",
     editorProps: {
-      attributes: { class: `${viewStyles.body} ${styles.content}`, dir: "rtl" },
+      attributes: { class: `${viewStyles.body} ${styles.content}`, dir: "rtl", "data-reading": "" },
       handleTextInput: (view, _from, _to, text) => {
         if (view.state.doc.textContent.length + text.length > BODY_TEXT_LIMIT) flagBlocked();
         return false;

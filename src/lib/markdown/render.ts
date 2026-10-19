@@ -8,6 +8,8 @@ const escapeHtml = (s: string) =>
   s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
 
 const UNDERLINE_TAG = /^<\/?u>$/i;
+// Trailing step length in AI step headings: "### 1. name (10 דק׳)".
+const STEP_MINUTES = /\s*\((\d+)\s*דק(?:׳|'|&#39;)\)\s*$/;
 
 const md = new Marked({
   extensions: [
@@ -28,6 +30,12 @@ const md = new Marked({
   gfm: true,
   breaks: true,
   renderer: {
+    heading({ tokens, depth }) {
+      const inner = this.parser.parseInline(tokens);
+      const minutes = depth === 3 ? STEP_MINUTES.exec(inner) : null;
+      if (!minutes) return false;
+      return `<h3>${inner.slice(0, minutes.index)} <span data-minutes>${minutes[1]} דק׳</span></h3>\n`;
+    },
     html({ text }) {
       return UNDERLINE_TAG.test(text.trim()) ? text.trim().toLowerCase() : escapeHtml(text);
     },

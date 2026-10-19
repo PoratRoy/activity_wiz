@@ -88,13 +88,13 @@ export function EditableActivity({
   if (editing) {
     return (
       <>
-        <div className={barStyles.bar}>
+        <div className={barStyles.bar} data-actionbar>
           <ActionButton icon={<Pencil size={20} aria-hidden />} label="סיום עריכה" onClick={finishEditing} accent />
-          <span className={`${styles.status} ${status === "error" ? styles.statusError : ""}`} role="status">
+          <span className={`${styles.status} ${status === "error" ? styles.statusError : ""}`} role="status" data-state={status}>
             {!content.title.trim() ? "צריך כותרת" : statusText}
           </span>
         </div>
-        <div className={viewStyles.article}>
+        <div className={viewStyles.article} data-activity>
           <ActivityEditor title={content.title} bodyMd={content.bodyMd} onChange={onChange} belowTitle={<ChipRow items={chips} />} />
         </div>
       </>
