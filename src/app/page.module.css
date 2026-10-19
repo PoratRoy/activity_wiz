@@ -93,6 +93,8 @@
 
 .landscape {
   margin-top: auto;
+  /* Sits 20px lower; the overhang tucks behind the fixed bottom navigation. */
+  margin-bottom: -20px;
   flex-shrink: 0;
   display: block;
   width: 100%;
