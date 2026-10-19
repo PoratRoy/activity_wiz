@@ -28,7 +28,7 @@ export function PickerSheet({ label, placeholder, options, value, onChange }: Pr
   return (
     <div>
       <span className={styles.label}>{label}</span>
-      <button type="button" className={styles.field} onClick={() => setOpen(true)} aria-haspopup="listbox">
+      <button type="button" className={styles.field} onClick={() => setOpen(true)} aria-haspopup="listbox" aria-expanded={open} data-filled={!!current}>
         <span className={current ? "" : styles.placeholder}>{current?.label ?? placeholder}</span>
         <ChevronDown size={20} aria-hidden />
       </button>

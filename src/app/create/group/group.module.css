@@ -1,9 +1,11 @@
-/* Keep the new palette local to this step, including its navigation and sheets. */
+/* Route-local palette keeps the form, sheets and navigation in the home theme. */
 :global(body):has(.page) {
   --green: #32765b;
   --green-dark: #255b46;
   --green-light: #e7efdf;
   --yellow: #f4d675;
+  --yellow-dark: #a98225;
+  --yellow-light: #fbf2cf;
   --cream: #faf8f1;
   --backdrop: #eeefe8;
   --text: #303a34;
@@ -13,59 +15,200 @@
 }
 
 .page {
-  --form-gap: clamp(6px, calc((var(--app-height) - 520px) * 0.05), 20px);
   display: flex;
   flex-direction: column;
   min-height: calc(var(--app-height) - var(--tabbar-h) - env(safe-area-inset-bottom));
+  background: var(--green-dark);
+  color: var(--text);
 }
-.page > header { flex-shrink: 0; height: clamp(56px, calc(var(--app-height) * 0.085), 72px); padding-inline: 16px; border-bottom: 0; }
-.page > header h1 { font-size: 26px; color: #252b27; text-align: start; letter-spacing: -0.6px; }
-.page :focus-visible { outline: 3px solid var(--green-dark); outline-offset: 3px; }
 
-.form { display: flex; flex: 1; flex-direction: column; gap: var(--form-gap); padding: 0 24px clamp(12px, calc(var(--app-height) * 0.025), 24px); }
-.intro { display: flex; justify-content: center; }
-.compass { width: auto; height: clamp(32px, calc((var(--app-height) - 480px) * 0.3), 88px); object-fit: contain; }
-.form legend, .form > div > span { color: #303a34; font-size: 16px; font-weight: 600; margin-block-end: 6px; }
+.masthead {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  flex-shrink: 0;
+  padding-bottom: 40px;
+  background: linear-gradient(to bottom, var(--green-dark) calc(100% - 24px), transparent calc(100% - 24px));
+}
+
+.masthead > header {
+  flex-shrink: 0;
+  min-height: 64px;
+  height: auto;
+  padding: 8px 16px;
+  border-bottom: 0;
+  background: transparent;
+}
+
+.masthead h1 {
+  color: var(--cream);
+  font-size: 24px;
+  letter-spacing: -0.5px;
+  white-space: normal;
+  overflow: visible;
+}
+
+.masthead > header > div:first-child button,
+.masthead > header > div:first-child a { color: var(--yellow); }
+
+.masthead :focus-visible {
+  outline: 3px solid var(--yellow);
+  outline-offset: 3px;
+}
+
+.form :focus-visible {
+  outline: 3px solid var(--green-dark);
+  outline-offset: 3px;
+}
+
+.form {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 24px;
+  position: relative;
+  margin-top: -24px;
+  padding: 52px 24px 24px;
+  border-radius: 32px 32px 0 0;
+  background: var(--cream);
+}
+
+/* Artwork overlaps the green/ivory seam, away from labels and controls. */
+.compass {
+  position: absolute;
+  inset-inline-end: 28px;
+  bottom: -30px;
+  z-index: 32;
+  display: block;
+  width: 132px;
+  height: 88px;
+  object-fit: contain;
+  pointer-events: none;
+  transform: rotate(-9deg);
+}
+
+.form legend,
+.form > div > span {
+  color: var(--text);
+  font-size: 16px;
+  font-weight: 500;
+  margin-block-end: 10px;
+}
+
 .form button[aria-haspopup="listbox"] {
-  min-height: clamp(48px, calc(var(--app-height) * 0.065), 54px);
-  border-width: 1px;
-  border-radius: 12px;
-  font-size: 17px;
+  min-height: 60px;
+  padding-block: 12px;
+  gap: 12px;
+  border: 2px solid #ced7c9;
+  border-radius: 18px;
+  font-size: 16px;
+  font-weight: 500;
+  box-shadow: 0 3px 0 #ced7c9;
+  transition: border-color 120ms ease, background 120ms ease, transform 100ms ease, box-shadow 100ms ease;
+}
+
+.form button[aria-haspopup="listbox"] svg {
+  flex-shrink: 0;
+  color: var(--green);
+  width: 30px;
+  height: 30px;
+  padding: 5px;
+  border-radius: 10px;
+  background: var(--yellow-light);
+  stroke-width: 2.5;
+  transition: transform 120ms ease;
+}
+
+.form button[aria-haspopup="listbox"][data-filled="true"] {
+  border-color: #9eb79b;
+  background: #f1f6ec;
+  color: var(--green-dark);
+  box-shadow: 0 3px 0 #9eb79b;
+}
+
+.form button[aria-haspopup="listbox"][data-filled="true"] svg {
+  background: var(--green-light);
+}
+
+.form button[aria-haspopup="listbox"][aria-expanded="true"] svg { transform: rotate(180deg); }
+.form button[aria-haspopup="listbox"]:active {
+  transform: translateY(3px);
   box-shadow: none;
 }
-.form button[aria-haspopup="listbox"] svg { color: var(--text-muted); }
+
+.form fieldset > div { gap: 8px; }
+
 .form button[role="radio"] {
-  min-height: 44px;
-  border-width: 1px;
-  border-radius: 14px;
-  box-shadow: none;
-  transition: background 120ms ease, border-color 120ms ease;
+  position: relative;
+  min-height: 52px;
+  padding: 12px 20px;
+  border: 2px solid #ced7c9;
+  border-radius: 16px;
+  background: var(--surface);
+  box-shadow: 0 3px 0 #ced7c9;
+  font-weight: 500;
+  transition: background 120ms ease, border-color 120ms ease, transform 100ms ease, box-shadow 100ms ease;
 }
+
 .form button[role="radio"][aria-checked="true"] {
   border-color: var(--green);
   background: var(--green-light);
   color: var(--green-dark);
-  box-shadow: inset 0 0 0 1px var(--green);
+  box-shadow: 0 3px 0 var(--green);
+  font-weight: 700;
 }
-.form button[role="radio"]:active { transform: translateY(1px); }
+
+.form button[role="radio"]:active { transform: translateY(3px); box-shadow: none; }
 .form [role="dialog"] { border-radius: 24px 24px 0 0; }
-.form [role="option"][aria-selected="true"] { background: var(--green-light); border-radius: 12px; }
-.footer { margin-top: auto; padding-top: 4px; }
-.footer button { min-height: clamp(48px, calc(var(--app-height) * 0.065), 54px); border-radius: 16px; font-size: 20px; font-weight: 700; }
-.footer button:disabled { --btn-lip: var(--border); box-shadow: none; }
+.form [role="option"][aria-selected="true"] {
+  background: var(--green-light);
+  border-radius: 12px;
+}
+
+.footer {
+  margin-top: auto;
+  padding-top: 8px;
+}
+
+.footer button {
+  min-height: 54px;
+  padding-block: 12px;
+  border-radius: 16px;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.footer button svg { order: 1; flex-shrink: 0; color: var(--yellow); }
+.footer button:disabled svg { color: currentColor; }
+
+.footer button:active:not(:disabled) { transform: translateY(2px); }
+.footer button:disabled { box-shadow: none; }
+
 :global(body):has(.page) :global(nav[aria-label="ניווט ראשי"]) {
   border-top: 1px solid var(--border);
   border-radius: 22px 22px 0 0;
-  background: #fffefa;
+  background: var(--cream);
   box-shadow: 0 -4px 18px rgb(37 91 70 / 0.04);
 }
-:global(body):has(.page) :global(nav[aria-label="ניווט ראשי"] a[aria-current="page"] > span:first-child) { border-radius: 12px; }
-/* A single quiet segmented choice for the three composition options. */
-.form fieldset > div { gap: 4px; padding: 4px; border-radius: 16px; background: #eeefe7; }
-.form button[role="radio"] { border: 0; background: transparent; border-radius: 12px; }
-.form button[role="radio"][aria-checked="true"] { background: var(--surface); box-shadow: 0 1px 4px rgb(37 91 70 / 0.12); }
+
+:global(body):has(.page) :global(nav[aria-label="ניווט ראשי"] a[aria-current="page"] > span:first-child) {
+  border-radius: 12px;
+}
+
+@media (hover: hover) {
+  .form button[aria-haspopup="listbox"]:hover,
+  .form button[role="radio"]:hover { border-color: var(--green); background: var(--green-light); }
+  .footer button:hover:not(:disabled) { background: var(--green-dark); }
+}
+
 @media (max-width: 359px) {
-  .form { padding-inline: 20px; }
-  .page > header { padding-inline: 8px; }
-  .page > header h1 { font-size: 24px; }
+  .form { padding-inline: 16px; }
+  .masthead > header { padding-inline: 8px; }
+  .masthead h1 { font-size: 22px; }
+  .form button[role="radio"] { padding-inline: 16px; }
+}
+
+@media (max-height: 740px) {
+  .form { gap: 20px; }
+  .compass { width: 120px; height: 80px; }
 }

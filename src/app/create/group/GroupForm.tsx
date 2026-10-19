@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
 import { useViewer } from "@/components/AppShell/viewer";
 import { Button } from "@/components/Button/Button";
-import Image from "next/image";
+import { ArrowLeft } from "lucide-react";
 import styles from "./group.module.css";
 import { PickerSheet } from "@/components/PickerSheet/PickerSheet";
 import { TileGroup } from "@/components/Tile/Tile";
@@ -52,15 +52,12 @@ export function GroupForm({ accountGroup }: { accountGroup: GroupInput | null })
 
   return (
     <form className={styles.form} onSubmit={(e) => (e.preventDefault(), onContinue())}>
-      <div className={styles.intro}>
-        <Image className={styles.compass} src="/illustrations/group-compass.webp" width={300} height={200} alt="" unoptimized />
-      </div>
       <PickerSheet label="תנועה" placeholder="בחרו תנועה" options={movementOptions} value={group.movement} onChange={set("movement")} />
       <PickerSheet label="כיתה" placeholder="בחרו כיתה" options={asOptions(GRADES)} value={group.grade} onChange={set("grade")} />
       <PickerSheet label="מספר חניכים" placeholder="בחרו מספר חניכים" options={asOptions(GROUP_SIZES)} value={group.groupSize} onChange={set("groupSize")} />
       <TileGroup name="gender" label="הרכב" columns={3} options={asOptions(GENDERS)} value={group.gender} onChange={set("gender")} />
       <div className={styles.footer}>
-        <Button type="submit" disabled={!complete || pending}>
+        <Button type="submit" disabled={!complete || pending} icon={<ArrowLeft size={20} aria-hidden />}>
           {pending ? "שומרים…" : "המשך"}
         </Button>
       </div>

@@ -1,85 +1,167 @@
 # Design
 
-This is a simple first-pass design, meant to be replaced later with a richer one (illustrations made in ChatGPT). Everything visual goes through the CSS variables in `src/app/globals.css`, so the reskin is a token change and an asset swap.
+## Direction agreed on 2026-10-19
+
+Use the first illustrated three-screen proposal: warm ivory, forest green, sage, butter-yellow highlights, rounded Hebrew typography and expressive outdoor illustrations. The user preferred this to the later recolored group-form mockup, which felt empty and lacked life. Do not use that later mockup as the target, or return to the original neon-lime Duolingo skin.
+
+The first proposal shows home, group setup and activity reading. It is a visual reference, not a replacement screen specification: its dropdown substitutions, sample copy, logo and omitted features are not requirements. Preserve the routes, field types, option order, content, navigation, permissions and interactions in [Screens](screens.md) and [Product](product.md). The approved `/create/group` implementation below supersedes the earlier field-type and visual guidance for that route: group size now uses a bottom-sheet picker, while composition remains tiles. Preserve all option values, order, validation and saving behavior. Other routes retain their specified field types.
+
+Visual reference: [original three-screen preview](/Users/royporat/.codex/generated_images/01a1509a-e263-7230-8409-d918f0d21008/exec-1adc6e26-b44f-4e1c-8482-afcabb32321d.png). This local preview is not a production asset; the written specification remains usable without access to it.
+
+Status: the landing page and `/create/group` have received local visual updates. The user approved the current group page on 2026-10-19; it is the concrete reference for the form look and feel. This does not mark the remaining screens as reskinned. The group-page measurements below describe its implementation; general tokens remain targets for the broader app.
 
 ## Principles
 
-- **App, not website.** A phone-width column, a bottom tab bar, a top bar with a back arrow, and big tap targets (at least 48px).
-- **Minimal text.** One short line where a paragraph would go. Icons only where they help.
-- **Youthful and friendly.** Inspired by Duolingo: chunky rounded buttons with a bottom "lip", bright green and yellow, simple shapes, small illustrations.
-- **Reading comes first** on activity pages: large comfortable text and nothing covering it.
-- **Hebrew RTL everywhere.** `<html lang="he" dir="rtl">`. Use logical CSS properties (`margin-inline-start`, `inset-inline-end`), never `left`/`right`.
-- Light mode only.
+- **An illustrated, welcoming app.** Illustrations are part of the identity, not an optional polish pass. Color changes alone do not meet this brief.
+- **Youthful, with restraint.** Design for teenage youth movement leaders. Take rounded, tactile controls and clear responsive feedback from Duolingo. The approved group controls use 2px borders and restrained 3px lower edges; avoid neon colors, exaggerated depth and constant mascot animation.
+- **Warm and readable.** White controls on warm ivory, dark readable text, one visually dominant primary action. Use sage for selected states and butter yellow for warmth.
+- **Preserve the existing structure.** Add artwork within existing hero, heading and empty-state regions without moving controls or introducing steps. Do not change field types without an explicit product decision. The approved exception is group size on `/create/group`, which now matches the movement and grade pickers.
+- **Hebrew RTL throughout.** Keep `lang="he" dir="rtl"` and logical CSS properties. Preserve existing copy unless separately approved.
+- Light mode only. Use the existing CSS Modules, shared CSS variables, Rubik and lucide-react; no new UI framework is required.
 
-## Tokens (`:root` in `globals.css`)
+## Approved group page `/create/group` (2026-10-19)
+
+This is the accepted form reference: expressive in the header, clean and easy to scan in the body, with tactile Duolingo-inspired controls in the app’s outdoor palette. Follow the current [page](../src/app/create/group/page.tsx), [form](../src/app/create/group/GroupForm.tsx) and [route stylesheet](../src/app/create/group/group.module.css). These route-specific decisions take precedence over older group-page descriptions in this document, [Screens](screens.md) and [Product](product.md).
+
+### Header and illustration
+
+- Dark forest-green header (`#255B46`) with the ivory title **הקבוצה שלי** centered in the top bar. Keep the back control on the right in butter yellow and the avatar on the left.
+- The top bar is at least 64px high; the title is 24px, reduced to 22px below 360px viewport width. The masthead stays sticky.
+- The ivory form overlaps the header by 24px and has 32px rounded top corners. This transition is the main visual feature.
+- Use the existing transparent [compass illustration](../public/illustrations/group-compass.webp), overlapping the green/ivory seam on the left. It is 132 × 88px, rotated −9°, inset 28px from the inline end, with its bottom extending 30px below the masthead. At viewport heights of 740px or less it becomes 120 × 80px. Keep it decorative (`alt=""`, no pointer interaction) and clear of controls.
+- Do not revert to the rejected alternative with a separate, right-aligned title row and the compass beside it on a lighter green header. Do not return to a detached, centered illustration above the fields.
+
+### Fields and tactile feedback
+
+Keep this order and these control types:
+
+| Field | Approved control |
+| --- | --- |
+| תנועה | Bottom-sheet picker; placeholder בחרו תנועה |
+| כיתה | Bottom-sheet picker; placeholder בחרו כיתה |
+| מספר חניכים | Bottom-sheet picker; placeholder בחרו מספר חניכים; preserve all five existing size ranges |
+| הרכב | Three single-selection tiles: בנים, בנות, מעורב |
+
+All three pickers share the same styling and state rules. A populated size picker is not a distinct variant.
+
+- **Labels:** visible above controls, 16px/500, dark text, with 10px spacing below.
+- **Empty pickers:** white surface, at least 60px high, 18px corners, a 2px `#CED7C9` border and a 3px lower edge in the same color. Text is 16px/500.
+- **Chevron:** forest green on a small pale-butter (`#FBF2CF`) rounded backing, 30 × 30px with 10px corners. Rotate it when the sheet is open.
+- **Filled pickers:** the current approved implementation uses a pale sage surface (`#F1F6EC`), `#9EB79B` border/lower edge, dark-green text and a sage chevron backing. A suggestion to keep filled pickers white was discussed but was not implemented; do not treat it as an approved change.
+- **Composition tiles:** white unselected surfaces, at least 52px high, 16px corners, 2px borders and 3px lower edges. Keep the three-column layout with 8px gaps. Selected tiles use sage (`#E7EFDF`), a forest-green border/lower edge, dark-green text and weight 700.
+- **No checkmark on composition tiles.** Selection is conveyed through the fill, border and bolder label. Keep the selected-item checkmark inside picker sheets; its removal was not requested.
+- **Feedback:** hover adds a sage fill and green border. Pressing a picker or tile moves it down 3px and removes its lower shadow. Use brief 100–120ms transitions and respect reduced motion. Retain visible keyboard focus and programmatic selection/expanded states.
+- **Sheets:** retain their existing bottom-sheet interaction, 24px rounded top corners, selected-row highlight and checkmark. Overlays must appear above the header, artwork and bottom navigation.
+
+### Spacing, action and navigation
+
+- The form uses 24px horizontal padding and 24px vertical gaps, with 52px top padding to clear the overlapping artwork. Below 360px, horizontal padding is 16px; at viewport heights of 740px or less, gaps reduce to 20px. Keep natural scrolling on short screens.
+- **המשך** is full-width forest green, at least 54px high, with 16px corners, 18px/500 text and a yellow left arrow. Its subtle 2px lower edge depresses by 2px on press. The footer uses available space above it to place the action toward the bottom; keep it reachable above navigation.
+- Continue stays disabled until all four fields are valid, and during saving. Disabled styling is neutral with no raised edge. Preserve prefill, persistence, error handling and navigation to `/create/activity`.
+- Bottom navigation is ivory with a fine top border, rounded upper corners and a sage active state. Keep the current navigation labels and behavior.
+- These styles are scoped to the group route (including its shell palette while mounted). Reuse this visual language deliberately on future forms; do not claim shared components or other routes have already been reskinned.
+
+## Visual tokens
+
+Target values for `src/app/globals.css`; these are specifications, not a claim about current code:
 
 ```css
---green: #58CC02;        /* primary */
---green-dark: #46A302;   /* button lip / pressed */
---green-light: #D7FFB8;  /* active tab pill, success bg */
---yellow: #FFC800;       /* accent */
---yellow-dark: #E0A800;
---yellow-light: #FFF4CC; /* banners */
---cream: #FFF8E7;        /* page background inside the column */
---backdrop: #F2EBD9;     /* desktop area outside the column */
---surface: #FFFFFF;      /* cards */
---text: #3C3C3C;
---text-muted: #777777;
---border: #E5E5E5;
---danger: #FF4B4B;
---danger-dark: #D93636;
---card-blue: #1CB0F6;  --card-orange: #FF9600;  /* category card rotation */
+--green: #32765B;
+--green-dark: #255B46;
+--green-light: #E7EFDF;
+--yellow: #F4D675;
+--yellow-dark: #A98225;
+--yellow-light: #FBF2CF;
+--cream: #FAF8F1;
+--backdrop: #EEEFE8;
+--surface: #FFFFFF;
+--text: #303A34;
+--text-muted: #626D65;
+--border: #DDE1D8;
+--danger: #B8453B;
+--danger-dark: #92342D;
+--card-blue: #DFEAF0;
+--card-orange: #F7E3CC;
 
---radius-sm: 12px; --radius: 16px; --radius-lg: 24px; --radius-pill: 999px;
---space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px; --space-5: 24px; --space-6: 32px;
---lip: 0 4px 0;          /* used as box-shadow: var(--lip) var(--green-dark) */
+--radius-sm: 12px;
+--radius: 16px;
+--radius-lg: 24px;
+--radius-pill: 999px;
+--space-1: 4px;
+--space-2: 8px;
+--space-3: 12px;
+--space-4: 16px;
+--space-5: 24px;
+--space-6: 32px;
+--lip: 0 2px 0;
 --column: 480px;
---topbar-h: 56px; --tabbar-h: 64px; --actionbar-h: 64px;
+--topbar-h: 56px;
+--tabbar-h: 64px;
+--actionbar-h: 64px;
 --font: var(--font-rubik), system-ui, sans-serif;
 ```
 
-**Font:** Rubik through `next/font/google` (`subsets: ['hebrew','latin']`, weights 400/500/700). Sizes: body 16px, reading text 18px with line-height 1.7, H1 24px/700, H2 20px/700, small 14px.
+Rubik 400/500/700: body 16px, reading 18px with 1.7 line height, H1 24px/700, H2 20px/700, supporting text 14px. Home display type can scale fluidly from 30–36px. Keep headings strong and labels quieter; avoid making every text element bold. Validate actual foreground/background pairs for readable contrast, including disabled, error and selected states. Yellow is decorative or paired with dark text, never small yellow text on white.
 
-## Layout
+## Responsive shell
 
-- `body` uses `--backdrop`. `.app` is centered with `max-width: var(--column)`, `min-height: 100dvh` and the `--cream` background. On desktop it looks like a phone in the middle of the screen.
-- The top bar is sticky at the top. The tab bar is fixed at the bottom, inside the column width. Content gets bottom padding equal to `--tabbar-h` (plus `--actionbar-h` on activity pages) plus `env(safe-area-inset-bottom)`.
-- Side padding is `--space-4` (16px).
+- All mobile widths must work fluidly. Use width 100% with max-width 480px, not a fixed 480px canvas scaled down. Start validation at 320px and include 360, 375, 390, 414, 430 and 480px; layouts must also work between these samples.
+- At desktop widths (768px and above), use a centered 480px maximum-width panel with 32px rounded corners and 32px outer padding on a soft background. Its height is capped at 900px and the viewport height minus 64px. Content scrolls inside the panel; navigation, action bars, sheets and dialogs stay anchored within it. Route changes reset the inner scroll position. No desktop sidebar or expanded columns.
+- On phones the app fills the available width without a device frame or outer gutters. Keep current content padding; allow labels to wrap and grids to reflow only as needed to prevent clipping. Preserve logical order and control types.
+- On mobile use `min-height: 100dvh` and natural document scrolling; desktop uses the bounded frame above. Support short screens, landscape, browser chrome changes and the software keyboard. A page may scroll; its primary action must remain reachable.
+- Top bar remains sticky. Bottom navigation remains fixed and aligned to the app column on every viewport. Activity action bars remain directly above it. Sheets, dialogs and toasts must fit the viewport and align with the centered column.
+- Reserve bottom content clearance for the actual navigation/action bar heights plus `env(safe-area-inset-bottom)`. Allow bar height to grow if text enlargement needs it. Neither content nor the ad placeholder may sit behind these bars.
+- No horizontal page overflow. Keep 48px primary control targets, visible keyboard focus, sensible focus order and usable 200% text enlargement. Artwork scales with its container, with intrinsic dimensions reserved to avoid layout shifts.
 
-## Components (`src/components`, each with its own `.module.css`)
+## Illustrations and icons
 
-| Component | Notes |
+The visual reference is the original proposal's woodland landscape and small compass illustration: rounded organic shapes, layered sage hills, forest-green foliage, a butter-yellow sun, cream paths and small tents. Use a cohesive illustrated family with subtle texture in artwork only. Avoid generic geometric placeholders, stock-photo collages and busy thumbnails.
+
+- **Home:** a substantial outdoor scene in the existing hero region gives the app its most memorable visual. Keep all specified buttons. Do not add a library preview or category section to the landing page; access remains in bottom navigation (owner clarification, 2026-10-19). The scene scales/crops without covering content or navigation.
+- **Group and activity forms:** a compact compass, leaves, trail marker or similar vignette in the existing heading region adds character. For the approved group page, use the placement and dimensions above. For other forms, a 64–96px-high vignette is a starting point; reduce as needed rather than moving fields. Do not add a large blank illustration panel.
+- **Library:** keep the specified two-column category grid. Give each card a meaningful, coordinated illustration and quiet tinted surface, with dark legible titles. Replace arbitrary saturated color/icon hashing with stable category artwork or a neutral thematic fallback.
+- **My activities and empty/error states:** use a small backpack, folded map, campfire or other relevant scene with the existing message and action.
+- **Loading:** use a small illustrated companion or camp scene with restrained progress feedback. Match the same palette; retain existing tips, AI notice and outcome behavior.
+- **Activity reading/editing:** keep the body quiet and unobstructed. Any decorative detail is confined to the heading; no artwork behind reading text or editor controls.
+- **Admin:** use the same surfaces, type and controls. Keep illustration minimal around dense management content.
+
+Use one consistent rounded lucide icon family for functional actions, with text labels where already present. Retain existing icon meanings; the generated mockup's generic database/person icons are not required replacements. Decorative illustrations have empty alt text; meaningful images receive useful alternatives. Existing mascot SVGs are placeholders, not the finished art direction. No new mascot identity or logo is mandated.
+
+## Component treatment
+
+| Component | Target treatment; existing behavior stays intact |
 | --- | --- |
-| `AppShell` | Wraps every page: `TopBar` + content + `BottomNav` + `ToastHost`. |
-| `TopBar` | Props `title`, `back?: string`. Back arrow (`ChevronRight`) on the inline start (the right side), the title centered, `AvatarMenu` on the inline end (the left side). |
-| `AvatarMenu` | A 36px round avatar or a generic icon. Opens a small popover menu. Client component using `useSession`. |
-| `BottomNav` | 4 tabs, each a lucide icon plus a label of 12px or less. The active tab gets a `--green-light` pill behind the icon and green text. Uses `Home`, `Sparkles`, `BookOpen`, `ListChecks`, plus `Lock` on top of the last tab for guests. |
-| `Button` | Variants `primary` (green), `secondary` (white with border), `accent` (yellow), `danger`. Full width by default, 52px tall, `--radius`, bold text, and `box-shadow: var(--lip) <dark>`. When `:active`, it moves down 4px (`translateY(4px)`) and the shadow disappears. |
-| `Tile` / `TileGroup` | Radio-like tiles in a wrapping grid. Unselected: white with a 2px `--border` and a gray lip. Selected: `--green-light` background with a green border and a green lip. Used for 2–6 options. |
-| `PickerSheet` | A field button that shows the current value. Tapping it slides up a bottom sheet with a scrollable list (one item per row, checkmark on the selected one). Used for movement and grade. Closes when you tap the backdrop or pick an item. |
-| `SubjectField` | A `TextField` with a ✨ (`Sparkles`) icon button on the inline end. Tapping it fills in a random suggestion with a short 300ms spin. |
-| `TextField` / `TextArea` | 2px border, `--radius`, green border on focus. |
-| `Collapsible` | The "עוד אפשרויות" (more options) row with a chevron. |
-| `Chip` | A small pill (`--yellow-light`, 14px) for the type, place and duration. |
-| `ActivityView` | Chips, title and Markdown body, plus the sticky `ActionBar`. Switches to edit mode with `ActivityEditor` (Tiptap, loaded with `next/dynamic` so it only downloads in edit mode). |
-| `ActionBar` | Sticky, sitting directly above the `BottomNav`. A row of icon+label buttons: `Copy`, `Share2` (share, green), `Pencil`, `MoreVertical`, `BookmarkPlus`. |
-| `Modal` | A centered card on a dimmed backdrop, used for delete confirmations and the admin category form. `blocking` prop: the backdrop doesn't close it (used for the trial popup). |
-| `SignInGate` | The blocking trial popup: mascot, «הניסיון הסתיים 🙂 התחברו כדי להמשיך ליצור פעולות», a Google button, and a "חזרה" (back) text link. |
-| `Toast` / `ToastHost` | Bottom-centered above the bars. A dark pill with white text. Disappears after 2.5 seconds. |
-| `CategoryCard` | Square, `--radius-lg`. Its background color comes from the rotation [green, yellow, blue, orange], picked by a hash of the ID. A white lucide icon is picked by a hash from a fixed list (`Tent`, `Sun`, `Leaf`, `Star`, `Flame`, `Compass`, `Heart`, `Users`, `Mountain`, `Snowflake`). The title is bold white text. |
-| `ActivityCard` | A white card with the title (bold) and a 2-line excerpt or a date. |
-| `EmptyState` | Small illustration, one line of text and an optional button. |
-| `AdSlot` | Returns `null` unless `NEXT_PUBLIC_ADS_ENABLED === 'true'`. When enabled, a fixed-height (250px) box with a dashed border and «פרסומת». |
-| `Mascot` | An inline SVG: a round green spark/flame character with big eyes and a yellow scarf (צעיף), a nod to the scout neckerchief. Variants: `idle` and `bounce` (CSS keyframes). |
+| AppShell | Shared mobile column, soft desktop surround, navigation and toast layer; no ad reservation while ads are paused. |
+| TopBar / AvatarMenu | Quiet ivory by default; the approved group route uses a dark forest header, centered ivory title and yellow back control. Preserve real user photos. |
+| BottomNav | Light surface, subtle upper separation, sage active pill and forest-green icon/label. No deep shadow or thick border. |
+| Button | Forest primary with white text, 52px minimum height, 16px corners and subtle 2px lower edge. Secondary white with a restrained border; yellow accent uses dark text. Press movement matches edge depth. Avoid deep plastic-like lips. |
+| Tile / TileGroup | Preserve all choices and grids. White unselected surface; selected sage fill, forest border and stronger text. Group composition uses the tactile 2px border/3px edge treatment above, without checkmarks. Avoid exaggerated depth. Selection must be apparent without relying on color alone. |
+| PickerSheet | Use the approved group treatment as the form reference: rounded raised fields, distinct empty/filled states and a small chevron backing. Sheet retains selection/checkmark behavior. Keep field labels visible. |
+| TextField / TextArea / SubjectField | White surface, restrained border and forest focus treatment; preserve limits, suggestions and validation. |
+| Collapsible | Quiet row and consistent chevron; preserve expansion behavior. |
+| Chip | Pale sage or butter tint with dark text and compact rounded shape. |
+| ActivityView / Editor | Clear heading hierarchy and comfortable paragraph spacing. Preserve Markdown, editing, autosave and all actions. |
+| ActionBar | Light surface, subtle divider, clear icon/label pairs. Preserve existing actions and visibility rules. |
+| CategoryCard / ActivityCard | Quiet surfaces, dark titles and meaningful illustration where appropriate; preserve shape, grid/list structure and metadata. |
+| Modal / SignInGate | Rounded white/ivory surface, restrained backdrop, existing actions and blocking behavior; illustration where already provided. |
+| Toast | Readable charcoal surface, placed above fixed controls; preserve announcement and dismissal behavior. |
+| EmptyState | Finished thematic illustration, existing brief copy and action. |
+| AdSlot | Paused: renders nothing and reserves no space. |
 
-## Illustrations
+## Ads paused (2026-10-19)
 
-These are simple inline SVGs built from basic shapes in the palette colors, kept in `src/components/illustrations/`: `Mascot`, `EmptyBox` (empty states), `Campfire` (landing), `Oops` (error and refusal). They are placeholders until the final art arrives.
+The owner requested removal of ads for now. Render no ad placeholders or reserved blank ad space on any page, regardless of the old ads environment flag. Keep the reusable AdSlot as a no-op for a future explicit integration request. This supersedes the earlier every-page ad reservation requirement.
 
-## Motion
+## Motion and copy
 
-Keep it subtle: button press (80ms), sheet slide-up (200ms ease-out), mascot bounce (1.2s loop), and a smooth progress-bar fill. Respect `prefers-reduced-motion`.
+Brief button feedback (80–120ms), sheet transitions (about 200ms) and existing progress feedback. No continuous decorative bouncing. Respect reduced-motion preferences and retain status text when animation is disabled. Keep the existing short, warm plural Hebrew copy; artwork should add life without extra explanatory text.
 
-## Copy tone
+## Implementation acceptance
 
-Short, warm, informal plural Hebrew (נסו, התחברו). One emoji at most, and only in friendly moments.
+- Original illustrated direction is recognizable: finished hero/heading/empty-state assets, not merely recolored controls. Reject a sparse form-only result like the later mockup.
+- Existing flows, option order and business rules remain intact. Apply the approved group field types: three pickers and composition tiles, without tile checkmarks.
+- No ads or reserved ad space while ads are paused; fixed controls stay within the desktop frame.
+- Review representative home, forms, loading/error, reading/editing, library, saved and admin screens across the mobile widths above, landscape/short heights, and 768/1280/1440px desktop widths.
+- Verify RTL, long Hebrew labels, keyboard focus, enlarged text, reduced motion, safe-area insets, keyboard-open inputs and no horizontal overflow.
+- Desktop remains one centered mobile-width column with soft surroundings; mobile fills the viewport naturally.
+- The group page described above is implemented and approved; do not infer completion of the remaining redesign. Track broader implementation separately in [Implementation plan](implementation-plan.md).

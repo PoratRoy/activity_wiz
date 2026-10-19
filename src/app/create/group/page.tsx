@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { TopBar } from "@/components/TopBar/TopBar";
 import { getAccountGroup } from "@/lib/auth/session";
 import { GroupForm } from "./GroupForm";
@@ -10,7 +11,10 @@ export default async function GroupPage() {
   const accountGroup = await getAccountGroup();
   return (
     <div className={styles.page}>
-      <TopBar title="הקבוצה שלי" />
+      <div className={styles.masthead}>
+        <TopBar title="הקבוצה שלי" />
+        <Image className={styles.compass} src="/illustrations/group-compass.webp" width={300} height={200} alt="" unoptimized />
+      </div>
       <GroupForm accountGroup={accountGroup} />
     </div>
   );
