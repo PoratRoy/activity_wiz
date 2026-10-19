@@ -30,6 +30,7 @@
 
   --lip: 0 4px 0;
   --column: 480px;
+  --app-height: 100dvh;
   --topbar-h: 56px;
   --tabbar-h: 64px;
   --actionbar-h: 64px;
@@ -119,5 +120,26 @@ button {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+/* The frame itself does not scroll: its content does, keeping fixed controls
+   and overlays anchored to the phone-sized panel rather than the desktop. */
+@media (min-width: 768px) {
+  body {
+    --app-height: min(900px, calc(100dvh - 64px));
+    padding: 32px;
+    background: #eeefe8;
+  }
+
+  .app {
+    width: 100%;
+    height: var(--app-height);
+    min-height: 0;
+    overflow: hidden;
+    border-radius: 32px;
+    transform: translateZ(0);
+    isolation: isolate;
+    box-shadow: 0 12px 48px rgb(48 58 52 / 0.12), 0 0 0 1px rgb(48 58 52 / 0.06);
   }
 }

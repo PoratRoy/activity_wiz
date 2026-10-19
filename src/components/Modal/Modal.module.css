@@ -10,6 +10,8 @@
 }
 
 .card {
+  max-height: 100%;
+  overflow-y: auto;
   width: 100%;
   max-width: calc(var(--column) - 2 * var(--space-4));
   padding: var(--space-5);

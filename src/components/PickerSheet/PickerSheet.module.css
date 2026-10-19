@@ -34,7 +34,7 @@
 .sheet {
   width: 100%;
   max-width: var(--column);
-  max-height: 75dvh;
+  max-height: calc(var(--app-height) * 0.75);
   display: flex;
   flex-direction: column;
   padding: var(--space-3) var(--space-4) calc(var(--space-4) + env(safe-area-inset-bottom));

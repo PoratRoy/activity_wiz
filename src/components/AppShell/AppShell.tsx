@@ -3,7 +3,7 @@ import { BottomNav } from "@/components/BottomNav/BottomNav";
 import { ToastHost } from "@/components/Toast/Toast";
 import { NavigationTracker } from "./history";
 import { ViewerProvider, type Viewer } from "./viewer";
-import styles from "./AppShell.module.css";
+import { AppViewport } from "./AppViewport";
 
 /** Wraps every page: content + fixed bottom tabs + toasts. Pages render their own TopBar. */
 export function AppShell({ viewer, children }: { viewer: Viewer; children: ReactNode }) {
@@ -11,7 +11,7 @@ export function AppShell({ viewer, children }: { viewer: Viewer; children: React
     <ViewerProvider viewer={viewer}>
       <NavigationTracker />
       <ToastHost>
-        <div className={styles.content}>{children}</div>
+        <AppViewport>{children}</AppViewport>
         <BottomNav />
       </ToastHost>
     </ViewerProvider>

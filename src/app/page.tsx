@@ -65,9 +65,6 @@ export default async function HomePage() {
           />
         </section>
 
-        <div className={styles.adArea}>
-          <div className={styles.adSlot} role="region" aria-label="פרסומת">פרסומת</div>
-        </div>
       </main>
     </div>
   );
