@@ -61,6 +61,17 @@ All three pickers share the same styling and state rules. A populated size picke
 - Bottom navigation is ivory with a fine top border, rounded upper corners and a sage active state. Keep the current navigation labels and behavior.
 - These styles are scoped to the group route (including its shell palette while mounted). Reuse this visual language deliberately on future forms; do not claim shared components or other routes have already been reskinned.
 
+## Activity page `/create/activity` (2026-10-19, awaiting review)
+
+Restyled to follow the approved group page; see [page](../src/app/create/activity/page.tsx) and [route stylesheet](../src/app/create/activity/activity.module.css). Fields, option order, validation and navigation are unchanged.
+
+- Same forest masthead, centered ivory title **הפעולה**, yellow back control and compass illustration (reused for now; dedicated artwork can replace it later).
+- Because this form scrolls, the 32px rounded ivory seam belongs to the sticky masthead, so fields slide under it instead of showing behind the compass.
+- Tiles, labels, borders and press feedback match the group composition tiles; tile inline padding is 8px so three-column labels fit on one line where possible.
+- Subject and notes fields use the picker look: white, 2px `#CED7C9` border, 3px lower edge, 18px corners; sage once filled and white with a green edge while focused. The suggestion button is a pale-butter rounded square with a small yellow lower edge.
+- **עוד אפשרויות** is a raised white card whose header matches a picker (chevron on pale butter, sage when open) with a dashed divider above its contents.
+- **יצירת הפעולה** keeps the group button styling with a yellow sparkles icon and stays sticky above the bottom navigation on a soft ivory fade.
+
 ## Visual tokens
 
 Target values for `src/app/globals.css`; these are specifications, not a claim about current code:

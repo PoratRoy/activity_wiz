@@ -2,15 +2,16 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { Sparkles } from "lucide-react";
 import { Button } from "@/components/Button/Button";
 import { Collapsible } from "@/components/Collapsible/Collapsible";
-import styles from "@/components/FormPage/FormPage.module.css";
 import { SubjectField } from "@/components/SubjectField/SubjectField";
 import { TextArea } from "@/components/TextField/TextField";
 import { TileGroup } from "@/components/Tile/Tile";
 import { asOptions, DURATIONS, EQUIPMENT, findMovement, NOTES_MAX, PLACES, resolveType, SHABBAT, TEAMS, type TypeKey } from "@/data/options";
 import { activityFormStore, groupStore, requestStore } from "@/lib/guest/storage";
 import { hasErrors, validateActivity, validateGroup, type ActivityInput, type GroupInput } from "@/lib/validate";
+import styles from "./activity.module.css";
 
 const EMPTY: ActivityInput = {
   type: "",
@@ -87,23 +88,27 @@ export function ActivityForm({ accountGroup }: { accountGroup: GroupInput | null
         </>
       )}
 
-      <Collapsible title="עוד אפשרויות">
-        <TileGroup name="equipment" label="ציוד" allowClear options={asOptions(EQUIPMENT)} value={form.equipment} onChange={set("equipment")} />
-        <TileGroup name="teams" label="חלוקה לקבוצות" allowClear options={asOptions(TEAMS)} value={form.teams} onChange={set("teams")} />
-        <TileGroup name="shabbat" label="שבת" allowClear options={asOptions(SHABBAT)} value={form.shabbat} onChange={set("shabbat")} />
-        <TextArea
-          id="notes"
-          label="הערות"
-          placeholder="משהו שחשוב שנדע?"
-          maxLength={NOTES_MAX}
-          value={form.notes}
-          onChange={(e) => set("notes")(e.target.value)}
-        />
-        {show("notes") && <p className={styles.error}>{errors.notes}</p>}
-      </Collapsible>
+      <div className={styles.more}>
+        <Collapsible title="עוד אפשרויות">
+          <TileGroup name="equipment" label="ציוד" allowClear options={asOptions(EQUIPMENT)} value={form.equipment} onChange={set("equipment")} />
+          <TileGroup name="teams" label="חלוקה לקבוצות" allowClear options={asOptions(TEAMS)} value={form.teams} onChange={set("teams")} />
+          <TileGroup name="shabbat" label="שבת" allowClear options={asOptions(SHABBAT)} value={form.shabbat} onChange={set("shabbat")} />
+          <TextArea
+            id="notes"
+            label="הערות"
+            placeholder="משהו שחשוב שנדע?"
+            maxLength={NOTES_MAX}
+            value={form.notes}
+            onChange={(e) => set("notes")(e.target.value)}
+          />
+          {show("notes") && <p className={styles.error}>{errors.notes}</p>}
+        </Collapsible>
+      </div>
 
       <div className={styles.footer}>
-        <Button type="submit">יצירת הפעולה</Button>
+        <Button type="submit" icon={<Sparkles size={20} aria-hidden />}>
+          יצירת הפעולה
+        </Button>
       </div>
     </form>
   );
