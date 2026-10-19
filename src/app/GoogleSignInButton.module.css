@@ -1,0 +1,24 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  justify-self: center;
+  gap: 10px;
+  min-height: 48px;
+  max-width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #747775;
+  border-radius: 999px;
+  background: #fff;
+  color: #1f1f1f;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: box-shadow 120ms ease;
+}
+.button img { flex-shrink: 0; }
+.button:disabled { opacity: 0.65; cursor: wait; }
+@media (hover: hover) {
+  .button:hover:not(:disabled) { box-shadow: 0 1px 3px rgb(60 64 67 / 0.2); }
+}

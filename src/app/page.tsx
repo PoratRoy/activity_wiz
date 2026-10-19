@@ -54,9 +54,9 @@ export default async function HomePage() {
             </div>
           </div>
           <Image
-            src="/illustrations/home-woodland.webp"
-            width={960}
-            height={640}
+            src="/illustrations/home-hills.webp"
+            width={1200}
+            height={400}
             sizes="(max-width: 480px) 100vw, 480px"
             unoptimized
             preload
