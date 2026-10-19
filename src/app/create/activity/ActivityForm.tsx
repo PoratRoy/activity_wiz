@@ -8,7 +8,19 @@ import { Collapsible } from "@/components/Collapsible/Collapsible";
 import { SubjectField } from "@/components/SubjectField/SubjectField";
 import { TextArea } from "@/components/TextField/TextField";
 import { TileGroup } from "@/components/Tile/Tile";
-import { asOptions, DURATIONS, EQUIPMENT, findMovement, NOTES_MAX, PLACES, resolveType, SHABBAT, TEAMS, type TypeKey } from "@/data/options";
+import { Switch } from "@/components/Switch/Switch";
+import {
+  asOptions,
+  DURATIONS,
+  findMovement,
+  NO_EQUIPMENT,
+  NO_TEAMS,
+  NOTES_MAX,
+  PLACES,
+  resolveType,
+  SHABBAT_OBSERVANT,
+  type TypeKey,
+} from "@/data/options";
 import { activityFormStore, groupStore, requestStore } from "@/lib/guest/storage";
 import { hasErrors, validateActivity, validateGroup, type ActivityInput, type GroupInput } from "@/lib/validate";
 import styles from "./activity.module.css";
@@ -40,7 +52,15 @@ export function ActivityForm({ accountGroup }: { accountGroup: GroupInput | null
     }
     const saved = activityFormStore.load() ?? {};
     setGroup(g);
-    setForm({ ...EMPTY, ...saved, type: resolveType(g.movement, saved.type) ?? "" });
+    // The switches only know "on" or no preference; older saved values like "עם חלוקה לקבוצות" reset to off.
+    setForm({
+      ...EMPTY,
+      ...saved,
+      type: resolveType(g.movement, saved.type) ?? "",
+      equipment: saved.equipment === NO_EQUIPMENT ? NO_EQUIPMENT : "",
+      teams: saved.teams === NO_TEAMS ? NO_TEAMS : "",
+      shabbat: saved.shabbat === SHABBAT_OBSERVANT ? SHABBAT_OBSERVANT : "",
+    });
     setReady(true);
   }, [accountGroup, router]);
 
@@ -54,6 +74,10 @@ export function ActivityForm({ accountGroup }: { accountGroup: GroupInput | null
   const movement = findMovement(group.movement)!;
   const errors = validateActivity(form, group.movement);
   const set = (field: keyof ActivityInput) => (value: string) => setForm((f) => ({ ...f, [field]: value }));
+  const toggle = (field: keyof ActivityInput, on: string) => ({
+    checked: form[field] === on,
+    onChange: (checked: boolean) => set(field)(checked ? on : ""),
+  });
   const isGame = form.type === "playTime";
   const show = (field: keyof ActivityInput) => (touched || form[field] !== "") && errors[field];
 
@@ -90,9 +114,11 @@ export function ActivityForm({ accountGroup }: { accountGroup: GroupInput | null
 
       <div className={styles.more}>
         <Collapsible title="עוד אפשרויות">
-          <TileGroup name="equipment" label="ציוד" allowClear options={asOptions(EQUIPMENT)} value={form.equipment} onChange={set("equipment")} />
-          <TileGroup name="teams" label="חלוקה לקבוצות" allowClear options={asOptions(TEAMS)} value={form.teams} onChange={set("teams")} />
-          <TileGroup name="shabbat" label="שבת" allowClear options={asOptions(SHABBAT)} value={form.shabbat} onChange={set("shabbat")} />
+          <div className={styles.switches}>
+            <Switch id="equipment" label="ללא ציוד" {...toggle("equipment", NO_EQUIPMENT)} />
+            <Switch id="teams" label="ללא קבוצות" {...toggle("teams", NO_TEAMS)} />
+            <Switch id="shabbat" label="מותאם לשמירת שבת" {...toggle("shabbat", SHABBAT_OBSERVANT)} />
+          </div>
           <TextArea
             id="notes"
             label="הערות"

@@ -22,6 +22,10 @@ export const GROUP_SIZE_MAX: Record<string, number> = { "1-5": 5, "5-10": 10, "1
 export const EQUIPMENT = ["לא משנה", "ללא ציוד"];
 export const TEAMS = ["לא משנה", "עם חלוקה לקבוצות", "ללא חלוקה לקבוצות"];
 export const SHABBAT = ["לא משנה", "מותאם לשומרי שבת"];
+/** Values the create form's switches store when on; off stores "" (no preference). */
+export const NO_EQUIPMENT = "ללא ציוד";
+export const NO_TEAMS = "ללא חלוקה לקבוצות";
+export const SHABBAT_OBSERVANT = "מותאם לשומרי שבת";
 
 /** Generic type labels, used where no movement applies (admin form, chips on copies). */
 export const GENERIC_TYPE_LABELS: Record<TypeKey, string> = {

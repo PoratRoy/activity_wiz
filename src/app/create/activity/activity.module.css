@@ -226,6 +226,13 @@
   gap: 24px;
 }
 
+/* Switches sit as one tight list at the top of "more options". */
+.switches {
+  display: flex;
+  flex-direction: column;
+  margin-block: -8px -4px;
+}
+
 .error {
   margin: -14px 0 0;
   color: var(--danger-dark);

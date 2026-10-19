@@ -70,6 +70,7 @@ Restyled to follow the approved group page; see [page](../src/app/create/activit
 - Tiles, labels, borders and press feedback match the group composition tiles; tile inline padding is 8px so three-column labels fit on one line where possible.
 - Subject and notes fields use the picker look: white, 2px `#CED7C9` border, 3px lower edge, 18px corners; sage once filled and white with a green edge while focused. The suggestion button is a pale-butter rounded square with a small yellow lower edge.
 - **עוד אפשרויות** is a raised white card whose header matches a picker (chevron on pale butter, sage when open) with a dashed divider above its contents.
+- Inside it, equipment, teams and Shabbat are switch rows ([Switch](../src/components/Switch/Switch.tsx)): label at the start, a 52 × 32px pill switch at the end, thin dividers between rows. The track is `#CED7C9` off and forest green on; the white knob has a small lower edge and slides toward the inline end. Tapping the label also toggles it; motion is off under reduced motion.
 - **יצירת הפעולה** keeps the group button styling with a yellow sparkles icon and stays sticky above the bottom navigation on a soft ivory fade.
 
 ## Visual tokens

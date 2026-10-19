@@ -98,10 +98,12 @@ Google is the only sign-in method.
 | Place (מקום) | Yes | לא משנה, במקום סגור, במקום פתוח |
 | Duration (משך) | Yes | חצי שעה, שעה, שעה וחצי |
 | *Collapsed "more options" section:* | | |
-| Equipment (ציוד) | No | לא משנה, ללא ציוד |
-| Teams (חלוקה לקבוצות) | No | לא משנה, עם חלוקה לקבוצות, ללא חלוקה לקבוצות |
-| Shabbat (שבת) | No | לא משנה, מותאם לשומרי שבת |
+| Equipment (ציוד) | No | Switch **ללא ציוד**: on stores ללא ציוד; off (default) means equipment may be used |
+| Teams (חלוקה לקבוצות) | No | Switch **ללא קבוצות**: on stores ללא חלוקה לקבוצות; off (default) means teams may be used |
+| Shabbat (שבת) | No | Switch **מותאם לשמירת שבת**: on stores מותאם לשומרי שבת; off (default) is a regular, non-adapted activity |
 | Notes (הערות) | No | Free text, up to 1000 characters |
+
+The create form offers only these on/off switches (owner decision, 2026-10-19); "עם חלוקה לקבוצות" is no longer offered there. Off stores an empty value, which the prompt treats as לא משנה. The admin public-activity form keeps the full lists (לא משנה, עם/ללא חלוקה לקבוצות, etc.).
 
 Free-text fields reject links (URLs).
 
