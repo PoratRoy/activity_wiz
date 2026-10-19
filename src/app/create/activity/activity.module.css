@@ -184,8 +184,9 @@
   box-shadow: none;
 }
 
-/* "More options": a raised card whose header matches the pickers. */
+/* "More options": a raised card whose header matches the pickers, set a little apart from the required fields. */
 .more {
+  margin-top: 12px;
   border: 2px solid #ced7c9;
   border-radius: 18px;
   background: var(--surface);
