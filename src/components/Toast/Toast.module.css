@@ -1,7 +1,7 @@
 .region {
   position: fixed;
   inset-inline: 0;
-  bottom: calc(var(--tabbar-h) + var(--actionbar-h) + var(--space-3) + env(safe-area-inset-bottom));
+  bottom: calc(var(--tabbar-h) + var(--space-3) + env(safe-area-inset-bottom));
   z-index: 70;
   display: flex;
   justify-content: center;

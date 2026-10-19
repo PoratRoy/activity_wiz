@@ -21,7 +21,7 @@
 
 .toolbar {
   position: sticky;
-  top: calc(var(--topbar-h) + var(--space-2));
+  top: calc(var(--topbar-h) + var(--actionbar-h) + var(--space-2));
   z-index: 5;
   display: flex;
   gap: var(--space-2);

@@ -32,14 +32,6 @@
   animation: fill 15s cubic-bezier(0.2, 0.7, 0.3, 1) forwards;
 }
 
-.tip {
-  min-height: 3em;
-  margin: 0;
-  color: var(--text);
-  font-weight: 500;
-  animation: fade 400ms ease-out;
-}
-
 .notice {
   margin: var(--space-4) 0 0;
   color: var(--text-muted);
@@ -60,16 +52,5 @@
   }
   to {
     transform: scaleX(1);
-  }
-}
-
-@keyframes fade {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
   }
 }

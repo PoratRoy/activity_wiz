@@ -53,7 +53,7 @@ export function ActionButton({
   );
 }
 
-/** Sticky bar above the bottom tabs: copy + share, plus page-specific actions (`children`). */
+/** Bar pinned under the top bar: page-specific actions (`children`) first, then share and copy. */
 export function ActionBar({ title, bodyMd, children }: { title: string; bodyMd: string; children?: ReactNode }) {
   const toast = useToast();
 
@@ -76,9 +76,9 @@ export function ActionBar({ title, bodyMd, children }: { title: string; bodyMd: 
 
   return (
     <div className={styles.bar}>
-      <ActionButton icon={<Copy size={20} aria-hidden />} label="העתקה" onClick={onCopy} />
-      <ActionButton icon={<Share2 size={20} aria-hidden />} label="שיתוף" onClick={onShare} accent />
       {children}
+      <ActionButton icon={<Share2 size={20} aria-hidden />} label="שיתוף" onClick={onShare} accent />
+      <ActionButton icon={<Copy size={20} aria-hidden />} label="העתקה" onClick={onCopy} />
     </div>
   );
 }

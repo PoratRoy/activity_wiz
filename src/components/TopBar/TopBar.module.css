@@ -21,6 +21,9 @@
 }
 
 .back {
+  padding: 0;
+  border: 0;
+  background: none;
   display: flex;
   align-items: center;
   justify-content: center;

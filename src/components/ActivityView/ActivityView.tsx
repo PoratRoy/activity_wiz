@@ -6,7 +6,7 @@ import styles from "./ActivityView.module.css";
 
 /**
  * Read mode of an activity (draft, personal, public): title, labeled chips, Markdown body, ad slot.
- * The page adds its own ActionBar and any banner (`before`).
+ * The page renders its ActionBar before this (pinned at the top) and may add a banner (`before`).
  */
 export function ActivityView({
   title,

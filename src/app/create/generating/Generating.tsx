@@ -11,15 +11,6 @@ import { draftStore, requestStore, type GenerationRequest } from "@/lib/guest/st
 import { generateActivity } from "../actions";
 import styles from "./Generating.module.css";
 
-const TIPS = [
-  "ידעתם? משחק פתיחה קצר מגביר ריכוז 🎯",
-  "טיפ: עברו על הפעולה פעם אחת לפני שמתחילים",
-  "חניכים זוכרים חוויות, לא הרצאות",
-  "מעגל בסוף הפעולה עוזר לסגור את מה שלמדנו",
-  "שאלה טובה שווה יותר מתשובה טובה",
-  "אפשר לערוך את הפעולה אחרי שהיא מוכנה ✏️",
-];
-
 type View =
   | { kind: "loading" }
   | { kind: "refused" }
@@ -31,7 +22,6 @@ type View =
 export function Generating() {
   const router = useRouter();
   const [view, setView] = useState<View>({ kind: "loading" });
-  const [tip, setTip] = useState(0);
   const [now, setNow] = useState(() => Date.now());
   const started = useRef(false);
 
@@ -72,12 +62,6 @@ export function Generating() {
   }, [router, run]);
 
   useEffect(() => {
-    if (view.kind !== "loading") return;
-    const t = setInterval(() => setTip((i) => (i + 1) % TIPS.length), 3000);
-    return () => clearInterval(t);
-  }, [view.kind]);
-
-  useEffect(() => {
     if (view.kind !== "rate_limited") return;
     const t = setInterval(() => setNow(Date.now()), 500);
     return () => clearInterval(t);
@@ -97,9 +81,6 @@ export function Generating() {
         <div className={styles.bar} role="progressbar" aria-label="יוצרים את הפעולה">
           <div className={styles.fill} />
         </div>
-        <p className={styles.tip} key={tip}>
-          {TIPS[tip]}
-        </p>
         <p className={styles.notice}>שימו לב! התוכן מופק בעזרת בינה מלאכותית ויתכנו טעויות.</p>
       </main>
     );

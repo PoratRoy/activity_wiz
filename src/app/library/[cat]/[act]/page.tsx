@@ -65,12 +65,12 @@ export default async function PublicActivityPage({ params }: Props) {
         // JSON.stringify output with "<" escaped cannot break out of the script tag.
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
       />
+      <PublicActions publicId={activity.id} title={activity.title} bodyMd={activity.bodyMd} />
       <ActivityView
         title={activity.title}
         bodyMd={activity.bodyMd}
         chips={activityChips(typeLabel(null, activity.type), activity.place, activity.duration)}
       />
-      <PublicActions publicId={activity.id} title={activity.title} bodyMd={activity.bodyMd} />
     </>
   );
 }
