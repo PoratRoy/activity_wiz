@@ -80,7 +80,7 @@ The step minutes must add up to the chosen duration (30, 60 or 90). The server c
 ## Prompts (`src/prompts/`)
 
 **Current state.** `build.ts` `buildGeneration(group, activity)` picks the prompt by type:
-- **content** uses `content.ts`: a fully static system instruction with the gold example (cache-friendly), and a per-request user message holding the request, the movement's terms, the timing, one age block and only the conditions that apply.
+- **content** uses `content.ts` (v2): a fully static system instruction with one quality example (example A for grades א׳–ו׳, B for ז׳–י״ב, so there are two cacheable variants), and a per-request user message holding the request, the movement's terms, the timing, one age block and only the conditions that apply.
 - The movement's `groupTerm` is in `src/data/movements.json` and is currently «קבוצה» for every movement.
 - The other 3 types use the legacy prompt described below. Each will get its own file like `content.ts`.
 
