@@ -87,7 +87,7 @@ Google is the only sign-in method.
 | Movement (תנועה) | 16 movements from `src/data/movements.json` (below) |
 | Grade (כיתה) | כיתה א׳, כיתה ב׳, כיתה ג׳, כיתה ד׳, כיתה ה׳, כיתה ו׳, כיתה ז׳, כיתה ח׳, כיתה ט׳, כיתה י׳, כיתה י״א, כיתה י״ב |
 | Group size (מספר חניכים) | 1-5, 5-10, 10-20, 20-30, 30+ |
-| Gender (הרכב) | בנים, בנות, מעורב |
+| Gender (הרכב) | מעורב, בנים, בנות |
 
 ### Activity page
 

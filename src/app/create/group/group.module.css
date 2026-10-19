@@ -182,7 +182,13 @@
 .footer button:disabled svg { color: currentColor; }
 
 .footer button:active:not(:disabled) { transform: translateY(2px); }
-.footer button:disabled { box-shadow: none; }
+/* Disabled until all four fields are set: a quiet, flat placeholder that doesn't compete with the form. */
+.footer button:disabled {
+  --btn-bg: #eef0ea;
+  --btn-fg: #87918a;
+  --btn-border: #e2e6dd;
+  box-shadow: none;
+}
 
 :global(body):has(.page) :global(nav[aria-label="ניווט ראשי"]) {
   border-top: 1px solid var(--border);

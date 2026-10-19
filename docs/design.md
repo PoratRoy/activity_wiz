@@ -40,7 +40,7 @@ Keep this order and these control types:
 | תנועה | Bottom-sheet picker; placeholder בחרו תנועה |
 | כיתה | Bottom-sheet picker; placeholder בחרו כיתה |
 | מספר חניכים | Bottom-sheet picker; placeholder בחרו מספר חניכים; preserve all five existing size ranges |
-| הרכב | Three single-selection tiles: בנים, בנות, מעורב |
+| הרכב | Three single-selection tiles: מעורב, בנים, בנות (מעורב first, owner decision 2026-10-19) |
 
 All three pickers share the same styling and state rules. A populated size picker is not a distinct variant.
 
@@ -57,7 +57,7 @@ All three pickers share the same styling and state rules. A populated size picke
 
 - The form uses 24px horizontal padding and 24px vertical gaps, with 52px top padding to clear the overlapping artwork. Below 360px, horizontal padding is 16px; at viewport heights of 740px or less, gaps reduce to 20px. Keep natural scrolling on short screens.
 - **המשך** is full-width forest green, at least 54px high, with 16px corners, 18px/500 text and a yellow left arrow. Its subtle 2px lower edge depresses by 2px on press. The footer uses available space above it to place the action toward the bottom; keep it reachable above navigation.
-- Continue stays disabled until all four fields are valid, and during saving. Disabled styling is neutral with no raised edge. Preserve prefill, persistence, error handling and navigation to `/create/activity`.
+- Continue stays disabled until all four fields are valid, and during saving. Disabled styling is a quiet flat placeholder with no raised edge: `#EEF0EA` fill, 2px `#E2E6DD` border and `#87918A` text and arrow. Preserve prefill, persistence, error handling and navigation to `/create/activity`.
 - Bottom navigation is ivory with a fine top border, rounded upper corners and a sage active state. Keep the current navigation labels and behavior.
 - These styles are scoped to the group route (including its shell palette while mounted). Reuse this visual language deliberately on future forms; do not claim shared components or other routes have already been reskinned.
 
