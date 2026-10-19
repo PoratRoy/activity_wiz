@@ -12,18 +12,22 @@
   --lip: 0 2px 0;
 }
 
-.page { min-height: calc(var(--app-height) - var(--tabbar-h)); }
-.page > header { height: 72px; padding-inline: 16px; border-bottom: 0; }
+.page {
+  --form-gap: clamp(6px, calc((var(--app-height) - 520px) * 0.05), 20px);
+  display: flex;
+  flex-direction: column;
+  min-height: calc(var(--app-height) - var(--tabbar-h) - env(safe-area-inset-bottom));
+}
+.page > header { flex-shrink: 0; height: clamp(56px, calc(var(--app-height) * 0.085), 72px); padding-inline: 16px; border-bottom: 0; }
 .page > header h1 { font-size: 26px; color: #252b27; text-align: start; letter-spacing: -0.6px; }
 .page :focus-visible { outline: 3px solid var(--green-dark); outline-offset: 3px; }
 
-.form { display: flex; flex-direction: column; gap: 20px; padding: 8px 24px 32px; }
-.intro { display: flex; flex-direction: row-reverse; align-items: center; gap: 20px; min-height: 100px; }
-.intro p { margin: 0; color: var(--text-muted); font-size: 14px; line-height: 1.7; max-width: 20ch; }
-.compass { width: 150px; height: 100px; object-fit: contain; flex-shrink: 0; }
-.form legend, .form > div > span { color: #303a34; font-size: 17px; font-weight: 600; }
+.form { display: flex; flex: 1; flex-direction: column; gap: var(--form-gap); padding: 0 24px clamp(12px, calc(var(--app-height) * 0.025), 24px); }
+.intro { display: flex; justify-content: center; }
+.compass { width: auto; height: clamp(32px, calc((var(--app-height) - 480px) * 0.3), 88px); object-fit: contain; }
+.form legend, .form > div > span { color: #303a34; font-size: 16px; font-weight: 600; margin-block-end: 6px; }
 .form button[aria-haspopup="listbox"] {
-  min-height: 56px;
+  min-height: clamp(48px, calc(var(--app-height) * 0.065), 54px);
   border-width: 1px;
   border-radius: 12px;
   font-size: 17px;
@@ -31,7 +35,7 @@
 }
 .form button[aria-haspopup="listbox"] svg { color: var(--text-muted); }
 .form button[role="radio"] {
-  min-height: 52px;
+  min-height: 44px;
   border-width: 1px;
   border-radius: 14px;
   box-shadow: none;
@@ -46,8 +50,8 @@
 .form button[role="radio"]:active { transform: translateY(1px); }
 .form [role="dialog"] { border-radius: 24px 24px 0 0; }
 .form [role="option"][aria-selected="true"] { background: var(--green-light); border-radius: 12px; }
-.footer { padding: 4px 0 16px; }
-.footer button { min-height: 56px; border-radius: 16px; font-size: 20px; font-weight: 700; }
+.footer { margin-top: auto; padding-top: 4px; }
+.footer button { min-height: clamp(48px, calc(var(--app-height) * 0.065), 54px); border-radius: 16px; font-size: 20px; font-weight: 700; }
 .footer button:disabled { --btn-lip: var(--border); box-shadow: none; }
 :global(body):has(.page) :global(nav[aria-label="ניווט ראשי"]) {
   border-top: 1px solid var(--border);
@@ -56,10 +60,12 @@
   box-shadow: 0 -4px 18px rgb(37 91 70 / 0.04);
 }
 :global(body):has(.page) :global(nav[aria-label="ניווט ראשי"] a[aria-current="page"] > span:first-child) { border-radius: 12px; }
+/* A single quiet segmented choice for the three composition options. */
+.form fieldset > div { gap: 4px; padding: 4px; border-radius: 16px; background: #eeefe7; }
+.form button[role="radio"] { border: 0; background: transparent; border-radius: 12px; }
+.form button[role="radio"][aria-checked="true"] { background: var(--surface); box-shadow: 0 1px 4px rgb(37 91 70 / 0.12); }
 @media (max-width: 359px) {
-  .form { padding-inline: 20px; gap: 20px; }
+  .form { padding-inline: 20px; }
   .page > header { padding-inline: 8px; }
   .page > header h1 { font-size: 24px; }
-  .intro { gap: 12px; }
-  .compass { width: 124px; height: 92px; }
 }

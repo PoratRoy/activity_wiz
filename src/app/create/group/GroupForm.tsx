@@ -54,11 +54,10 @@ export function GroupForm({ accountGroup }: { accountGroup: GroupInput | null })
     <form className={styles.form} onSubmit={(e) => (e.preventDefault(), onContinue())}>
       <div className={styles.intro}>
         <Image className={styles.compass} src="/illustrations/group-compass.webp" width={300} height={200} alt="" unoptimized />
-        <p>ספרו לנו על הקבוצה, ונשמור את זה לפעם הבאה.</p>
       </div>
       <PickerSheet label="תנועה" placeholder="בחרו תנועה" options={movementOptions} value={group.movement} onChange={set("movement")} />
       <PickerSheet label="כיתה" placeholder="בחרו כיתה" options={asOptions(GRADES)} value={group.grade} onChange={set("grade")} />
-      <TileGroup name="groupSize" label="מספר חניכים" columns={3} options={asOptions(GROUP_SIZES)} value={group.groupSize} onChange={set("groupSize")} />
+      <PickerSheet label="מספר חניכים" placeholder="בחרו מספר חניכים" options={asOptions(GROUP_SIZES)} value={group.groupSize} onChange={set("groupSize")} />
       <TileGroup name="gender" label="הרכב" columns={3} options={asOptions(GENDERS)} value={group.gender} onChange={set("gender")} />
       <div className={styles.footer}>
         <Button type="submit" disabled={!complete || pending}>
