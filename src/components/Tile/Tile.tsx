@@ -13,13 +13,15 @@ type Props = {
   /** Tapping the selected tile clears it (for optional fields). */
   allowClear?: boolean;
   columns?: 2 | 3;
+  /** Keep the label for screen readers only, when the options speak for themselves. */
+  hideLabel?: boolean;
 };
 
 /** Radio-like tiles for short option sets (2–6 options). */
-export function TileGroup({ name, label, options, value, onChange, allowClear, columns = 2 }: Props) {
+export function TileGroup({ name, label, options, value, onChange, allowClear, columns = 2, hideLabel }: Props) {
   return (
     <fieldset className={styles.group}>
-      {label && <legend className={styles.legend}>{label}</legend>}
+      {label && <legend className={hideLabel ? styles.hiddenLegend : styles.legend}>{label}</legend>}
       <div className={styles.grid} style={{ gridTemplateColumns: `repeat(${columns}, 1fr)` }}>
         {options.map((o) => {
           const selected = o.value === value;

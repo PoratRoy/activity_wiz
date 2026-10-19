@@ -13,7 +13,7 @@ export const GRADES = ["א׳", "ב׳", "ג׳", "ד׳", "ה׳", "ו׳", "ז׳", "
 export const GROUP_SIZES = ["1-5", "5-10", "10-20", "20-30", "30+"];
 export const GENDERS = ["מעורב", "בנים", "בנות"];
 
-export const PLACES = ["לא משנה", "במקום סגור", "במקום פתוח"];
+export const PLACES = ["במקום סגור", "במקום פתוח", "לא משנה"];
 export const DURATIONS = ["חצי שעה", "שעה", "שעה וחצי"];
 export const DURATION_MINUTES: Record<string, number> = { "חצי שעה": 30, "שעה": 60, "שעה וחצי": 90 };
 /** Upper bound of each group-size range, for prompt rules that depend on the number of participants. */

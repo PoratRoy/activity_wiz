@@ -55,7 +55,7 @@ export function GroupForm({ accountGroup }: { accountGroup: GroupInput | null })
       <PickerSheet label="תנועה" placeholder="בחרו תנועה" options={movementOptions} value={group.movement} onChange={set("movement")} />
       <PickerSheet label="כיתה" placeholder="בחרו כיתה" options={asOptions(GRADES)} value={group.grade} onChange={set("grade")} />
       <PickerSheet label="מספר חניכים" placeholder="בחרו מספר חניכים" options={asOptions(GROUP_SIZES)} value={group.groupSize} onChange={set("groupSize")} />
-      <TileGroup name="gender" label="הרכב" columns={3} options={asOptions(GENDERS)} value={group.gender} onChange={set("gender")} />
+      <TileGroup name="gender" label="הרכב" hideLabel columns={3} options={asOptions(GENDERS)} value={group.gender} onChange={set("gender")} />
       <div className={styles.footer}>
         <Button type="submit" disabled={!complete || pending} icon={<ArrowLeft size={20} aria-hidden />}>
           {pending ? "שומרים…" : "המשך"}

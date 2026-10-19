@@ -65,7 +65,7 @@
   display: flex;
   flex: 1;
   flex-direction: column;
-  gap: 24px;
+  gap: 16px;
   position: relative;
   margin-top: -24px;
   padding: 52px 24px 24px;
@@ -92,12 +92,12 @@
   color: var(--text);
   font-size: 16px;
   font-weight: 500;
-  margin-block-end: 10px;
+  margin-block-end: 6px;
 }
 
 .form button[aria-haspopup="listbox"] {
-  min-height: 60px;
-  padding-block: 12px;
+  min-height: 52px;
+  padding-block: 10px;
   gap: 12px;
   border: 2px solid #ced7c9;
   border-radius: 18px;
@@ -140,8 +140,8 @@
 
 .form button[role="radio"] {
   position: relative;
-  min-height: 52px;
-  padding: 12px 20px;
+  min-height: 48px;
+  padding: 10px 20px;
   border: 2px solid #ced7c9;
   border-radius: 16px;
   background: var(--surface);
@@ -171,8 +171,8 @@
 }
 
 .footer button {
-  min-height: 54px;
-  padding-block: 12px;
+  min-height: 50px;
+  padding-block: 10px;
   border-radius: 16px;
   font-size: 18px;
   font-weight: 500;
@@ -215,6 +215,5 @@
 }
 
 @media (max-height: 740px) {
-  .form { gap: 20px; }
   .compass { width: 120px; height: 80px; }
 }

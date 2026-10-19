@@ -11,6 +11,16 @@
   font-weight: 700;
 }
 
+/* Visually hidden, still announced as the group name. */
+.hiddenLegend {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
 .grid {
   display: grid;
   gap: var(--space-3);

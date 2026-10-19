@@ -95,7 +95,7 @@ Google is the only sign-in method.
 | --- | --- | --- |
 | Type (סוג) | Yes | Depends on the movement (below). Defaults to the movement's first type. |
 | Subject (נושא) | Yes | Free text, up to **21 characters**, with a ✨ suggestion button (R26) |
-| Place (מקום) | Yes | לא משנה, במקום סגור, במקום פתוח |
+| Place (מקום) | Yes | במקום סגור, במקום פתוח, לא משנה |
 | Duration (משך) | Yes | חצי שעה, שעה, שעה וחצי |
 | *Collapsed "more options" section:* | | |
 | Equipment (ציוד) | No | Switch **ללא ציוד**: on stores ללא ציוד; off (default) means equipment may be used |

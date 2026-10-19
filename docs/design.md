@@ -40,23 +40,23 @@ Keep this order and these control types:
 | תנועה | Bottom-sheet picker; placeholder בחרו תנועה |
 | כיתה | Bottom-sheet picker; placeholder בחרו כיתה |
 | מספר חניכים | Bottom-sheet picker; placeholder בחרו מספר חניכים; preserve all five existing size ranges |
-| הרכב | Three single-selection tiles: מעורב, בנים, בנות (מעורב first, owner decision 2026-10-19) |
+| הרכב | Three single-selection tiles: מעורב, בנים, בנות (מעורב first, owner decision 2026-10-19). No visible label; it stays as a screen-reader-only legend |
 
 All three pickers share the same styling and state rules. A populated size picker is not a distinct variant.
 
-- **Labels:** visible above controls, 16px/500, dark text, with 10px spacing below.
-- **Empty pickers:** white surface, at least 60px high, 18px corners, a 2px `#CED7C9` border and a 3px lower edge in the same color. Text is 16px/500.
+- **Labels:** visible above the three pickers, 16px/500, dark text, with 6px spacing below. The composition tiles have no visible label (owner decision, 2026-10-19).
+- **Empty pickers:** white surface, at least 52px high, 18px corners, a 2px `#CED7C9` border and a 3px lower edge in the same color. Text is 16px/500.
 - **Chevron:** forest green on a small pale-butter (`#FBF2CF`) rounded backing, 30 × 30px with 10px corners. Rotate it when the sheet is open.
 - **Filled pickers:** the current approved implementation uses a pale sage surface (`#F1F6EC`), `#9EB79B` border/lower edge, dark-green text and a sage chevron backing. A suggestion to keep filled pickers white was discussed but was not implemented; do not treat it as an approved change.
-- **Composition tiles:** white unselected surfaces, at least 52px high, 16px corners, 2px borders and 3px lower edges. Keep the three-column layout with 8px gaps. Selected tiles use sage (`#E7EFDF`), a forest-green border/lower edge, dark-green text and weight 700.
+- **Composition tiles:** white unselected surfaces, at least 48px high, 16px corners, 2px borders and 3px lower edges. Keep the three-column layout with 8px gaps. Selected tiles use sage (`#E7EFDF`), a forest-green border/lower edge, dark-green text and weight 700.
 - **No checkmark on composition tiles.** Selection is conveyed through the fill, border and bolder label. Keep the selected-item checkmark inside picker sheets; its removal was not requested.
 - **Feedback:** hover adds a sage fill and green border. Pressing a picker or tile moves it down 3px and removes its lower shadow. Use brief 100–120ms transitions and respect reduced motion. Retain visible keyboard focus and programmatic selection/expanded states.
 - **Sheets:** retain their existing bottom-sheet interaction, 24px rounded top corners, selected-row highlight and checkmark. Overlays must appear above the header, artwork and bottom navigation.
 
 ### Spacing, action and navigation
 
-- The form uses 24px horizontal padding and 24px vertical gaps, with 52px top padding to clear the overlapping artwork. Below 360px, horizontal padding is 16px; at viewport heights of 740px or less, gaps reduce to 20px. Keep natural scrolling on short screens.
-- **המשך** is full-width forest green, at least 54px high, with 16px corners, 18px/500 text and a yellow left arrow. Its subtle 2px lower edge depresses by 2px on press. The footer uses available space above it to place the action toward the bottom; keep it reachable above navigation.
+- Compact rhythm (2026-10-19, to fit short phones): the form uses 24px horizontal padding and 16px vertical gaps, with 52px top padding to clear the overlapping artwork. Below 360px, horizontal padding is 16px. Keep natural scrolling on short screens.
+- **המשך** is full-width forest green, at least 50px high, with 16px corners, 18px/500 text and a yellow left arrow. Its subtle 2px lower edge depresses by 2px on press. The footer uses available space above it to place the action toward the bottom; keep it reachable above navigation.
 - Continue stays disabled until all four fields are valid, and during saving. Disabled styling is a quiet flat placeholder with no raised edge: `#EEF0EA` fill, 2px `#E2E6DD` border and `#87918A` text and arrow. Preserve prefill, persistence, error handling and navigation to `/create/activity`.
 - Bottom navigation is ivory with a fine top border, rounded upper corners and a sage active state. Keep the current navigation labels and behavior.
 - These styles are scoped to the group route (including its shell palette while mounted). Reuse this visual language deliberately on future forms; do not claim shared components or other routes have already been reskinned.
@@ -67,6 +67,8 @@ Restyled to follow the approved group page; see [page](../src/app/create/activit
 
 - Same forest masthead, centered ivory title **הפעולה**, yellow back control and compass illustration (reused for now; dedicated artwork can replace it later).
 - Because this form scrolls, the 32px rounded ivory seam belongs to the sticky masthead, so fields slide under it instead of showing behind the compass.
+- Type, place and duration tiles have no visible labels (owner decision, 2026-10-19); each keeps a screen-reader-only legend. Subject and notes keep their visible labels. Place reads במקום סגור, במקום פתוח, לא משנה.
+- Compact rhythm to fit 375 × 667 without scrolling: 16px gaps between fields, 6px under labels, 38px top padding (just clears the compass), 48px tiles, 52px subject field and "more options" header, and a 50px create button in a 10/12px sticky footer.
 - Type tiles fill one row when the movement has up to 3 types and use a 2 × 2 grid for 4, so no tile sits alone on a second row.
 - Tiles, labels, borders and press feedback match the group composition tiles; tile inline padding is 8px so three-column labels fit on one line where possible.
 - Subject and notes fields use the picker look: white, 2px `#CED7C9` border, 3px lower edge, 18px corners; sage once filled and white with a green edge while focused. The suggestion button is a pale-butter rounded square with a small yellow lower edge.

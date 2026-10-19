@@ -94,6 +94,7 @@ export function ActivityForm({ accountGroup }: { accountGroup: GroupInput | null
       <TileGroup
         name="type"
         label="סוג"
+        hideLabel
         columns={movement.types.length === 3 ? 3 : 2}
         options={movement.types.map((t) => ({ value: t.key, label: t.label }))}
         value={form.type}
@@ -103,12 +104,12 @@ export function ActivityForm({ accountGroup }: { accountGroup: GroupInput | null
       <SubjectField value={form.subject} onChange={set("subject")} type={(form.type || null) as TypeKey | null} />
       {show("subject") && <p className={styles.error}>{errors.subject}</p>}
 
-      <TileGroup name="place" label="מקום" columns={3} options={asOptions(PLACES)} value={form.place} onChange={set("place")} />
+      <TileGroup name="place" label="מקום" hideLabel columns={3} options={asOptions(PLACES)} value={form.place} onChange={set("place")} />
       {touched && errors.place && <p className={styles.error}>{errors.place}</p>}
 
       {!isGame && (
         <>
-          <TileGroup name="duration" label="משך" columns={3} options={asOptions(DURATIONS)} value={form.duration} onChange={set("duration")} />
+          <TileGroup name="duration" label="משך" hideLabel columns={3} options={asOptions(DURATIONS)} value={form.duration} onChange={set("duration")} />
           {touched && errors.duration && <p className={styles.error}>{errors.duration}</p>}
         </>
       )}
