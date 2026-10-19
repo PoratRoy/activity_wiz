@@ -40,11 +40,11 @@ Keep this order and these control types:
 | תנועה | Bottom-sheet picker; placeholder בחרו תנועה |
 | כיתה | Bottom-sheet picker; placeholder בחרו כיתה |
 | מספר חניכים | Bottom-sheet picker; placeholder בחרו מספר חניכים; preserve all five existing size ranges |
-| הרכב | Three single-selection tiles: מעורב, בנים, בנות (מעורב first, owner decision 2026-10-19). No visible label; it stays as a screen-reader-only legend |
+| הרכב | Three single-selection tiles: מעורב, בנים, בנות (מעורב first, owner decision 2026-10-19) |
 
 All three pickers share the same styling and state rules. A populated size picker is not a distinct variant.
 
-- **Labels:** visible above the three pickers, 16px/500, dark text, with 6px spacing below. The composition tiles have no visible label (owner decision, 2026-10-19).
+- **Labels:** visible above every field, 16px/500, dark text, with 6px spacing below.
 - **Empty pickers:** white surface, at least 52px high, 18px corners, a 2px `#CED7C9` border and a 3px lower edge in the same color. Text is 16px/500.
 - **Chevron:** forest green on a small pale-butter (`#FBF2CF`) rounded backing, 30 × 30px with 10px corners. Rotate it when the sheet is open.
 - **Filled pickers:** the current approved implementation uses a pale sage surface (`#F1F6EC`), `#9EB79B` border/lower edge, dark-green text and a sage chevron backing. A suggestion to keep filled pickers white was discussed but was not implemented; do not treat it as an approved change.
@@ -67,8 +67,8 @@ Restyled to follow the approved group page; see [page](../src/app/create/activit
 
 - Same forest masthead, centered ivory title **הפעולה**, yellow back control and compass illustration (reused for now; dedicated artwork can replace it later).
 - Because this form scrolls, the 32px rounded ivory seam belongs to the sticky masthead, so fields slide under it instead of showing behind the compass.
-- Type, place and duration tiles have no visible labels (owner decision, 2026-10-19); each keeps a screen-reader-only legend. Subject and notes keep their visible labels. Place reads במקום סגור, במקום פתוח, לא משנה.
-- Compact rhythm to fit 375 × 667 without scrolling: 16px gaps between fields, 6px under labels, 38px top padding (just clears the compass), 48px tiles, 52px subject field and "more options" header, and a 50px create button in a 10/12px sticky footer.
+- Only the type tiles have no visible label (owner decision, 2026-10-19); they keep a screen-reader-only legend. All other fields keep visible labels. Place reads במקום סגור, במקום פתוח, לא משנה.
+- Compact rhythm so every required field and the "more options" row are visible at 375 × 667: 16px gaps between fields, 6px under labels, 38px top padding (just clears the compass), 48px tiles, 52px subject field and "more options" header, and a 50px create button in a 10/12px sticky footer.
 - Type tiles fill one row when the movement has up to 3 types and use a 2 × 2 grid for 4, so no tile sits alone on a second row.
 - Tiles, labels, borders and press feedback match the group composition tiles; tile inline padding is 8px so three-column labels fit on one line where possible.
 - Subject and notes fields use the picker look: white, 2px `#CED7C9` border, 3px lower edge, 18px corners; sage once filled and white with a green edge while focused. The suggestion button is a pale-butter rounded square with a small yellow lower edge.
