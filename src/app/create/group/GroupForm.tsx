@@ -4,7 +4,8 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
 import { useViewer } from "@/components/AppShell/viewer";
 import { Button } from "@/components/Button/Button";
-import styles from "@/components/FormPage/FormPage.module.css";
+import { UsersRound } from "lucide-react";
+import styles from "./group.module.css";
 import { PickerSheet } from "@/components/PickerSheet/PickerSheet";
 import { TileGroup } from "@/components/Tile/Tile";
 import { useToast } from "@/components/Toast/Toast";
@@ -51,7 +52,10 @@ export function GroupForm({ accountGroup }: { accountGroup: GroupInput | null })
 
   return (
     <form className={styles.form} onSubmit={(e) => (e.preventDefault(), onContinue())}>
-      <p className={styles.intro}>ספרו לנו על הקבוצה, ונשמור את זה לפעם הבאה.</p>
+      <div className={styles.intro}>
+        <span className={styles.emblem} aria-hidden="true"><UsersRound size={28} strokeWidth={1.7} /></span>
+        <p>ספרו לנו על הקבוצה, ונשמור את זה לפעם הבאה.</p>
+      </div>
       <PickerSheet label="תנועה" placeholder="בחרו תנועה" options={movementOptions} value={group.movement} onChange={set("movement")} />
       <PickerSheet label="כיתה" placeholder="בחרו כיתה" options={asOptions(GRADES)} value={group.grade} onChange={set("grade")} />
       <TileGroup name="groupSize" label="מספר חניכים" columns={3} options={asOptions(GROUP_SIZES)} value={group.groupSize} onChange={set("groupSize")} />
