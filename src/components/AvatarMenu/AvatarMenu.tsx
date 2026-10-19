@@ -1,11 +1,12 @@
 "use client";
 
-import { LogIn, LogOut, Shield, UserRound } from "lucide-react";
+import { CircleHelp, FileText, LogIn, LogOut, Mail, Share2, Shield, UserRound } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useViewer } from "@/components/AppShell/viewer";
 import { signInWithGoogle, signOutAction } from "@/lib/auth/actions";
+import { shareSite } from "@/lib/shareSite";
 import styles from "./AvatarMenu.module.css";
 
 export function AvatarMenu() {
@@ -41,9 +42,34 @@ export function AvatarMenu() {
 
       {open && (
         <div className={styles.menu} role="menu">
+          {viewer.signedIn && viewer.name && <div className={styles.name}>{viewer.name}</div>}
+          <button
+            type="button"
+            role="menuitem"
+            className={styles.item}
+            onClick={() => {
+              setOpen(false);
+              void shareSite();
+            }}
+          >
+            <Share2 size={18} aria-hidden />
+            שתפו עם חברים
+          </button>
+          <Link href="/contact" role="menuitem" className={styles.item} onClick={() => setOpen(false)}>
+            <Mail size={18} aria-hidden />
+            צרו קשר
+          </Link>
+          <Link href="/faq" role="menuitem" className={styles.item} onClick={() => setOpen(false)}>
+            <CircleHelp size={18} aria-hidden />
+            שאלות נפוצות
+          </Link>
+          <Link href="/terms" role="menuitem" className={styles.item} onClick={() => setOpen(false)}>
+            <FileText size={18} aria-hidden />
+            תנאי שירות
+          </Link>
+          <hr className={styles.divider} />
           {viewer.signedIn ? (
             <>
-              {viewer.name && <div className={styles.name}>{viewer.name}</div>}
               {viewer.isAdmin && (
                 <Link href="/admin" role="menuitem" className={styles.item} onClick={() => setOpen(false)}>
                   <Shield size={18} aria-hidden />

@@ -26,6 +26,8 @@
   "vars": {
     "AUTH_TRUST_HOST": "true",
     "GEMINI_MODEL": "gemini-3.5-flash-lite",
-    "SITE_URL": "https://activitywiz.porat-roy.workers.dev"
+    "SITE_URL": "https://activitywiz.porat-roy.workers.dev",
+    "CONTACT_TO_EMAIL": "porat.roy@gmail.com",
+    "CONTACT_FROM_EMAIL": "ActivityWiz <onboarding@resend.dev>"
   }
 }

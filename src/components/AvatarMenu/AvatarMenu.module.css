@@ -59,3 +59,9 @@
 .item:hover {
   background: var(--cream);
 }
+
+.divider {
+  margin: var(--space-1) var(--space-2);
+  border: 0;
+  border-top: 1px solid var(--border);
+}
