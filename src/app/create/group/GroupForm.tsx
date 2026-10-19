@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
 import { useViewer } from "@/components/AppShell/viewer";
 import { Button } from "@/components/Button/Button";
-import { UsersRound } from "lucide-react";
+import Image from "next/image";
 import styles from "./group.module.css";
 import { PickerSheet } from "@/components/PickerSheet/PickerSheet";
 import { TileGroup } from "@/components/Tile/Tile";
@@ -53,7 +53,7 @@ export function GroupForm({ accountGroup }: { accountGroup: GroupInput | null })
   return (
     <form className={styles.form} onSubmit={(e) => (e.preventDefault(), onContinue())}>
       <div className={styles.intro}>
-        <span className={styles.emblem} aria-hidden="true"><UsersRound size={28} strokeWidth={1.7} /></span>
+        <Image className={styles.compass} src="/illustrations/group-compass.webp" width={300} height={200} alt="" unoptimized />
         <p>ספרו לנו על הקבוצה, ונשמור את זה לפעם הבאה.</p>
       </div>
       <PickerSheet label="תנועה" placeholder="בחרו תנועה" options={movementOptions} value={group.movement} onChange={set("movement")} />
