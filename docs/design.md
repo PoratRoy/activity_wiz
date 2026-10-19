@@ -56,7 +56,7 @@ All three pickers share the same styling and state rules. A populated size picke
 ### Spacing, action and navigation
 
 - Compact rhythm (2026-10-19, to fit short phones): the form uses 24px horizontal padding and 16px vertical gaps, with 52px top padding to clear the overlapping artwork. Below 360px, horizontal padding is 16px. Keep natural scrolling on short screens.
-- **המשך** is full-width forest green, at least 50px high, with 16px corners, 18px/500 text and a yellow left arrow. Its subtle 2px lower edge depresses by 2px on press. The footer uses available space above it to place the action toward the bottom; keep it reachable above navigation.
+- **המשך** is full-width forest green, at least 50px high, with 16px corners, 18px/500 text and a yellow left arrow. Its subtle 2px lower edge depresses by 2px on press. The footer uses available space above it to place the action toward the bottom and is sticky above the ad bar and navigation, so it stays visible on short screens.
 - Continue stays disabled until all four fields are valid, and during saving. Disabled styling is a quiet flat placeholder with no raised edge: `#EEF0EA` fill, 2px `#E2E6DD` border and `#87918A` text and arrow. Preserve prefill, persistence, error handling and navigation to `/create/activity`.
 - Bottom navigation is ivory with a fine top border, rounded upper corners and a sage active state. Keep the current navigation labels and behavior.
 - These styles are scoped to the group route (including its shell palette while mounted). Reuse this visual language deliberately on future forms; do not claim shared components or other routes have already been reskinned.
@@ -146,7 +146,7 @@ Use one consistent rounded lucide icon family for functional actions, with text 
 
 | Component | Target treatment; existing behavior stays intact |
 | --- | --- |
-| AppShell | Shared mobile column, soft desktop surround, navigation and toast layer; no ad reservation while ads are paused. |
+| AppShell | Shared mobile column, soft desktop surround, ad bar, navigation and toast layer. |
 | TopBar / AvatarMenu | Quiet ivory by default; the approved group route uses a dark forest header, centered ivory title and yellow back control. Preserve real user photos. |
 | BottomNav | Light surface, subtle upper separation, sage active pill and forest-green icon/label. No deep shadow or thick border. |
 | Button | Forest primary with white text, 52px minimum height, 16px corners and subtle 2px lower edge. Secondary white with a restrained border; yellow accent uses dark text. Press movement matches edge depth. Avoid deep plastic-like lips. |
@@ -161,11 +161,16 @@ Use one consistent rounded lucide icon family for functional actions, with text 
 | Modal / SignInGate | Rounded white/ivory surface, restrained backdrop, existing actions and blocking behavior; illustration where already provided. |
 | Toast | Readable charcoal surface, placed above fixed controls; preserve announcement and dismissal behavior. |
 | EmptyState | Finished thematic illustration, existing brief copy and action. |
-| AdSlot | Paused: renders nothing and reserves no space. |
+| AdSlot / AdBar | In-content `AdSlot` stays a no-op. `AdBar` is the single fixed ad placeholder above the bottom tabs (see below). |
 
-## Ads paused (2026-10-19)
+## Ad bar (2026-10-19)
 
-The owner requested removal of ads for now. Render no ad placeholders or reserved blank ad space on any page, regardless of the old ads environment flag. Keep the reusable AdSlot as a no-op for a future explicit integration request. This supersedes the earlier every-page ad reservation requirement.
+Owner requirement, superseding the earlier "ads paused" rule: every page except landing (`/`), terms (`/terms`), FAQ (`/faq`) and admin (`/admin/*`) shows one ad placeholder fixed directly above the bottom tabs ([AdBar](../src/components/AdSlot/AdBar.tsx)).
+
+- A gray (`#E8EAE4`) strip with a 1px `#D9DCD5` top border and a small muted "פרסומת" label, aligned with the app column on phones and inside the desktop frame. It is decorative for now (`aria-hidden`) and ignores taps.
+- Its height is the minimum for a real ad: 50px, the smallest standard mobile banner (320 × 50). It extends behind the tabs so rounded tab bars show gray in their corners.
+- While it is shown, `--adbar-h` (otherwise `0px`) adds its height to content bottom padding, sticky footers, toasts and full-height layouts, so nothing sits behind it. The create-flow continue/create buttons are sticky just above it.
+- In-content `AdSlot` placements (library grids, activity view) stay no-ops; no other ad space is reserved.
 
 ## Motion and copy
 
@@ -175,7 +180,7 @@ Brief button feedback (80–120ms), sheet transitions (about 200ms) and existing
 
 - Original illustrated direction is recognizable: finished hero/heading/empty-state assets, not merely recolored controls. Reject a sparse form-only result like the later mockup.
 - Existing flows, option order and business rules remain intact. Apply the approved group field types: three pickers and composition tiles, without tile checkmarks.
-- No ads or reserved ad space while ads are paused; fixed controls stay within the desktop frame.
+- The ad bar appears only on the pages listed above and never covers content or actions; fixed controls stay within the desktop frame.
 - Review representative home, forms, loading/error, reading/editing, library, saved and admin screens across the mobile widths above, landscape/short heights, and 768/1280/1440px desktop widths.
 - Verify RTL, long Hebrew labels, keyboard focus, enlarged text, reduced motion, safe-area insets, keyboard-open inputs and no horizontal overflow.
 - Desktop remains one centered mobile-width column with soft surroundings; mobile fills the viewport naturally.

@@ -32,7 +32,7 @@
   align-items: center;
   justify-content: center;
   gap: var(--space-3);
-  min-height: calc(var(--app-height) - var(--topbar-h) - var(--tabbar-h));
+  min-height: calc(var(--app-height) - var(--topbar-h) - var(--tabbar-h) - var(--adbar-h));
   font-size: var(--fs-h2);
   font-weight: 700;
 }

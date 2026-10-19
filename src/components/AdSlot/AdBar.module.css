@@ -1,0 +1,29 @@
+:global(body):has([data-ad-bar]) {
+  --adbar-h: 50px;
+}
+
+/* Extends 24px down behind the tabs so rounded tab bars show gray, not a gap, in their corners. */
+.bar {
+  position: fixed;
+  bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom) - 24px);
+  inset-inline: 0;
+  z-index: 29;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: var(--column);
+  height: calc(var(--adbar-h) + 24px);
+  margin-inline: auto;
+  padding-bottom: 24px;
+  border-top: 1px solid #d9dcd5;
+  background: #e8eae4;
+  pointer-events: none;
+}
+
+.label {
+  color: #8b948d;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}

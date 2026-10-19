@@ -19,7 +19,7 @@
 .page {
   display: flex;
   flex-direction: column;
-  min-height: calc(var(--app-height) - var(--tabbar-h) - env(safe-area-inset-bottom));
+  min-height: calc(var(--app-height) - var(--tabbar-h) - var(--adbar-h) - env(safe-area-inset-bottom));
   background: var(--cream);
   color: var(--text);
 }
@@ -245,7 +245,7 @@
 /* Long form: the action stays pinned above the bottom navigation. */
 .footer {
   position: sticky;
-  bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom));
+  bottom: calc(var(--tabbar-h) + var(--adbar-h) + env(safe-area-inset-bottom));
   z-index: 5;
   margin-top: auto;
   margin-inline: -24px;

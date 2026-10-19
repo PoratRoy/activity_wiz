@@ -17,7 +17,7 @@
 .page {
   display: flex;
   flex-direction: column;
-  min-height: calc(var(--app-height) - var(--tabbar-h) - env(safe-area-inset-bottom));
+  min-height: calc(var(--app-height) - var(--tabbar-h) - var(--adbar-h) - env(safe-area-inset-bottom));
   background: var(--green-dark);
   color: var(--text);
 }
@@ -165,9 +165,16 @@
   border-radius: 12px;
 }
 
+/* Pinned above the ad bar and tabs on short screens; on tall ones it simply rests at the bottom. */
 .footer {
+  position: sticky;
+  bottom: calc(var(--tabbar-h) + var(--adbar-h) + env(safe-area-inset-bottom));
+  z-index: 5;
   margin-top: auto;
-  padding-top: 8px;
+  margin-inline: -24px;
+  margin-bottom: -24px;
+  padding: 8px 24px 12px;
+  background: linear-gradient(to top, var(--cream) 78%, transparent);
 }
 
 .footer button {
@@ -209,6 +216,7 @@
 
 @media (max-width: 359px) {
   .form { padding-inline: 16px; }
+  .footer { margin-inline: -16px; padding-inline: 16px; }
   .masthead > header { padding-inline: 8px; }
   .masthead h1 { font-size: 22px; }
   .form button[role="radio"] { padding-inline: 16px; }

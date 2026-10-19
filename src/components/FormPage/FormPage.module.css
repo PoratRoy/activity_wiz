@@ -20,7 +20,7 @@
 
 .footer {
   position: sticky;
-  bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom));
+  bottom: calc(var(--tabbar-h) + var(--adbar-h) + env(safe-area-inset-bottom));
   padding: var(--space-3) 0 var(--space-4);
   background: linear-gradient(to top, var(--cream) 75%, transparent);
 }
