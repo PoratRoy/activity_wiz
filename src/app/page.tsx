@@ -43,20 +43,19 @@ export default async function HomePage() {
       <main className={styles.main}>
         <section className={styles.hero} aria-labelledby="home-title">
           <div className={styles.intro}>
-            <h1 id="home-title">בונים פעולה?</h1>
-            <p className={styles.subtitle}>מותאם, פשוט ומהיר</p>
-            <p className={styles.pitch}>פעולה מוכנה לשבט בדקה</p>
+            <h1 id="home-title">פחות לתכנן.<br />יותר להדריך.</h1>
+            <p className={styles.pitch}>בחרו נושא וקבוצה, וקבלו פעולה מוכנה להדרכה.</p>
             <div className={styles.actions}>
               <ButtonLink href="/create/group" icon={<Sparkles size={22} aria-hidden />}>
-                יצירת פעולה עם AI
+                יצירת פעולה
               </ButtonLink>
               {!signedIn && <GoogleSignInButton />}
             </div>
           </div>
           <Image
-            src="/illustrations/home-hills.webp"
+            src="/illustrations/home-trail.webp"
             width={1200}
-            height={400}
+            height={800}
             sizes="(max-width: 480px) 100vw, 480px"
             unoptimized
             preload

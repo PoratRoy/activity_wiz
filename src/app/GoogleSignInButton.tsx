@@ -6,7 +6,7 @@ import { useTransition } from "react";
 import { signInWithGoogle } from "@/lib/auth/actions";
 import styles from "./GoogleSignInButton.module.css";
 
-const googleSans = Google_Sans({ weight: "500", subsets: ["hebrew", "latin"], display: "swap" });
+const googleSans = Google_Sans({ weight: "500", subsets: ["hebrew", "latin"], display: "swap", adjustFontFallback: false });
 
 export function GoogleSignInButton() {
   const [pending, startTransition] = useTransition();
