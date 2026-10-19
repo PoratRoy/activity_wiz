@@ -1,12 +1,13 @@
 import "server-only";
-import { ApiError, GoogleGenAI, HarmBlockThreshold, HarmCategory } from "@google/genai";
+import { ApiError, GoogleGenAI, HarmBlockThreshold, HarmCategory, ThinkingLevel } from "@google/genai";
 import { getEnv } from "@/lib/env";
-import { AI_RESPONSE_SCHEMA, parseAiActivity, type AiActivity } from "./schema";
 
 export const GENERATION_TIMEOUT_MS = 60_000;
 
+export type GeminiRequest = { systemInstruction: string; contents: string; schema: object };
+
 export type GeminiOutcome =
-  | { kind: "ok"; activity: AiActivity }
+  | { kind: "ok"; json: unknown }
   | { kind: "refused" }
   | { kind: "busy" }
   | { kind: "error"; reason: string };
@@ -24,8 +25,8 @@ function isOverloaded(err: unknown): boolean {
   return /overloaded|unavailable|high demand|resource.?exhausted/.test(msg);
 }
 
-/** One non-streamed Gemini call (no SDK retries), bounded by GENERATION_TIMEOUT_MS. */
-export async function generateWithGemini(systemInstruction: string, contents: string): Promise<GeminiOutcome> {
+/** One non-streamed JSON Gemini call (no SDK retries), bounded by GENERATION_TIMEOUT_MS. */
+export async function generateWithGemini({ systemInstruction, contents, schema }: GeminiRequest): Promise<GeminiOutcome> {
   const env = getEnv();
   const ai = new GoogleGenAI({ apiKey: env.GEMINI_API_KEY, httpOptions: { retryOptions: { attempts: 1 } } });
   const abort = new AbortController();
@@ -38,9 +39,12 @@ export async function generateWithGemini(systemInstruction: string, contents: st
       config: {
         systemInstruction,
         temperature: 0.9,
-        maxOutputTokens: 4000,
+        // A 90-minute activity in Hebrew JSON can pass 4000 tokens. Thinking stays minimal:
+        // the prompt's hidden "plan" field does the planning, and thinking can double the cost.
+        maxOutputTokens: 8000,
+        thinkingConfig: { thinkingLevel: ThinkingLevel.MINIMAL },
         responseMimeType: "application/json",
-        responseJsonSchema: AI_RESPONSE_SCHEMA,
+        responseJsonSchema: schema,
         safetySettings: SAFETY,
         abortSignal: abort.signal,
       },
@@ -54,16 +58,11 @@ export async function generateWithGemini(systemInstruction: string, contents: st
     const text = res.text;
     if (!text) return { kind: "error", reason: `empty response (${finish ?? "no finish reason"})` };
 
-    let json: unknown;
     try {
-      json = JSON.parse(text);
+      return { kind: "ok", json: JSON.parse(text) };
     } catch {
       return { kind: "error", reason: `invalid JSON (${finish})` };
     }
-    const activity = parseAiActivity(json);
-    if (!activity) return { kind: "error", reason: "schema mismatch" };
-    if (activity.refused) return { kind: "refused" };
-    return { kind: "ok", activity };
   } catch (err) {
     if (abort.signal.aborted) return { kind: "error", reason: "timeout" };
     if (isOverloaded(err)) return { kind: "busy" };

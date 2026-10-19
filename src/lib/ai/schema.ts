@@ -1,6 +1,19 @@
-// The JSON Gemini must return (docs/ai.md "Output schema").
+// What every activity type is converted to before it becomes Markdown (lib/markdown/fromAi.ts).
+// summary and tips are only filled by the legacy prompt.
 
 export type AiStep = { name: string; minutes: number; instructions: string };
+
+export type GeneratedActivity = {
+  title: string;
+  goal: string;
+  materials: string[];
+  steps: AiStep[];
+  summary: string;
+  tips: string[];
+};
+
+// Legacy JSON, still used by pointOfView, survival and playTime until their own prompts exist
+// (content uses prompts/content.ts).
 
 export type AiActivity = {
   refused: boolean;

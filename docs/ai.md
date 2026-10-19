@@ -19,12 +19,23 @@
 
 - `@google/genai` SDK, `models.generateContent`, not streamed.
 - The model comes from `GEMINI_MODEL`, currently `gemini-3.5-flash-lite`. Google no longer offers `gemini-2.5-flash-lite` to new users.
-- `temperature: 0.9` (creative variety). Set `maxOutputTokens` to fit an hour and a half of content (about 4000).
-- `responseMimeType: 'application/json'` plus `responseSchema` (below).
+- `temperature: 0.9` (creative variety). `maxOutputTokens: 8000`, because a 90-minute activity in Hebrew JSON can pass 4000.
+- Thinking at its minimum (`thinkingLevel: MINIMAL`). The content prompt's hidden `plan` field does the planning, and thinking could double the cost.
+- `responseMimeType: 'application/json'` plus `responseJsonSchema`, which comes from the type's prompt builder.
 - Safety: all four harm categories set to `BLOCK_LOW_AND_ABOVE`.
 - No tools, no URL context, no grounding.
 
 ## Output schema
+
+**content** uses its own schema, defined in `src/prompts/content.ts`:
+- A hidden `plan` (`angle`, `insight`, `frame`, `thread`), generated first and never shown to the guide.
+- `title`, `goal`, and `materials` (at most 6).
+- Exactly the steps that the code's timing plan asks for: פתיחה, חלק 1, an optional חלק 2, and סיכום.
+- No `refused`, `summary` or `tips`.
+
+The code decides the timing (`planTiming`) and then overwrites the step names and minutes in the answer (`applyTiming`).
+
+**pointOfView, survival and playTime** still use the legacy schema below until their own prompts are written:
 
 ```ts
 {
@@ -67,6 +78,13 @@ The step minutes must add up to the chosen duration (30, 60 or 90). The server c
 `title` is stored separately and isn't part of the body.
 
 ## Prompts (`src/prompts/`)
+
+**Current state.** `build.ts` `buildGeneration(group, activity)` picks the prompt by type:
+- **content** uses `content.ts`: a fully static system instruction with the gold example (cache-friendly), and a per-request user message holding the request, the movement's terms, the timing, one age block and only the conditions that apply.
+- The movement's `groupTerm` is in `src/data/movements.json` and is currently «קבוצה» for every movement.
+- The other 3 types use the legacy prompt described below. Each will get its own file like `content.ts`.
+
+### Legacy prompt
 
 **One prompt builder, not four separate prompts.** Most of the text (role, tone, safety, constraints, output rules) is the same for every type, so it lives in one place. Each type adds only a short **structure block**. The old site kept 15 separate Hebrew prompt files that duplicated each other (type × younger/older × special variants), which made them hard to keep consistent.
 

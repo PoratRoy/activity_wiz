@@ -2,10 +2,11 @@
   {
     "key": "scout",
     "label": "צופים",
+    "groupTerm": "קבוצה",
     "types": [
       {
         "key": "content",
-        "label": "פעולת תוכן"
+        "label": "פעולה"
       },
       {
         "key": "pointOfView",
@@ -24,154 +25,190 @@
   {
     "key": "oved",
     "label": "הנוער העובד והלומד",
+    "groupTerm": "קבוצה",
     "types": [
       {
         "key": "content",
-        "label": "מתודה מרכזית"
-      },
-      {
-        "key": "playTime",
-        "label": "משחק פתיחה"
+        "label": "פעולה"
       },
       {
         "key": "pointOfView",
         "label": "מתודת הצפה"
+      },
+      {
+        "key": "playTime",
+        "label": "משחק"
       }
     ]
   },
   {
     "key": "akiva",
     "label": "בני עקיבא",
+    "groupTerm": "קבוצה",
     "types": [
       {
         "key": "content",
-        "label": "פעולה ערכית"
+        "label": "פעולה"
+      },
+      {
+        "key": "pointOfView",
+        "label": "פעולת דיון"
       },
       {
         "key": "playTime",
-        "label": "משחקי גיבוש"
+        "label": "משחק"
       }
     ]
   },
   {
     "key": "maccabi",
     "label": "מכבי צעיר",
+    "groupTerm": "קבוצה",
     "types": [
       {
         "key": "content",
-        "label": "פעולה ערכית"
+        "label": "פעולה"
+      },
+      {
+        "key": "pointOfView",
+        "label": "פעולת דיון"
       },
       {
         "key": "playTime",
-        "label": "משחקי גיבוש"
+        "label": "משחק"
       }
     ]
   },
   {
     "key": "camps",
     "label": "המחנות העולים",
+    "groupTerm": "קבוצה",
     "types": [
       {
         "key": "content",
-        "label": "פעולה ערכית"
+        "label": "פעולה"
+      },
+      {
+        "key": "pointOfView",
+        "label": "פעולת דיון"
       },
       {
         "key": "playTime",
-        "label": "משחקי קבוצה"
+        "label": "משחק"
       }
     ]
   },
   {
     "key": "shomer",
     "label": "השומר הצעיר",
+    "groupTerm": "קבוצה",
     "types": [
       {
         "key": "content",
-        "label": "פעולה ערכית"
+        "label": "פעולה"
+      },
+      {
+        "key": "pointOfView",
+        "label": "פעולת דיון"
       },
       {
         "key": "playTime",
-        "label": "משחק קבוצתי"
+        "label": "משחק"
       }
     ]
   },
   {
     "key": "bitar",
     "label": "נוער לאומי ביתר",
+    "groupTerm": "קבוצה",
     "types": [
       {
         "key": "content",
-        "label": "פעולה ערכית"
+        "label": "פעולה"
+      },
+      {
+        "key": "pointOfView",
+        "label": "פעולת דיון"
       },
       {
         "key": "playTime",
-        "label": "משחקי גיבוש"
+        "label": "משחק"
       }
     ]
   },
   {
     "key": "hadasha",
     "label": "הנוער השומר",
+    "groupTerm": "קבוצה",
     "types": [
       {
         "key": "content",
-        "label": "פעולה ערכית"
+        "label": "פעולה"
+      },
+      {
+        "key": "pointOfView",
+        "label": "פעולת דיון"
       },
       {
         "key": "playTime",
-        "label": "משחקי גיבוש"
-      }
-    ]
-  },
-  {
-    "key": "netzach",
-    "label": "נצח ישראל",
-    "types": [
-      {
-        "key": "content",
-        "label": "פעולה ערכית"
-      },
-      {
-        "key": "playTime",
-        "label": "משחקי גיבוש"
+        "label": "משחק"
       }
     ]
   },
   {
     "key": "medtchim",
     "label": "ארגון המד״צים",
+    "groupTerm": "קבוצה",
     "types": [
       {
         "key": "content",
-        "label": "פעולה ערכית"
+        "label": "פעולה"
+      },
+      {
+        "key": "pointOfView",
+        "label": "פעולת דיון"
       },
       {
         "key": "playTime",
-        "label": "משחקי קבוצה"
+        "label": "משחק"
       }
     ]
   },
   {
     "key": "meshachim",
     "label": "מדריכי של״ח צעירים",
+    "groupTerm": "קבוצה",
     "types": [
       {
         "key": "content",
-        "label": "פעילות תוכן"
+        "label": "פעילות"
+      },
+      {
+        "key": "pointOfView",
+        "label": "פעילות דיון"
+      },
+      {
+        "key": "survival",
+        "label": "ניווט וידיעת הארץ"
       },
       {
         "key": "playTime",
-        "label": "משחק שטח"
+        "label": "משחק"
       }
     ]
   },
   {
     "key": "sayarut",
     "label": "חוגי סיירות",
+    "groupTerm": "קבוצה",
     "types": [
       {
         "key": "content",
-        "label": "פעילות שטח"
+        "label": "פעילות"
+      },
+      {
+        "key": "pointOfView",
+        "label": "פעילות דיון"
       },
       {
         "key": "survival",
@@ -186,60 +223,80 @@
   {
     "key": "noam",
     "label": "נוע״ם",
+    "groupTerm": "קבוצה",
     "types": [
       {
         "key": "content",
-        "label": "פעולה ערכית"
+        "label": "פעולה"
+      },
+      {
+        "key": "pointOfView",
+        "label": "פעולת דיון"
       },
       {
         "key": "playTime",
-        "label": "משחק קבוצתי"
+        "label": "משחק"
       }
     ]
   },
   {
     "key": "agricultural",
     "label": "האיחוד החקלאי",
+    "groupTerm": "קבוצה",
     "types": [
       {
         "key": "content",
-        "label": "פעולה ערכית"
+        "label": "פעולה"
+      },
+      {
+        "key": "pointOfView",
+        "label": "פעולת דיון"
       },
       {
         "key": "playTime",
-        "label": "משחק קבוצתי"
+        "label": "משחק"
       }
     ]
   },
   {
     "key": "shinshin",
     "label": "שינשינים",
-    "types": [
-      {
-        "key": "content",
-        "label": "פעילות תוכן"
-      },
-      {
-        "key": "playTime",
-        "label": "משחק גיבוש"
-      }
-    ]
-  },
-  {
-    "key": "other",
-    "label": "אחר",
+    "groupTerm": "קבוצה",
     "types": [
       {
         "key": "content",
         "label": "פעילות"
       },
       {
+        "key": "pointOfView",
+        "label": "פעילות דיון"
+      },
+      {
         "key": "playTime",
         "label": "משחק"
+      }
+    ]
+  },
+  {
+    "key": "other",
+    "label": "אחר",
+    "groupTerm": "קבוצה",
+    "types": [
+      {
+        "key": "content",
+        "label": "פעילות"
+      },
+      {
+        "key": "pointOfView",
+        "label": "פעילות דיון"
       },
       {
         "key": "survival",
-        "label": "הישרדות"
+        "label": "מיומנות שטח"
+      },
+      {
+        "key": "playTime",
+        "label": "משחק"
       }
     ]
   }

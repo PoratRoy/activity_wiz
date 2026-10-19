@@ -1,7 +1,7 @@
-import type { AiActivity } from "@/lib/ai/schema";
+import type { GeneratedActivity } from "@/lib/ai/schema";
 
 /** Converts the AI JSON to the stored Markdown body (title is stored separately). */
-export function aiToMarkdown(a: AiActivity): string {
+export function aiToMarkdown(a: GeneratedActivity): string {
   const parts: string[] = [];
   if (a.goal) parts.push(`**מטרה:** ${a.goal}`);
   if (a.materials.length) parts.push(`## ציוד\n${a.materials.map((m) => `- ${m}`).join("\n")}`);

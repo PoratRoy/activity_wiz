@@ -1,11 +1,9 @@
 import type { TypeKey } from "@/data/options";
 
-// What each activity type should look like. The rest of the prompt is shared (system.ts).
+// Legacy prompt: what pointOfView, survival and playTime look like until each gets its own prompt
+// file like content.ts. The rest of the prompt is shared (system.ts).
 
-export const STRUCTURE: Record<TypeKey, string> = {
-  content: `ACTIVITY TYPE: a value/educational activity (פעולת תוכן).
-Structure: an engaging opening hook, then 2-3 methods (מתודות) that explore the subject from different angles (game, discussion, creative task, role play), then a closing discussion that ties it together. The summary holds 3-4 discussion questions.`,
-
+export const STRUCTURE: Record<Exclude<TypeKey, "content">, string> = {
   pointOfView: `ACTIVITY TYPE: a perspective / discussion-opening activity (נקודת מבט).
 Structure: built around one dilemma, story or idea related to the subject. Use short methods that surface different points of view (for example "stand on the line", choosing sides, short scenarios), with the guide moderating. The summary holds the main discussion questions.`,
 

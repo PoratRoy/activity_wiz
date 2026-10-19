@@ -11,6 +11,9 @@ import { draftStore, requestStore, type GenerationRequest } from "@/lib/guest/st
 import { generateActivity } from "../actions";
 import styles from "./Generating.module.css";
 
+const AI_DISCLAIMER =
+  "שימו לב: התוכן מבוסס בינה מלאכותית והוא בגדר הצעה בלבד – עברו על הפעולה, התאימו אותה לצרכים שלכם והבטיחו שהיא בטוחה ומתאימה לשטח.";
+
 type View =
   | { kind: "loading" }
   | { kind: "refused" }
@@ -81,7 +84,7 @@ export function Generating() {
         <div className={styles.bar} role="progressbar" aria-label="יוצרים את הפעולה">
           <div className={styles.fill} />
         </div>
-        <p className={styles.notice}>שימו לב! התוכן מופק בעזרת בינה מלאכותית ויתכנו טעויות.</p>
+        <p className={styles.notice}>{AI_DISCLAIMER}</p>
       </main>
     );
   }

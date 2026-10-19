@@ -8,7 +8,7 @@ import { ensureGuest, isTrialExpired, writeGuest, type Guest } from "@/lib/guest
 import { aiToMarkdown } from "@/lib/markdown/fromAi";
 import { hitRateLimit } from "@/lib/rate-limit";
 import { hasErrors, validateActivity, validateGroup, type ActivityInput, type GroupInput } from "@/lib/validate";
-import { buildPrompt } from "@/prompts/build";
+import { buildGeneration } from "@/prompts/build";
 
 /** Saves the signed-in user's one group. Guests keep it in localStorage only. */
 export async function saveGroup(group: GroupInput): Promise<{ ok: boolean }> {
@@ -59,19 +59,25 @@ export async function generateActivity(input: { group: GroupInput; activity: Act
   if (guest && !guest.trialStart) await writeGuest({ ...guest, trialStart: Date.now() });
 
   // 6-7. One Gemini call.
-  const { systemInstruction, contents } = buildPrompt(group, activity);
-  const outcome = await generateWithGemini(systemInstruction, contents);
+  const generation = buildGeneration(group, activity);
+  const outcome = await generateWithGemini(generation);
   if (outcome.kind === "refused") return { status: "refused" };
   if (outcome.kind === "busy") return { status: "busy" };
   if (outcome.kind === "error") {
     console.error("generateActivity failed:", outcome.reason);
     return { status: "error" };
   }
+  const result = generation.parse(outcome.json);
+  if (result === "refused") return { status: "refused" };
+  if (!result) {
+    console.error("generateActivity failed: schema mismatch");
+    return { status: "error" };
+  }
 
   // 8-9. Convert and persist.
   const content = {
-    title: outcome.activity.title,
-    bodyMd: aiToMarkdown(outcome.activity),
+    title: result.title,
+    bodyMd: aiToMarkdown(result),
     type: activity.type,
     subject: activity.subject.trim(),
     place: activity.place,

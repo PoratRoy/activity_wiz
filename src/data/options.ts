@@ -4,7 +4,8 @@ import movementsJson from "./movements.json";
 // except movement and type, which store their keys.
 
 export type TypeKey = "content" | "pointOfView" | "survival" | "playTime";
-export type Movement = { key: string; label: string; types: { key: TypeKey; label: string }[] };
+/** groupTerm: what the movement calls its group (used in the prompt). */
+export type Movement = { key: string; label: string; groupTerm: string; types: { key: TypeKey; label: string }[] };
 
 export const MOVEMENTS = movementsJson as Movement[];
 
@@ -15,6 +16,8 @@ export const GENDERS = ["בנים", "בנות", "מעורב"];
 export const PLACES = ["לא משנה", "במקום סגור", "במקום פתוח"];
 export const DURATIONS = ["חצי שעה", "שעה", "שעה וחצי"];
 export const DURATION_MINUTES: Record<string, number> = { "חצי שעה": 30, "שעה": 60, "שעה וחצי": 90 };
+/** Upper bound of each group-size range, for prompt rules that depend on the number of participants. */
+export const GROUP_SIZE_MAX: Record<string, number> = { "1-5": 5, "5-10": 10, "10-20": 20, "20-30": 30, "30+": 35 };
 
 export const EQUIPMENT = ["לא משנה", "ללא ציוד"];
 export const TEAMS = ["לא משנה", "עם חלוקה לקבוצות", "ללא חלוקה לקבוצות"];
@@ -22,9 +25,9 @@ export const SHABBAT = ["לא משנה", "מותאם לשומרי שבת"];
 
 /** Generic type labels, used where no movement applies (admin form, chips on copies). */
 export const GENERIC_TYPE_LABELS: Record<TypeKey, string> = {
-  content: "פעולת תוכן",
-  pointOfView: "נקודת מבט",
-  survival: "הישרדות",
+  content: "פעולה",
+  pointOfView: "פעולת דיון",
+  survival: "מיומנות שטח",
   playTime: "משחק",
 };
 
