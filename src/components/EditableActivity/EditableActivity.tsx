@@ -29,11 +29,14 @@ export function EditableActivity({
   initial,
   chips,
   before,
+  actionsAtEnd,
   onSave,
 }: {
   initial: Content;
   chips: (string | null | undefined)[];
   before?: ReactNode;
+  /** Read mode: put the actions after the text (read first, then copy) instead of pinning them on top. */
+  actionsAtEnd?: boolean;
   onSave: (c: Content) => Promise<boolean>;
 }) {
   const [content, setContent] = useState<Content>(initial);
@@ -101,12 +104,17 @@ export function EditableActivity({
     );
   }
 
+  const actions = (
+    <ActionBar title={content.title} bodyMd={content.bodyMd} placement={actionsAtEnd ? "end" : "top"}>
+      <ActionButton icon={<Pencil size={20} aria-hidden />} label="עריכה" onClick={() => setEditing(true)} />
+    </ActionBar>
+  );
+
   return (
     <>
-      <ActionBar title={content.title} bodyMd={content.bodyMd}>
-        <ActionButton icon={<Pencil size={20} aria-hidden />} label="עריכה" onClick={() => setEditing(true)} />
-      </ActionBar>
+      {!actionsAtEnd && actions}
       <ActivityView title={content.title} bodyMd={content.bodyMd} chips={chips} before={before} />
+      {actionsAtEnd && actions}
     </>
   );
 }

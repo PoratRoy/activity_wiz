@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { TopBar } from "@/components/TopBar/TopBar";
-import { activityChips, typeLabel } from "@/data/options";
-import { getAccountGroup, getUserId } from "@/lib/auth/session";
+import { getUserId } from "@/lib/auth/session";
 import { getActivity } from "@/lib/db/queries";
 import { PersonalActivity } from "./PersonalActivity";
 import styles from "./activity.module.css";
@@ -13,7 +12,7 @@ export default async function PersonalActivityPage({ params }: { params: Promise
   const { id } = await params;
   const userId = await getUserId();
   if (!userId) redirect("/");
-  const [activity, group] = await Promise.all([getActivity(id, userId), getAccountGroup()]);
+  const activity = await getActivity(id, userId);
   if (!activity) redirect("/my");
 
   return (
@@ -23,7 +22,8 @@ export default async function PersonalActivityPage({ params }: { params: Promise
         id={activity.id}
         title={activity.title}
         bodyMd={activity.bodyMd}
-        chips={activityChips(typeLabel(group?.movement, activity.type), activity.place, activity.duration)}
+        // Only what helps prepare: length and, when it matters, the place. The leader picked the type.
+        chips={[activity.duration, activity.place === "לא משנה" ? null : activity.place]}
       />
     </div>
   );
