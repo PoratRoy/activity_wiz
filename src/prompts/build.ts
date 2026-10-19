@@ -1,18 +1,27 @@
 import { DURATION_MINUTES, findMovement, GROUP_SIZE_MAX, typeLabel, type TypeKey } from "@/data/options";
-import { AI_RESPONSE_SCHEMA, parseAiActivity, type GeneratedActivity } from "@/lib/ai/schema";
+import { AI_RESPONSE_SCHEMA, parseAiActivity } from "@/lib/ai/schema";
 import type { GeminiRequest } from "@/lib/ai/gemini";
+import { aiToMarkdown } from "@/lib/markdown/fromAi";
 import type { ActivityInput, GroupInput } from "@/lib/validate";
 import { buildContentPrompt, parseContentActivity, type ContentPromptInput } from "./content";
+import { buildGamePrompt, GAME_SCHEMA, gameToMarkdown, parseGameActivity, type GamePromptInput } from "./playTime";
 import { gradeBand, stepsForDuration, STRUCTURE } from "./structure";
 import { SYSTEM_PROMPT } from "./system";
 
+/** What a generation stores: the title and the Markdown body. */
+export type Generated = { title: string; bodyMd: string };
+
 /** One generation: what to send, and how to read the answer (null = unusable answer). */
-export type Generation = GeminiRequest & { parse: (json: unknown) => GeneratedActivity | "refused" | null };
+export type Generation = GeminiRequest & { parse: (json: unknown) => Generated | "refused" | null };
 
 export function buildGeneration(group: GroupInput, a: ActivityInput): Generation {
   if (a.type === "content") return contentGeneration(group, a);
+  if (a.type === "playTime") return gameGeneration(group, a);
   return legacyGeneration(group, a);
 }
+
+const toPlace = (place: string) => (place === "במקום פתוח" ? "outside" : place === "במקום סגור" ? "inside" : "any");
+const toTeams = (teams: string) => (teams === "עם חלוקה לקבוצות" ? "yes" : teams === "ללא חלוקה לקבוצות" ? "no" : "any");
 
 /* content: prompts/content.ts */
 
@@ -27,10 +36,10 @@ function toContentInput(group: GroupInput, a: ActivityInput): ContentPromptInput
     groupSize: GROUP_SIZE_MAX[group.groupSize] ?? 20,
     groupSizeLabel: group.groupSize,
     gender: group.gender as ContentPromptInput["gender"],
-    place: a.place === "במקום פתוח" ? "outside" : a.place === "במקום סגור" ? "inside" : "any",
+    place: toPlace(a.place),
     minutes: DURATION_MINUTES[a.duration] ?? 60,
     equipment: a.equipment !== "ללא ציוד",
-    teams: a.teams === "עם חלוקה לקבוצות" ? "yes" : a.teams === "ללא חלוקה לקבוצות" ? "no" : "any",
+    teams: toTeams(a.teams),
     shabbat: a.shabbat === "מותאם לשומרי שבת",
     notes: a.notes,
   };
@@ -45,16 +54,44 @@ function contentGeneration(group: GroupInput, a: ActivityInput): Generation {
     parse: (json) => {
       const c = parseContentActivity(json, timing);
       // The hidden plan is dropped here: it is never shown to the guide.
-      return c && { title: c.title, goal: c.goal, materials: c.materials, steps: c.steps, summary: "", tips: [] };
+      return c && { title: c.title, bodyMd: aiToMarkdown({ ...c, summary: "", tips: [] }) };
     },
   };
 }
 
-/* pointOfView, survival, playTime: the previous generic prompt, until their own prompts exist. */
+/* playTime: prompts/playTime.ts. The duration is not used for games. */
+
+function gameGeneration(group: GroupInput, a: ActivityInput): Generation {
+  const movement = findMovement(group.movement);
+  const input: GamePromptInput = {
+    movement: movement?.label ?? "",
+    typeLabel: typeLabel(group.movement, a.type) ?? "משחק",
+    subject: a.subject.trim(),
+    grade: group.grade,
+    groupSize: GROUP_SIZE_MAX[group.groupSize] ?? 20,
+    groupSizeLabel: group.groupSize,
+    gender: group.gender as GamePromptInput["gender"],
+    place: toPlace(a.place),
+    equipment: a.equipment !== "ללא ציוד",
+    teams: toTeams(a.teams),
+    shabbat: a.shabbat === "מותאם לשומרי שבת",
+    notes: a.notes,
+  };
+  return {
+    ...buildGamePrompt(input),
+    schema: GAME_SCHEMA,
+    parse: (json) => {
+      const g = parseGameActivity(json);
+      return g && { title: g.title, bodyMd: gameToMarkdown(g) };
+    },
+  };
+}
+
+/* pointOfView, survival: the previous generic prompt, until their own prompts exist. */
 
 function legacyGeneration(group: GroupInput, a: ActivityInput): Generation {
   const minutes = DURATION_MINUTES[a.duration] ?? 60;
-  const type = a.type as Exclude<TypeKey, "content">;
+  const type = a.type as Exclude<TypeKey, "content" | "playTime">;
 
   const systemInstruction = [
     SYSTEM_PROMPT,
@@ -84,8 +121,7 @@ function legacyGeneration(group: GroupInput, a: ActivityInput): Generation {
       const r = parseAiActivity(json);
       if (!r) return null;
       if (r.refused) return "refused";
-      const { refused: _, ...activity } = r;
-      return activity;
+      return { title: r.title, bodyMd: aiToMarkdown(r) };
     },
   };
 }

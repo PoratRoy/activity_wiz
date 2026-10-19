@@ -5,7 +5,6 @@ import { getAccountGroup, getUserId } from "@/lib/auth/session";
 import { insertActivity, updateGroup } from "@/lib/db/queries";
 import type { GenerateResult } from "@/lib/draft";
 import { ensureGuest, isTrialExpired, writeGuest, type Guest } from "@/lib/guest/cookie";
-import { aiToMarkdown } from "@/lib/markdown/fromAi";
 import { hitRateLimit } from "@/lib/rate-limit";
 import { hasErrors, validateActivity, validateGroup, type ActivityInput, type GroupInput } from "@/lib/validate";
 import { buildGeneration } from "@/prompts/build";
@@ -77,11 +76,11 @@ export async function generateActivity(input: { group: GroupInput; activity: Act
   // 8-9. Convert and persist.
   const content = {
     title: result.title,
-    bodyMd: aiToMarkdown(result),
+    bodyMd: result.bodyMd,
     type: activity.type,
     subject: activity.subject.trim(),
     place: activity.place,
-    duration: activity.duration,
+    duration: activity.type === "playTime" ? null : activity.duration,
     equipment: orNull(activity.equipment),
     teams: orNull(activity.teams),
     shabbat: orNull(activity.shabbat),
@@ -101,7 +100,7 @@ function pickActivity(a: ActivityInput): ActivityInput {
     type: s(a?.type),
     subject: s(a?.subject),
     place: s(a?.place),
-    duration: s(a?.duration),
+    duration: a?.type === "playTime" ? "" : s(a?.duration),
     equipment: s(a?.equipment),
     teams: s(a?.teams),
     shabbat: s(a?.shabbat),

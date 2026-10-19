@@ -70,7 +70,8 @@ export function validateActivity(a: ActivityInput, movementKey: string): FieldEr
   const subject = freeText(a.subject, SUBJECT_MAX, true);
   if (subject) errors.subject = subject;
   if (oneOf(PLACES, a.place)) errors.place = "יש לבחור מקום";
-  if (oneOf(DURATIONS, a.duration)) errors.duration = "יש לבחור משך";
+  // Games have no duration (the playTime prompt does not use it).
+  if (a.type !== "playTime" && oneOf(DURATIONS, a.duration)) errors.duration = "יש לבחור משך";
   if (oneOf(EQUIPMENT, a.equipment, true)) errors.equipment = "יש לבחור אפשרות";
   if (oneOf(TEAMS, a.teams, true)) errors.teams = "יש לבחור אפשרות";
   if (oneOf(SHABBAT, a.shabbat, true)) errors.shabbat = "יש לבחור אפשרות";

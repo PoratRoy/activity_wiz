@@ -82,7 +82,12 @@ The step minutes must add up to the chosen duration (30, 60 or 90). The server c
 **Current state.** `build.ts` `buildGeneration(group, activity)` picks the prompt by type:
 - **content** uses `content.ts` (v2): a fully static system instruction with one quality example (example A for grades א׳–ו׳, B for ז׳–י״ב, so there are two cacheable variants), and a per-request user message holding the request, the movement's terms, the timing, one age block and only the conditions that apply.
 - The movement's `groupTerm` is in `src/data/movements.json` and is currently «קבוצה» for every movement.
-- The other 3 types use the legacy prompt described below. Each will get its own file like `content.ts`.
+- **playTime** uses `playTime.ts` (v1):
+  - Exactly one game, with no steps and no minutes. The duration is not asked for in the form and not stored.
+  - Code sends `Known game name: yes` when the subject is in the form's game list, otherwise `unknown`.
+  - The answer has `plan{mechanic, themeLink}` (hidden), `title`, `description`, `materials`, `setup`, `rules` (3–6) and `ending` (1–3).
+  - It is stored as Markdown with these sections: תיאור המשחק, ציוד, הכנה, חוקים, מתי זה נגמר.
+- pointOfView and survival still use the legacy prompt described below. Each will get its own file like `content.ts`.
 
 ### Legacy prompt
 

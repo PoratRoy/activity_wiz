@@ -53,12 +53,14 @@ export function ActivityForm({ accountGroup }: { accountGroup: GroupInput | null
   const movement = findMovement(group.movement)!;
   const errors = validateActivity(form, group.movement);
   const set = (field: keyof ActivityInput) => (value: string) => setForm((f) => ({ ...f, [field]: value }));
+  const isGame = form.type === "playTime";
   const show = (field: keyof ActivityInput) => (touched || form[field] !== "") && errors[field];
 
   const onSubmit = () => {
     setTouched(true);
     if (hasErrors(errors)) return;
-    requestStore.save({ group, activity: { ...form, subject: form.subject.trim(), notes: form.notes.trim() } });
+    const duration = isGame ? "" : form.duration;
+    requestStore.save({ group, activity: { ...form, duration, subject: form.subject.trim(), notes: form.notes.trim() } });
     router.push("/create/generating");
   };
 
@@ -78,8 +80,12 @@ export function ActivityForm({ accountGroup }: { accountGroup: GroupInput | null
       <TileGroup name="place" label="מקום" columns={3} options={asOptions(PLACES)} value={form.place} onChange={set("place")} />
       {touched && errors.place && <p className={styles.error}>{errors.place}</p>}
 
-      <TileGroup name="duration" label="משך" columns={3} options={asOptions(DURATIONS)} value={form.duration} onChange={set("duration")} />
-      {touched && errors.duration && <p className={styles.error}>{errors.duration}</p>}
+      {!isGame && (
+        <>
+          <TileGroup name="duration" label="משך" columns={3} options={asOptions(DURATIONS)} value={form.duration} onChange={set("duration")} />
+          {touched && errors.duration && <p className={styles.error}>{errors.duration}</p>}
+        </>
+      )}
 
       <Collapsible title="עוד אפשרויות">
         <TileGroup name="equipment" label="ציוד" allowClear options={asOptions(EQUIPMENT)} value={form.equipment} onChange={set("equipment")} />

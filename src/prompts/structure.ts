@@ -1,17 +1,14 @@
 import type { TypeKey } from "@/data/options";
 
-// Legacy prompt: what pointOfView, survival and playTime look like until each gets its own prompt
+// Legacy prompt: what pointOfView and survival look like until each gets its own prompt
 // file like content.ts. The rest of the prompt is shared (system.ts).
 
-export const STRUCTURE: Record<Exclude<TypeKey, "content">, string> = {
+export const STRUCTURE: Record<Exclude<TypeKey, "content" | "playTime">, string> = {
   pointOfView: `ACTIVITY TYPE: a perspective / discussion-opening activity (נקודת מבט).
 Structure: built around one dilemma, story or idea related to the subject. Use short methods that surface different points of view (for example "stand on the line", choosing sides, short scenarios), with the guide moderating. The summary holds the main discussion questions.`,
 
   survival: `ACTIVITY TYPE: scouting / outdoor skills (צופיות / הישרדות).
 Structure: teach one practical skill related to the subject (knots, orientation, building, fire safety, nature knowledge) through demonstration, hands-on practice in small groups, and a closing challenge or mini-competition that uses the skill. Include clear safety notes inside the steps.`,
-
-  playTime: `ACTIVITY TYPE: games (זמן משחק).
-Structure: one or more games connected to the subject. For each game give setup, clear rules, how to win, and one variation. Keep the energy high. The summary is a short, light wrap-up, not a deep discussion.`,
 };
 
 /** Number of steps to aim for, by duration in minutes. */

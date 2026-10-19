@@ -8,7 +8,7 @@ export type Draft = {
   type: string;
   subject: string;
   place: string;
-  duration: string;
+  duration: string | null; // null for games (playTime has no duration)
   equipment: string | null;
   teams: string | null;
   shabbat: string | null;
