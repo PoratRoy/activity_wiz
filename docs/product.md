@@ -61,7 +61,7 @@ Google is the only sign-in method.
 - **R18.** Delete is available from the list and the activity page. It always asks for confirmation, then hard-deletes.
 
 ### Public library
-- **R19.** Categories are listed oldest first (creation order). Inside a category, activities are listed newest first.
+- **R19.** Categories are listed in the order the admin sets (new categories go last). Inside a category, activities are listed newest first.
 - **R20.** Signed-in users see "Save to my activities" on a public activity. Each tap creates a new, independent personal copy (title, body and **all activity fields**) and opens it.
 - **R21.** The library is fully server-rendered and SEO-optimized. Personal, create and admin pages are `noindex`.
 

@@ -46,6 +46,8 @@ export const activity = sqliteTable(
 export const publicCategory = sqliteTable("public_category", {
   id: text("id").primaryKey(),
   title: text("title").notNull(),
+  /** Display order set by the admin, ascending; new categories go last. */
+  position: integer("position").notNull().default(0),
   createdAt: integer("created_at").notNull(),
 });
 

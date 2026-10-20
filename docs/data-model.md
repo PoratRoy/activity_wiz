@@ -48,7 +48,8 @@ Deletes are hard deletes.
 | --- | --- | --- |
 | `id` | text PK | |
 | `title` | text, not null | |
-| `created_at` | integer, not null | Sort ascending |
+| `position` | integer, not null, default 0 | Admin-set display order; sort ascending. New categories get max + 1. Migration `0001` backfilled existing rows oldest first |
+| `created_at` | integer, not null | Tie-breaker after `position` |
 
 ## `public_activity`
 

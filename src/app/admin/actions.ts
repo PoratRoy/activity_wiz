@@ -9,6 +9,7 @@ import {
   getCategory,
   insertCategory,
   insertPublicActivity,
+  setCategoryOrder,
 } from "@/lib/db/queries";
 import { BODY_MAX, TITLE_MAX } from "@/lib/draft";
 
@@ -29,6 +30,13 @@ export async function removeCategory(id: string): Promise<boolean> {
   await requireAdmin();
   await deleteCategory(str(id));
   return true;
+}
+
+/** Saves the category order shown on /admin and in the library. False when the list is stale. */
+export async function reorderCategories(ids: string[]): Promise<boolean> {
+  await requireAdmin();
+  if (!Array.isArray(ids)) return false;
+  return setCategoryOrder(ids.map(str));
 }
 
 export async function categoryActivityCount(id: string): Promise<number> {

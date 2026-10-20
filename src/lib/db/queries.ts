@@ -1,5 +1,5 @@
 import "server-only";
-import { and, asc, count, desc, eq } from "drizzle-orm";
+import { and, asc, count, desc, eq, max } from "drizzle-orm";
 import { getDb, newId } from "./client";
 import { activity, publicActivity, publicCategory, users } from "./schema";
 
@@ -127,18 +127,21 @@ export async function deleteActivity(id: string, userId: string): Promise<boolea
 
 // ---------- public library ----------
 
+/** Admin-set order; creation time breaks ties. */
+const categoryOrder = [asc(publicCategory.position), asc(publicCategory.createdAt)];
+
 export async function listCategories() {
-  return getDb().select().from(publicCategory).orderBy(asc(publicCategory.createdAt));
+  return getDb().select().from(publicCategory).orderBy(...categoryOrder);
 }
 
-/** Categories oldest first, with their public activity counts. */
+/** Categories in display order, with their public activity counts. */
 export async function listCategoriesWithCounts() {
   return getDb()
     .select({ id: publicCategory.id, title: publicCategory.title, createdAt: publicCategory.createdAt, count: count(publicActivity.id) })
     .from(publicCategory)
     .leftJoin(publicActivity, eq(publicActivity.categoryId, publicCategory.id))
     .groupBy(publicCategory.id)
-    .orderBy(asc(publicCategory.createdAt));
+    .orderBy(...categoryOrder);
 }
 
 export async function getCategory(id: string) {
@@ -147,8 +150,24 @@ export async function getCategory(id: string) {
 
 export async function insertCategory(title: string): Promise<string> {
   const id = newId();
-  await getDb().insert(publicCategory).values({ id, title, createdAt: Date.now() });
+  const db = getDb();
+  const last = await db.select({ position: max(publicCategory.position) }).from(publicCategory).get();
+  await db.insert(publicCategory).values({ id, title, position: (last?.position ?? -1) + 1, createdAt: Date.now() });
   return id;
+}
+
+/** Saves a full category order. Returns false unless `ids` is exactly the current set of categories. */
+export async function setCategoryOrder(ids: string[]): Promise<boolean> {
+  const db = getDb();
+  const current = await db.select({ id: publicCategory.id }).from(publicCategory);
+  const known = new Set(current.map((c) => c.id));
+  if (ids.length !== known.size || new Set(ids).size !== ids.length || !ids.every((id) => known.has(id))) return false;
+  if (ids.length === 0) return true;
+  const [first, ...rest] = ids.map((id, position) =>
+    db.update(publicCategory).set({ position }).where(eq(publicCategory.id, id)),
+  );
+  await db.batch([first, ...rest]);
+  return true;
 }
 
 /** Cascades to the category's public activities (FK on delete cascade). */

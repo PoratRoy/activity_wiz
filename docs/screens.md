@@ -118,7 +118,7 @@ Used by `/activity/draft`, `/activity/[id]` and `/library/[cat]/[act]`:
 
 - Title: «מאגר פעולות»
 - No back arrow (tab root); one visible title in the forest masthead.
-- A single column of full-width category rows (name, shared illustration thumbnail; no activity counts). Oldest category first. No in-list ad slot. See [Design](design.md) → Library.
+- A single column of full-width category rows (name, shared illustration thumbnail; no activity counts). In the admin-set order (R19). No in-list ad slot. See [Design](design.md) → Library.
 - Empty state: «המאגר מתמלא בקרוב».
 
 ## Category `/library/[cat]`
@@ -137,6 +137,7 @@ Used by `/activity/draft`, `/activity/[id]` and `/library/[cat]/[act]`:
 - A non-admin is redirected to `/` by a server check.
 - Looks like the library (same forest masthead, ivory sheet and raised rows with the category thumbnail; new categories get the shared default image), plus each row's activity count and two buttons at the top: **+ קטגוריה** (new category) and **+ פעולה** (new activity).
 - **+ קטגוריה** opens a modal with a title input and **הוספה** (add).
+- **שינוי סדר** (shown with 2+ categories) switches the list to reorder mode: each row gets up/down arrows and every move is saved immediately; **סיום** returns to the normal list. The library uses the same order.
 - Each category row has a trash icon. Tapping it shows the confirmation «למחוק את הקטגוריה וכל X הפעולות שבה? פעולות שמורות של משתמשים לא יימחקו.»
 - Tapping a row opens `/admin/category/[id]`.
 
