@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Sparkles, Trees } from "lucide-react";
+import { Sparkles } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { ButtonLink } from "@/components/Button/Button";
@@ -34,7 +34,7 @@ export default async function HomePage() {
     <div className={styles.home}>
       <header className={styles.header}>
         <Link href="/" className={styles.brand} aria-label="ActivityWiz — בית">
-          <Trees size={30} strokeWidth={1.8} aria-hidden />
+          <Image src="/brand/activity-wiz-fresh-green.svg" width={36} height={36} alt="" />
           <span dir="ltr">ActivityWiz</span>
         </Link>
         <AvatarMenu />
