@@ -280,15 +280,20 @@
   font-weight: 500;
 }
 
-/* Long form: the action stays pinned above the bottom navigation. */
+/* Follows the fields when they fit; when they don't, it pins above the bottom navigation. */
 .footer {
   position: sticky;
   bottom: calc(var(--tabbar-h) + var(--adbar-h) + env(safe-area-inset-bottom));
   z-index: 5;
-  margin-top: auto;
   margin-inline: -24px;
   padding: 16px 24px;
   background: var(--cream);
+}
+
+/* In the desktop frame the scroller is the shell's content panel, whose bottom padding already
+   clears the tabs and ad bar, and sticky offsets are measured inside that padding. */
+@media (min-width: 768px) {
+  .footer { bottom: 0; }
 }
 
 /* Fields scrolling under the pinned button fade out over the form's 16px gap instead of being
