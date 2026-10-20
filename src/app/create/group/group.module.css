@@ -192,8 +192,20 @@
   margin-top: auto;
   margin-inline: -24px;
   margin-bottom: -24px;
-  padding: 8px 24px 12px;
-  background: linear-gradient(to top, var(--cream) 78%, transparent);
+  padding: 16px 24px;
+  background: var(--cream);
+}
+
+/* Fields scrolling under the pinned button fade out over the form's 16px gap instead of being
+   cut off. At rest it only covers that gap, so it never overlaps the last field. */
+.footer::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  bottom: 100%;
+  height: 16px;
+  background: linear-gradient(to top, var(--cream), rgb(250 248 241 / 0));
+  pointer-events: none;
 }
 
 .footer button {
