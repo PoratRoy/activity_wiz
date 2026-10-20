@@ -38,6 +38,8 @@
   height: 100%;
   object-fit: cover;
   object-position: center 60%;
+  /* Short fade on the inner edge (toward the name) blends the scene into the sky-colored row. */
+  mask-image: linear-gradient(to right, #000 75%, transparent);
 }
 
 @media (hover: hover) {
