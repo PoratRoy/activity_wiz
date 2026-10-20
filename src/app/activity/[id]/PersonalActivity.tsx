@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { EditableActivity } from "@/components/EditableActivity/EditableActivity";
 import { TopBar } from "@/components/TopBar/TopBar";
@@ -21,9 +22,18 @@ export function PersonalActivity({
   bodyMd: string;
   chips: (string | null | undefined)[];
 }) {
+  const router = useRouter();
   const page = useRef<HTMLDivElement>(null);
+  const mounted = useRef(true);
   const [name, setName] = useState(title);
   const [collapsed, setCollapsed] = useState(false);
+
+  useEffect(() => {
+    mounted.current = true;
+    return () => {
+      mounted.current = false;
+    };
+  }, []);
 
   useEffect(() => {
     const root = page.current;
@@ -68,9 +78,12 @@ export function PersonalActivity({
       <EditableActivity
         initial={{ title, bodyMd }}
         chips={chips}
-        onSave={(c) => {
+        onSave={async (c) => {
           setName(c.title);
-          return saveActivity(id, c);
+          const ok = await saveActivity(id, c);
+          // Saved on the way out: the page we went to (e.g. the list) may have rendered the old title.
+          if (ok && !mounted.current) router.refresh();
+          return ok;
         }}
       />
     </div>

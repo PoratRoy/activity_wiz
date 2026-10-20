@@ -68,13 +68,27 @@ export function EditableActivity({
     timer.current = setTimeout(() => void flush(), AUTOSAVE_DELAY_MS);
   };
 
-  useEffect(() => () => {
+  const saveNow = () => {
     if (timer.current) clearTimeout(timer.current);
+    void flush();
+  };
+  const saveNowRef = useRef(saveNow);
+  saveNowRef.current = saveNow;
+
+  // Leaving before the autosave delay (back, a tab, switching apps) saves right away instead of dropping the edit.
+  useEffect(() => {
+    const onHide = () => {
+      if (document.visibilityState === "hidden") saveNowRef.current();
+    };
+    document.addEventListener("visibilitychange", onHide);
+    return () => {
+      document.removeEventListener("visibilitychange", onHide);
+      saveNowRef.current();
+    };
   }, []);
 
   const finishEditing = () => {
-    if (timer.current) clearTimeout(timer.current);
-    void flush();
+    saveNow();
     setEditing(false);
   };
 

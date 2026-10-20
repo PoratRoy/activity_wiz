@@ -13,9 +13,11 @@ import styles from "./MyList.module.css";
 type Item = { id: string; title: string; createdAt: number };
 
 /** Newest first (R17). Delete via the trash icon, with confirmation (R18). */
-export function MyList({ items: initial }: { items: Item[] }) {
+export function MyList({ items: all }: { items: Item[] }) {
   const toast = useToast();
-  const [items, setItems] = useState(initial);
+  // Track deletions rather than copying the list, so a refresh (e.g. a title saved on the way here) shows through.
+  const [deleted, setDeleted] = useState<ReadonlySet<string>>(new Set());
+  const items = all.filter((i) => !deleted.has(i.id));
   const [confirm, setConfirm] = useState<Item | null>(null);
   const [deleting, setDeleting] = useState(false);
 
@@ -64,7 +66,7 @@ export function MyList({ items: initial }: { items: Item[] }) {
           const ok = await removeActivity(confirm.id).catch(() => false);
           setDeleting(false);
           if (ok) {
-            setItems((list) => list.filter((i) => i.id !== confirm.id));
+            setDeleted((d) => new Set(d).add(confirm.id));
             toast("הפעולה נמחקה");
           } else {
             toast("לא הצלחנו למחוק, נסו שוב");
