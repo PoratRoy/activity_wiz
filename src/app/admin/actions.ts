@@ -1,5 +1,6 @@
 "use server";
 
+import { isLibraryImage } from "@/data/libraryImages";
 import { DURATIONS, EQUIPMENT, GENERIC_TYPE_LABELS, NOTES_MAX, PLACES, SHABBAT, TEAMS } from "@/data/options";
 import { requireAdmin } from "@/lib/auth/admin";
 import {
@@ -10,6 +11,7 @@ import {
   insertCategory,
   insertPublicActivity,
   setCategoryOrder,
+  updateCategoryImage,
 } from "@/lib/db/queries";
 import { BODY_MAX, TITLE_MAX } from "@/lib/draft";
 
@@ -18,11 +20,18 @@ import { BODY_MAX, TITLE_MAX } from "@/lib/draft";
 const str = (v: unknown) => (typeof v === "string" ? v.trim() : "");
 const ADMIN_SUBJECT_MAX = 60;
 
-export async function createCategory(title: string): Promise<{ id: string } | { error: string }> {
+/** `image` is a name from LIBRARY_IMAGES, or null for the shared default. */
+export async function createCategory(title: string, image: string | null): Promise<{ id: string } | { error: string }> {
   await requireAdmin();
   const t = str(title).slice(0, TITLE_MAX);
   if (!t) return { error: "צריך שם לקטגוריה" };
-  return { id: await insertCategory(t) };
+  return { id: await insertCategory(t, isLibraryImage(image) ? image : null) };
+}
+
+export async function setCategoryImage(id: string, image: string | null): Promise<boolean> {
+  await requireAdmin();
+  if (image !== null && !isLibraryImage(image)) return false;
+  return updateCategoryImage(str(id), image);
 }
 
 /** Deletes the category and (FK cascade) its public activities. Personal copies are unaffected (R23). */

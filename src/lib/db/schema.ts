@@ -48,6 +48,8 @@ export const publicCategory = sqliteTable("public_category", {
   title: text("title").notNull(),
   /** Display order set by the admin, ascending; new categories go last. */
   position: integer("position").notNull().default(0),
+  /** Artwork name from src/data/libraryImages.ts; null shows the shared default. */
+  image: text("image"),
   createdAt: integer("created_at").notNull(),
 });
 

@@ -4,19 +4,25 @@ import { ArrowDown, ArrowUp, ArrowUpDown, Check, Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button, ButtonLink } from "@/components/Button/Button";
-import { categoryArt } from "@/components/CategoryCard/CategoryCard";
 import { Modal } from "@/components/Modal/Modal";
 import { TextField } from "@/components/TextField/TextField";
 import { useToast } from "@/components/Toast/Toast";
-import { createCategory, removeCategory, reorderCategories } from "./actions";
+import { categoryThumb } from "@/data/libraryImages";
+import { createCategory, removeCategory, reorderCategories, setCategoryImage } from "./actions";
 import styles from "./admin.module.css";
 import { AdminRows } from "./AdminRows";
+import { ImagePicker } from "./ImagePicker";
 
-export function AdminHome({ categories }: { categories: { id: string; title: string; count: number }[] }) {
+type Category = { id: string; title: string; image: string | null; count: number };
+
+export function AdminHome({ categories }: { categories: Category[] }) {
   const router = useRouter();
   const toast = useToast();
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState("");
+  const [image, setImage] = useState<string | null>(null);
+  // Category whose image is being changed, with the image picked so far.
+  const [editing, setEditing] = useState<{ id: string; title: string; image: string | null } | null>(null);
   const [error, setError] = useState("");
   const [pending, setPending] = useState(false);
   // Reorder mode: a local copy of the order, saved after every move.
@@ -40,7 +46,7 @@ export function AdminHome({ categories }: { categories: { id: string; title: str
 
   const add = async () => {
     setPending(true);
-    const res = await createCategory(title).catch(() => ({ error: "ההוספה נכשלה, נסו שוב" }));
+    const res = await createCategory(title, image).catch(() => ({ error: "ההוספה נכשלה, נסו שוב" }));
     setPending(false);
     if ("error" in res) {
       setError(res.error);
@@ -49,9 +55,20 @@ export function AdminHome({ categories }: { categories: { id: string; title: str
     setOpen(false);
     setOrder(null);
     setTitle("");
+    setImage(null);
     setError("");
     toast("הקטגוריה נוספה");
     router.refresh();
+  };
+
+  const saveImage = async () => {
+    if (!editing) return;
+    setPending(true);
+    const ok = await setCategoryImage(editing.id, editing.image).catch(() => false);
+    setPending(false);
+    setEditing(null);
+    toast(ok ? "התמונה עודכנה" : "העדכון נכשל, נסו שוב");
+    if (ok) router.refresh();
   };
 
   return (
@@ -115,13 +132,17 @@ export function AdminHome({ categories }: { categories: { id: string; title: str
             title: c.title,
             subtitle: `${c.count} פעולות`,
             href: `/admin/category/${c.id}`,
-            image: categoryArt(c.id),
+            image: categoryThumb(c.image),
             confirmMessage: `למחוק את הקטגוריה וכל ${c.count} הפעולות שבה? פעולות שמורות של משתמשים לא יימחקו.`,
           }))}
           confirmTitle="למחוק את הקטגוריה?"
           onDelete={removeCategory}
           deletedToast="הקטגוריה נמחקה"
           raised
+          onImageClick={(r) => {
+            const c = categories.find((x) => x.id === r.id);
+            if (c) setEditing({ id: c.id, title: c.title, image: c.image });
+          }}
         />
       )}
 
@@ -134,11 +155,23 @@ export function AdminHome({ categories }: { categories: { id: string; title: str
           }}
         >
           <TextField id="cat-title" placeholder="שם הקטגוריה" value={title} autoFocus onChange={(e) => setTitle(e.target.value)} />
+          <ImagePicker value={image} onChange={setImage} />
           {error && <p className={styles.error}>{error}</p>}
           <Button type="submit" disabled={pending || !title.trim()}>
             {pending ? "מוסיפים…" : "הוספה"}
           </Button>
         </form>
+      </Modal>
+
+      <Modal open={!!editing} onClose={() => setEditing(null)} title={editing ? `תמונה ל${editing.title}` : undefined}>
+        {editing && (
+          <div className={styles.form}>
+            <ImagePicker value={editing.image} onChange={(img) => setEditing({ ...editing, image: img })} />
+            <Button disabled={pending} onClick={() => void saveImage()}>
+              {pending ? "שומרים…" : "שמירה"}
+            </Button>
+          </div>
+        )}
       </Modal>
     </>
   );

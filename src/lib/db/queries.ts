@@ -137,7 +137,13 @@ export async function listCategories() {
 /** Categories in display order, with their public activity counts. */
 export async function listCategoriesWithCounts() {
   return getDb()
-    .select({ id: publicCategory.id, title: publicCategory.title, createdAt: publicCategory.createdAt, count: count(publicActivity.id) })
+    .select({
+      id: publicCategory.id,
+      title: publicCategory.title,
+      image: publicCategory.image,
+      createdAt: publicCategory.createdAt,
+      count: count(publicActivity.id),
+    })
     .from(publicCategory)
     .leftJoin(publicActivity, eq(publicActivity.categoryId, publicCategory.id))
     .groupBy(publicCategory.id)
@@ -148,12 +154,17 @@ export async function getCategory(id: string) {
   return (await getDb().select().from(publicCategory).where(eq(publicCategory.id, id)).get()) ?? null;
 }
 
-export async function insertCategory(title: string): Promise<string> {
+export async function insertCategory(title: string, image: string | null): Promise<string> {
   const id = newId();
   const db = getDb();
   const last = await db.select({ position: max(publicCategory.position) }).from(publicCategory).get();
-  await db.insert(publicCategory).values({ id, title, position: (last?.position ?? -1) + 1, createdAt: Date.now() });
+  await db.insert(publicCategory).values({ id, title, image, position: (last?.position ?? -1) + 1, createdAt: Date.now() });
   return id;
+}
+
+export async function updateCategoryImage(id: string, image: string | null): Promise<boolean> {
+  const rows = await getDb().update(publicCategory).set({ image }).where(eq(publicCategory.id, id)).returning({ id: publicCategory.id });
+  return rows.length > 0;
 }
 
 /** Saves a full category order. Returns false unless `ids` is exactly the current set of categories. */
