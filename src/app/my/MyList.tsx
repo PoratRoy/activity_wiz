@@ -1,6 +1,6 @@
 "use client";
 
-import { CalendarDays, Trash2 } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { formatDate } from "@/components/ActivityCard/ActivityCard";
@@ -42,10 +42,7 @@ export function MyList({ items: all }: { items: Item[] }) {
           <li key={item.id} className={styles.row}>
             <Link href={`/activity/${item.id}`} className={styles.link}>
               <span className={styles.title}>{item.title}</span>
-              <span className={styles.date}>
-                <CalendarDays size={14} aria-hidden />
-                {formatDate(item.createdAt)}
-              </span>
+              <span className={styles.date}>{formatDate(item.createdAt)}</span>
             </Link>
             <button type="button" className={styles.trash} aria-label={`מחיקת ${item.title}`} onClick={() => setConfirm(item)}>
               <Trash2 size={16} aria-hidden />
