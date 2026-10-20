@@ -5,6 +5,12 @@
   padding: var(--space-4) var(--space-4) var(--space-6);
 }
 
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
 .actions {
   display: flex;
   gap: var(--space-3);
@@ -40,6 +46,13 @@
   padding: var(--space-3) var(--space-4);
 }
 
+.rowText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
 .rowTitle {
   font-weight: 700;
 }
@@ -64,6 +77,63 @@
 
 .trash:active {
   background: var(--cream);
+}
+
+/* Raised rows: the library's category row look (docs/design.md → Library), plus the trash button. */
+.raised {
+  gap: 12px;
+}
+
+.raised .row {
+  min-height: 76px;
+  border-color: #ced7c9;
+  background: #fff;
+  box-shadow: 0 2px 0 #ced7c9;
+  transition: transform 100ms ease, box-shadow 100ms ease, border-color 120ms ease;
+}
+
+.raised .row:has(> a:active) {
+  transform: translateY(2px);
+  box-shadow: none;
+}
+
+.raised .rowLink {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  align-self: stretch;
+  padding: 10px 14px;
+}
+
+.raised .rowTitle {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  overflow-wrap: anywhere;
+}
+
+.raised .trash {
+  flex-shrink: 0;
+  margin-inline-end: 6px;
+}
+
+.thumb {
+  flex-shrink: 0;
+  width: 72px;
+  height: 52px;
+  border-radius: 10px;
+  object-fit: cover;
+  object-position: center;
+}
+
+@media (hover: hover) {
+  .raised .row:has(> a:hover) { border-color: var(--green-dark); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .raised .row { transition: none; }
+  .raised .row:has(> a:active) { transform: none; }
 }
 
 .form {

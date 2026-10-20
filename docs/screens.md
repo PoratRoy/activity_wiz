@@ -135,7 +135,7 @@ Used by `/activity/draft`, `/activity/[id]` and `/library/[cat]/[act]`:
 ## Admin `/admin`
 
 - A non-admin is redirected to `/` by a server check.
-- Looks like the library list, with two buttons at the top: **+ קטגוריה** (new category) and **+ פעולה** (new activity).
+- Looks like the library (same forest masthead, ivory sheet and raised rows with the category thumbnail; new categories get the shared default image), plus each row's activity count and two buttons at the top: **+ קטגוריה** (new category) and **+ פעולה** (new activity).
 - **+ קטגוריה** opens a modal with a title input and **הוספה** (add).
 - Each category row has a trash icon. Tapping it shows the confirmation «למחוק את הקטגוריה וכל X הפעולות שבה? פעולות שמורות של משתמשים לא יימחקו.»
 - Tapping a row opens `/admin/category/[id]`.

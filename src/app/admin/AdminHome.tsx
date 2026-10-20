@@ -4,6 +4,7 @@ import { Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button, ButtonLink } from "@/components/Button/Button";
+import { categoryArt } from "@/components/CategoryCard/CategoryCard";
 import { Modal } from "@/components/Modal/Modal";
 import { TextField } from "@/components/TextField/TextField";
 import { useToast } from "@/components/Toast/Toast";
@@ -53,11 +54,13 @@ export function AdminHome({ categories }: { categories: { id: string; title: str
           title: c.title,
           subtitle: `${c.count} פעולות`,
           href: `/admin/category/${c.id}`,
+          image: categoryArt(c.id),
           confirmMessage: `למחוק את הקטגוריה וכל ${c.count} הפעולות שבה? פעולות שמורות של משתמשים לא יימחקו.`,
         }))}
         confirmTitle="למחוק את הקטגוריה?"
         onDelete={removeCategory}
         deletedToast="הקטגוריה נמחקה"
+        raised
       />
 
       <Modal open={open} onClose={() => setOpen(false)} title="קטגוריה חדשה">
