@@ -58,7 +58,7 @@ export default async function PublicActivityPage({ params }: Props) {
   };
 
   return (
-    <ActivityPage label={category.title} back={categoryPath(category)} name={activity.title}>
+    <ActivityPage label={category.title} fallback={categoryPath(category)} name={activity.title}>
       <script
         type="application/ld+json"
         // JSON.stringify output with "<" escaped cannot break out of the script tag.

@@ -1,25 +1,20 @@
-import { ChevronRight } from "lucide-react";
-import Link from "next/link";
 import type { ReactNode } from "react";
 import { AvatarMenu } from "@/components/AvatarMenu/AvatarMenu";
 import { BackButton } from "./BackButton";
 import styles from "./TopBar.module.css";
 
+export type TopBarTone = "light" | "forest";
+
 /**
- * Sticky top bar: back arrow on the right (RTL start), title in the center, avatar on the left.
- * `back` links to a fixed parent; without it the arrow goes back in history; `false` hides it (a tab root).
+ * The one top bar every page except home uses: back arrow on the right (RTL start), title in the center, avatar
+ * on the left. Back returns to the previous in-app page; `fallback` is where it goes when the page was opened
+ * directly (default home). `tone="forest"` is the dark masthead of the redesigned pages.
  */
-export function TopBar({ title, back }: { title?: ReactNode; back?: string | false }) {
+export function TopBar({ title, fallback, tone = "light" }: { title?: ReactNode; fallback?: string; tone?: TopBarTone }) {
   return (
-    <header className={styles.bar}>
+    <header className={`${styles.bar} ${tone === "forest" ? styles.forest : ""}`}>
       <div className={styles.side}>
-        {back === false ? null : back ? (
-          <Link href={back} className={styles.back} aria-label="חזרה">
-            <ChevronRight size={28} aria-hidden />
-          </Link>
-        ) : (
-          <BackButton />
-        )}
+        <BackButton fallback={fallback} />
       </div>
       <h1 className={styles.title}>{title}</h1>
       <div className={`${styles.side} ${styles.end}`}>

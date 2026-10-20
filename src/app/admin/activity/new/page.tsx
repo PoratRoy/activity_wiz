@@ -17,7 +17,7 @@ export default async function NewPublicActivityPage({ searchParams }: { searchPa
   const initialCategory = categories.some((c) => c.id === category) ? category! : "";
   return (
     <>
-      <TopBar title="פעולה חדשה" back={initialCategory ? `/admin/category/${initialCategory}` : "/admin"} />
+      <TopBar title="פעולה חדשה" fallback={initialCategory ? `/admin/category/${initialCategory}` : "/admin"} />
       <main className={styles.main}>
         <NewPublicActivityForm categories={categories.map((c) => ({ value: c.id, label: c.title }))} initialCategory={initialCategory} />
       </main>

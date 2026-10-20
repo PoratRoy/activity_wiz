@@ -7,7 +7,7 @@ export const metadata: Metadata = { title: "יוצרים פעולה", robots: { 
 export default function GeneratingPage() {
   return (
     <>
-      <TopBar title="יוצרים פעולה" back="/create/activity" />
+      <TopBar title="יוצרים פעולה" fallback="/create/activity" />
       <Generating />
     </>
   );

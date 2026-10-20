@@ -12,7 +12,7 @@ export default async function ActivityPage() {
   return (
     <div className={styles.page}>
       <div className={styles.masthead}>
-        <TopBar title="הפעולה" back="/create/group" />
+        <TopBar title="הפעולה" fallback="/create/group" tone="forest" />
         <Image className={styles.compass} src="/illustrations/group-compass.webp" width={300} height={200} alt="" unoptimized />
       </div>
       <ActivityForm accountGroup={accountGroup} />

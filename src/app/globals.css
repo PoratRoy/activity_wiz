@@ -1,18 +1,18 @@
 :root {
-  --green: #58cc02;
-  --green-dark: #46a302;
-  --green-light: #d7ffb8;
-  --yellow: #ffc800;
-  --yellow-dark: #e0a800;
-  --yellow-light: #fff4cc;
-  --cream: #fff8e7;
-  --backdrop: #f2ebd9;
+  --green: #32765b;
+  --green-dark: #255b46;
+  --green-light: #e7efdf;
+  --yellow: #f4d675;
+  --yellow-dark: #a98225;
+  --yellow-light: #fbf2cf;
+  --cream: #faf8f1;
+  --backdrop: #eeefe8;
   --surface: #ffffff;
-  --text: #3c3c3c;
-  --text-muted: #777777;
-  --border: #e5e5e5;
-  --danger: #ff4b4b;
-  --danger-dark: #d93636;
+  --text: #303a34;
+  --text-muted: #626d65;
+  --border: #dde1d8;
+  --danger: #b8453b;
+  --danger-dark: #92342d;
   --card-blue: #1cb0f6;
   --card-orange: #ff9600;
 
@@ -28,7 +28,7 @@
   --space-5: 24px;
   --space-6: 32px;
 
-  --lip: 0 4px 0;
+  --lip: 0 2px 0;
   --column: 480px;
   --app-height: 100dvh;
   --topbar-h: 56px;
@@ -131,7 +131,7 @@ button {
   body {
     --app-height: min(900px, calc(100dvh - 64px));
     padding: 32px;
-    background: #eeefe8;
+    background: var(--backdrop);
   }
 
   .app {

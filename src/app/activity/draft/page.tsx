@@ -8,7 +8,7 @@ export const metadata: Metadata = { title: "הפעולה", robots: { index: fals
 export default function DraftPage() {
   return (
     <>
-      <TopBar title="הפעולה" back="/create/activity" />
+      <TopBar title="הפעולה" fallback="/create/activity" />
       <Suspense>
         <DraftView />
       </Suspense>

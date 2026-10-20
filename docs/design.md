@@ -60,7 +60,7 @@ All three pickers share the same styling and state rules. A populated size picke
 - Compact rhythm (2026-10-19, to fit short phones): the form uses 24px horizontal padding and 16px vertical gaps, with 52px top padding to clear the overlapping artwork. Below 360px, horizontal padding is 16px. Keep natural scrolling on short screens.
 - **המשך** is full-width forest green, at least 50px high, with 16px corners, 18px/500 text and a yellow left arrow. Its subtle 2px lower edge depresses by 2px on press. The footer uses available space above it to place the action toward the bottom and is sticky above the ad bar and navigation, so it stays visible on short screens.
 - Continue stays disabled until all four fields are valid, and during saving. Disabled styling is a quiet flat placeholder with no raised edge: `#EEF0EA` fill, 2px `#E2E6DD` border and `#87918A` text and arrow. Preserve prefill, persistence, error handling and navigation to `/create/activity`.
-- Bottom navigation is ivory with a fine top border, rounded upper corners and a sage active state. Keep the current navigation labels and behavior.
+- Bottom navigation follows the shared shell (see [Shared page layout](#shared-page-layout)). Keep the current navigation labels and behavior.
 - These styles are scoped to the group route (including its shell palette while mounted). Reuse this visual language deliberately on future forms; do not claim shared components or other routes have already been reskinned.
 
 ## Activity page `/create/activity` (2026-10-19, awaiting review)
@@ -89,12 +89,24 @@ Restyled in the group-page language with the content first. Both pages share [Ac
 - **Edit mode:** the green bar keeps **סיום עריכה** in yellow and the save status in ivory. Title input and toolbar use the picker look (2px `#CED7C9` border, 3px lower edge, 18px corners); the body editor keeps its dashed frame, solid green on focus, and uses the same reading styles.
 - **Hidden when empty (owner rule, 2026-10-20):** a chip whose value is «לא משנה» is not shown (e.g. place), and the **ציוד** section is not shown when it lists nothing real (empty, or only lines like «ללא ציוד» / «אין צורך בציוד»; `withoutEmptyEquipment`). This applies wherever this layout is used; edit mode and copy/share keep the text as stored.
 - **Library actions:** everyone gets **שיתוף** and **העתקה**; signed-in users also get a save button whose visible label is shortened to **שמירה** so the three fit one row (its accessible name stays «שמירה לפעולות שלי», and the toast still reads «נשמר לפעולות שלי»). This shortens the [Screens](screens.md) label on this page only.
-- Bottom navigation uses the ivory home treatment. Like the create pages, pulling past the top shows forest green, and the back control presses to a soft translucent circle.
+- Bottom navigation, the back control and pulling past the top follow the shared shell (see [Shared page layout](#shared-page-layout)).
 - The reading accents come from the Markdown built from the AI JSON (`aiToMarkdown`, and `gameToMarkdown` for games: a bold opening paragraph, `##` sections, `### N. name (M דק׳)` steps) and from admin-pasted library Markdown in the same shape. `renderMarkdown` tags the **ציוד** and **טיפים** sections by heading text (`data-section`), so their cards don't depend on section order; chips carry `data-kind` (type/place/duration) so each keeps its icon when one is missing (games have no length). Activities whose text was edited into another shape fall back to plain headings, lists and paragraphs.
+
+## Shared page layout (2026-10-20)
+
+Every page shares the same shell elements, so old-design and redesigned pages differ only in their content and header tone:
+
+- **Frame:** [AppShell](../src/components/AppShell/AppShell.tsx) in the root layout and `.app` in [globals.css](../src/app/globals.css): full width on phones; on desktop a centered 480px column with 32px rounded corners.
+- **Palette:** the forest/ivory tokens live once in `:root` in [globals.css](../src/app/globals.css). Routes don't redefine them.
+- **Bottom navigation:** [BottomNav](../src/components/BottomNav/BottomNav.tsx) is ivory with a fine top border, square upper corners and a sage active pill (12px corners). Routes don't restyle it.
+- **Ad bar:** [AdBar](../src/components/AdSlot/AdBar.tsx), 50px, directly above the tabs (see [Ad bar](#ad-bar-2026-10-19)).
+- **Top bar:** every page except home uses [TopBar](../src/components/TopBar/TopBar.tsx): back arrow on the right, title in the center, [avatar menu](../src/components/AvatarMenu/AvatarMenu.tsx) on the left. Home has its own brand header with the same avatar menu.
+  - `tone="light"` (default) is the quiet ivory bar. `tone="forest"` is the dark masthead bar: 64px, ivory 24px title, yellow back arrow with a soft translucent press, yellow focus ring, and green when pulling past the top. Mastheads (ForestPage, the create pages, ActivityPage) place it inside their own green band and don't restyle it.
+  - Back always returns to the previous in-app page. `fallback` (default `/`) is only used when the page was opened directly, e.g. from a shared link.
 
 ## Visual tokens
 
-Target values for `src/app/globals.css`; these are specifications, not a claim about current code:
+The palette below is the current `:root` in `src/app/globals.css`; `--card-blue` and `--card-orange` are still targets:
 
 ```css
 --green: #32765B;
@@ -151,7 +163,7 @@ The visual reference is the original proposal's woodland landscape and small com
 - **Home:** a substantial outdoor scene in the existing hero region gives the app its most memorable visual. Keep all specified buttons. Do not add a library preview or category section to the landing page; access remains in bottom navigation (owner clarification, 2026-10-19). The scene scales/crops without covering content or navigation.
 - **Group and activity forms:** a compact compass, leaves, trail marker or similar vignette in the existing heading region adds character. For the approved group page, use the placement and dimensions above. For other forms, a 64–96px-high vignette is a starting point; reduce as needed rather than moving fields. Do not add a large blank illustration panel.
 - **Library:** "Raised rows" (approved 2026-10-20, reference `design-references/library-raised-rows.png`). A compact forest masthead, pinned while the list scrolls, with the single title «מאגר פעולות», a butter-yellow back arrow (previous in-app page, or home) and the avatar; an ivory sheet (24px top corners, overlapping the masthead by 16px, with a short 12px ivory fade under the seam so scrolling rows don't end in a hard edge) holding one column of full-width rows with 12px gaps. Each row: 76px min height, sky-colored `#F9F4E8` background (the artwork's sky), 2px `#CED7C9` border, 16px radius, `0 2px 0 #CED7C9` lower edge, category name 16px/500 on the right, 24px from the row's edge, and the artwork edge to edge on the left (130px wide, full row height, clipped by the row's corners, no padding or fade); it presses down 2px. No counts, subtitles, chevrons or random colors/icons. Each category shows the artwork in `public/library` named after its English key (same flat forest/sage style as the landing art); a key with no matching image shows the landing `home-trail.webp`. Rows use 390px-wide thumbnails from `public/library/thumbs`. New artwork should be about 1.8 : 1 (e.g. 780 × 432) with a `#F9F4E8` background so it reads as part of the row.
-- **My activities `/my`** (2026-10-20, approved): the library's pinned forest masthead and ivory sheet with the single title «הפעולות שלי» (a tab root, so no back arrow) and no count line. Rows follow the library's raised rows without artwork: white surface, 2px `#CED7C9` border, 16px radius, `0 2px 0` lower edge, 72px min height, 12px gaps; title 17px/700 leads, with the `dd.mm.yy` date below it in quieter 13px muted gray (no icon). The whole row opens the activity and presses down 2px. Delete is a quiet 32px trash button (16px muted gray icon, 44px tap area) at the row's inline end that tints pale red only on hover/press, then confirms as before. See [list](../src/app/my/MyList.tsx) and [stylesheet](../src/app/my/MyList.module.css).
+- **My activities `/my`** (2026-10-20, approved): the library's pinned forest masthead and ivory sheet with the single title «הפעולות שלי» (with the shared back arrow) and no count line. Rows follow the library's raised rows without artwork: white surface, 2px `#CED7C9` border, 16px radius, `0 2px 0` lower edge, 72px min height, 12px gaps; title 17px/700 leads, with the `dd.mm.yy` date below it in quieter 13px muted gray (no icon). The whole row opens the activity and presses down 2px. Delete is a quiet 32px trash button (16px muted gray icon, 44px tap area) at the row's inline end that tints pale red only on hover/press, then confirms as before. See [list](../src/app/my/MyList.tsx) and [stylesheet](../src/app/my/MyList.module.css).
 - **Empty/error states:** use a small backpack, folded map, campfire or other relevant scene with the existing message and action.
 - **Loading:** use a small illustrated companion or camp scene with restrained progress feedback. Match the same palette; retain existing tips, AI notice and outcome behavior.
 - **Activity reading/editing:** keep the body quiet and unobstructed. Any decorative detail is confined to the heading; no artwork behind reading text or editor controls.
@@ -164,7 +176,7 @@ Use one consistent rounded lucide icon family for functional actions, with text 
 | Component | Target treatment; existing behavior stays intact |
 | --- | --- |
 | AppShell | Shared mobile column, soft desktop surround, ad bar, navigation and toast layer. |
-| TopBar / AvatarMenu | Quiet ivory by default; the approved group route uses a dark forest header, centered ivory title and yellow back control. Preserve real user photos. |
+| TopBar / AvatarMenu | `tone="light"` quiet ivory or `tone="forest"` dark masthead with centered ivory title and yellow back control (see [Shared page layout](#shared-page-layout)). Preserve real user photos. |
 | BottomNav | Light surface, subtle upper separation, sage active pill and forest-green icon/label. No deep shadow or thick border. |
 | Button | Forest primary with white text, 52px minimum height, 16px corners and subtle 2px lower edge. Secondary white with a restrained border; yellow accent uses dark text. Press movement matches edge depth. Avoid deep plastic-like lips. |
 | Tile / TileGroup | Preserve all choices and grids. White unselected surface; selected sage fill, forest border and stronger text. Group composition uses the tactile 2px border/3px edge treatment above, without checkmarks. Avoid exaggerated depth. Selection must be apparent without relying on color alone. |
@@ -185,7 +197,7 @@ Use one consistent rounded lucide icon family for functional actions, with text 
 Owner requirement, superseding the earlier "ads paused" rule: every page except landing (`/`), terms (`/terms`), FAQ (`/faq`) and admin (`/admin/*`) shows one ad placeholder fixed directly above the bottom tabs ([AdBar](../src/components/AdSlot/AdBar.tsx)).
 
 - A gray (`#E8EAE4`) strip with a 1px `#D9DCD5` top border and a small muted "פרסומת" label, aligned with the app column on phones and inside the desktop frame. It is decorative for now (`aria-hidden`) and ignores taps.
-- Its height is the minimum for a real ad: 50px, the smallest standard mobile banner (320 × 50). It extends behind the tabs so rounded tab bars show gray in their corners.
+- Its height is the minimum for a real ad: 50px, the smallest standard mobile banner (320 × 50), sitting directly on the tabs.
 - While it is shown, `--adbar-h` (otherwise `0px`) adds its height to content bottom padding, sticky footers, toasts and full-height layouts, so nothing sits behind it. The create-flow continue/create buttons are sticky just above it.
 - In-content `AdSlot` placements (category list, activity view) stay no-ops; no other ad space is reserved.
 

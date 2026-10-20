@@ -12,7 +12,7 @@ export default async function GroupPage() {
   return (
     <div className={styles.page}>
       <div className={styles.masthead}>
-        <TopBar title="הקבוצה שלי" />
+        <TopBar title="הקבוצה שלי" tone="forest" />
         <Image className={styles.compass} src="/illustrations/group-compass.webp" width={300} height={200} alt="" unoptimized />
       </div>
       <GroupForm accountGroup={accountGroup} />

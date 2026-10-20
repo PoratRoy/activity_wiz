@@ -44,3 +44,47 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+/* ---- Forest tone: the dark masthead of the redesigned pages ---- */
+
+.forest {
+  min-height: 64px;
+  height: auto;
+  padding: 8px 16px;
+  border-bottom: 0;
+  background: var(--green-dark);
+}
+
+.forest .title {
+  color: var(--cream);
+  font-size: 24px;
+  letter-spacing: -0.5px;
+}
+
+.forest .back {
+  color: var(--yellow);
+  transition: background 120ms ease;
+}
+
+/* A soft press on the dark bar instead of the light-gray circle. */
+.forest .back:active { background: rgb(250 248 241 / 0.14); }
+
+.forest :focus-visible {
+  outline: 3px solid var(--yellow);
+  outline-offset: 3px;
+}
+
+/* Pulling past the top (phone bounce, or the desktop frame's scroll bounce) shows green,
+   continuing the masthead instead of revealing the light backdrop. */
+:global(html):has(.forest),
+:global(.app):has(.forest) { background: var(--green-dark); }
+
+/* On phones the app column fills the width, so the body only shows when pulled past the top. */
+@media (max-width: 480px) {
+  :global(body):has(.forest) { background: var(--green-dark); }
+}
+
+@media (max-width: 359px) {
+  .forest { padding-inline: 8px; }
+  .forest .title { font-size: 22px; }
+}

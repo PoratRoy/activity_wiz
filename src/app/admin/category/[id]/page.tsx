@@ -22,7 +22,7 @@ export default async function AdminCategoryPage({ params }: { params: Promise<{ 
   const activities = await listPublicActivities(category.id);
   return (
     <>
-      <TopBar title={category.title} back="/admin" />
+      <TopBar title={category.title} fallback="/admin" />
       <main className={styles.main}>
         <ButtonLink href={`/admin/activity/new?category=${category.id}`} icon={<Plus size={18} aria-hidden />}>
           פעולה

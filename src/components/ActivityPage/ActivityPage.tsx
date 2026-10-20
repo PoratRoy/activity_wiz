@@ -10,7 +10,7 @@ import styles from "./ActivityPage.module.css";
  * Once the big title scrolls under the pinned bar, the bar swaps `label` for the activity's `name`
  * (`data-collapsed`, animated in CSS).
  */
-export function ActivityPage({ label, back, name, children }: { label: string; back: string; name: string; children: ReactNode }) {
+export function ActivityPage({ label, fallback, name, children }: { label: string; fallback: string; name: string; children: ReactNode }) {
   const page = useRef<HTMLDivElement>(null);
   const [collapsed, setCollapsed] = useState(false);
 
@@ -44,7 +44,8 @@ export function ActivityPage({ label, back, name, children }: { label: string; b
   return (
     <div ref={page} className={styles.page} data-collapsed={collapsed || undefined}>
       <TopBar
-        back={back}
+        fallback={fallback}
+        tone="forest"
         title={
           <span className={styles.barTitle}>
             <span className={styles.barLabel}>{label}</span>
