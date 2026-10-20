@@ -44,7 +44,9 @@ export default async function HomePage() {
         <section className={styles.hero} aria-labelledby="home-title">
           <div className={styles.intro}>
             <h1 id="home-title">פחות לתכנן.<br />יותר להדריך.</h1>
-            <p className={styles.pitch}>בחרו נושא וקבוצה, וקבלו פעולה מוכנה להדרכה.</p>
+            <p className={styles.pitch}>
+              <span aria-hidden>♦</span> מותאם, פשוט ומהיר <span aria-hidden>♦</span>
+            </p>
             <div className={styles.actions}>
               <ButtonLink href="/create/group" icon={<Sparkles size={22} aria-hidden />}>
                 יצירת פעולה

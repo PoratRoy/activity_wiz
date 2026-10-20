@@ -84,6 +84,7 @@
   line-height: 1.6;
   text-wrap: pretty;
 }
+.pitch span { color: var(--yellow-dark); }
 .actions { display: grid; gap: 12px; width: 81%; margin: 26px auto 0; }
 .actions > a {
   min-height: 52px;
