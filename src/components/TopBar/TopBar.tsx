@@ -1,5 +1,6 @@
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
+import type { ReactNode } from "react";
 import { AvatarMenu } from "@/components/AvatarMenu/AvatarMenu";
 import { BackButton } from "./BackButton";
 import styles from "./TopBar.module.css";
@@ -8,7 +9,7 @@ import styles from "./TopBar.module.css";
  * Sticky top bar: back arrow on the right (RTL start), title in the center, avatar on the left.
  * Every page has a back arrow: `back` links to a fixed parent; without it the arrow goes back in history.
  */
-export function TopBar({ title, back }: { title?: string; back?: string }) {
+export function TopBar({ title, back }: { title?: ReactNode; back?: string }) {
   return (
     <header className={styles.bar}>
       <div className={styles.side}>

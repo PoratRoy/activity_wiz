@@ -29,6 +29,15 @@
   color: var(--text);
 }
 
+/* Pulling past the top (phone bounce, or the desktop frame's scroll bounce) shows green,
+   continuing the header instead of revealing the light page backdrop. */
+:global(html):has(.page) { background: #255b46; }
+:global(.app):has(.page) { background: var(--green-dark); }
+
+@media (max-width: 480px) {
+  :global(body):has(.page) { background: var(--green-dark); }
+}
+
 /* Edit mode has no title block: the corners round over the ivory editor instead. */
 .page:has(div[data-activity]) { background: var(--cream); }
 
@@ -52,7 +61,46 @@
 }
 
 .page > header > div:first-child button,
-.page > header > div:first-child a { color: var(--yellow); }
+.page > header > div:first-child a {
+  color: var(--yellow);
+  transition: background 120ms ease;
+}
+
+/* A soft press on the dark header instead of the default light-gray circle. */
+.page > header > div:first-child button:active,
+.page > header > div:first-child a:active { background: rgb(250 248 241 / 0.14); }
+
+/* "הפעולה" gives way to the activity's name once the big title scrolls under the bar. */
+.barTitle {
+  display: grid;
+  min-width: 0;
+}
+
+.barLabel,
+.barName {
+  grid-area: 1 / 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: opacity 200ms ease, transform 200ms ease;
+}
+
+.barName {
+  font-size: 19px;
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.page[data-collapsed] .barLabel {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.page[data-collapsed] .barName {
+  opacity: 1;
+  transform: none;
+}
 
 .page > header :focus-visible,
 .page [data-actionbar] :focus-visible,
@@ -67,7 +115,11 @@
   border-bottom: 0;
   border-radius: 0 0 24px 24px;
   background: var(--green-dark);
+  transition: box-shadow 200ms ease;
 }
+
+/* Lifted off the text once it scrolls underneath. */
+.page[data-collapsed] [data-actionbar] { box-shadow: 0 6px 18px rgb(37 91 70 / 0.18); }
 
 .page [data-actionbar] button {
   flex-direction: row;
@@ -129,12 +181,40 @@
   text-wrap: balance;
 }
 
+.page [data-activity-head] > div {
+  gap: 6px;
+}
+
 .page [data-activity-head] > div > span {
-  padding: 5px 12px;
+  gap: 6px;
+  padding: 5px 11px;
   border: 1px solid rgb(250 248 241 / 0.2);
   background: rgb(250 248 241 / 0.1);
   color: #e3ece2;
   font-size: 14px;
+  white-space: nowrap;
+}
+
+/* Type, place and length, each with an icon instead of a "סוג:" style label, to fit one row. */
+.page [data-activity-head] > div:has(> span:nth-child(3)) > span::before {
+  content: "";
+  flex-shrink: 0;
+  width: 15px;
+  height: 15px;
+  background: currentColor;
+  mask: var(--icon) center / contain no-repeat;
+}
+
+.page [data-activity-head] > div > span:nth-child(1) {
+  --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z'/%3E%3Ccircle cx='7.5' cy='7.5' r='.5' fill='black'/%3E%3C/svg%3E");
+}
+
+.page [data-activity-head] > div > span:nth-child(2) {
+  --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0'/%3E%3Ccircle cx='12' cy='10' r='3'/%3E%3C/svg%3E");
+}
+
+.page [data-activity-head] > div > span:nth-child(3) {
+  --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cpath d='M12 6v6l4 2'/%3E%3C/svg%3E");
 }
 
 /* ---- Reading sheet ---- */
@@ -332,4 +412,5 @@
   .page [data-actionbar] button { gap: 6px; padding-inline: 8px; font-size: 14px; }
   .page [data-activity-head] { padding-inline: 16px; }
   .page [data-activity-head] + [data-reading] { padding-inline: 16px; }
+  .page [data-activity-head] > div > span { gap: 4px; padding-inline: 9px; font-size: 13px; }
 }
