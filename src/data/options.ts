@@ -59,25 +59,30 @@ export function typeLabel(movementKey: string | null | undefined, typeKey: strin
   );
 }
 
-/** Chips shown under an activity's title, e.g. "זמן: חצי שעה". Missing values are skipped. */
+/** A "no preference" answer says nothing about the activity, so it never becomes a chip. */
+const NO_PREFERENCE = "לא משנה";
+const shown = (v: string | null | undefined) => (v && v !== NO_PREFERENCE ? v : null);
+
+/** Chips shown under an activity's title, e.g. "זמן: חצי שעה". Missing and "לא משנה" values are skipped. */
 export function activityChips(type: string | null, place: string | null | undefined, duration: string | null | undefined): string[] {
   return [
-    type ? `סוג: ${type}` : null,
-    place ? `מקום: ${place}` : null,
-    duration ? `זמן: ${duration}` : null,
+    shown(type) && `סוג: ${type}`,
+    shown(place) && `מקום: ${place}`,
+    shown(duration) && `זמן: ${duration}`,
   ].filter((c): c is string => !!c);
 }
 
-/** Type, place and length as bare values, each tagged with its kind so a page can show an icon instead of a label. */
+/** Type, place and length as bare values, each tagged with its kind so a page can show an icon instead of a label.
+ * Missing and "לא משנה" values are left empty, and ChipRow skips them. */
 export function activityDetailChips(
   type: string | null,
   place: string | null | undefined,
   duration: string | null | undefined,
 ): ChipItem[] {
   return [
-    type ? { label: type, kind: "type" } : null,
-    place ? { label: place, kind: "place" } : null,
-    duration ? { label: duration, kind: "duration" } : null,
+    { label: shown(type) ?? "", kind: "type" },
+    { label: shown(place) ?? "", kind: "place" },
+    { label: shown(duration) ?? "", kind: "duration" },
   ];
 }
 

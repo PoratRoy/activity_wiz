@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { AdSlot } from "@/components/AdSlot/AdSlot";
 import { ChipRow, type ChipItem } from "@/components/Chip/Chip";
 import { renderMarkdown } from "@/lib/markdown/render";
+import { withoutEmptyEquipment } from "@/lib/markdown/sections";
 import styles from "./ActivityView.module.css";
 
 /**
@@ -27,8 +28,8 @@ export function ActivityView({
         <h1 className={styles.title}>{title}</h1>
         <ChipRow items={chips} />
       </header>
-      {/* renderMarkdown escapes raw HTML (except <u>) and drops links/images. */}
-      <div className={styles.body} data-reading dangerouslySetInnerHTML={{ __html: renderMarkdown(bodyMd) }} />
+      {/* renderMarkdown escapes raw HTML (except <u>) and drops links/images. An equipment section with nothing in it is hidden. */}
+      <div className={styles.body} data-reading dangerouslySetInnerHTML={{ __html: renderMarkdown(withoutEmptyEquipment(bodyMd)) }} />
       <AdSlot />
     </article>
   );
