@@ -34,12 +34,12 @@
   overflow-wrap: anywhere;
 }
 
-/* Anchored to the row's lower left corner across most of its width; the art's empty top is clipped by the row. */
+/* Anchored to the row's lower left corner across 70% of its width; the art's empty top is clipped by the row. */
 .thumb {
   position: absolute;
   bottom: 0;
   inset-inline-end: 0;
-  width: 78%;
+  width: 70%;
   height: auto;
 }
 
