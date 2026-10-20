@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
-import { TopBar } from "@/components/TopBar/TopBar";
+import { ForestPage } from "@/components/ForestPage/ForestPage";
 import { getUserId } from "@/lib/auth/session";
 import { listActivities } from "@/lib/db/queries";
 import { MyList } from "./MyList";
@@ -12,9 +12,8 @@ export default async function MyActivitiesPage() {
   if (!userId) redirect("/");
   const items = await listActivities(userId);
   return (
-    <>
-      <TopBar title="הפעולות שלי" />
+    <ForestPage title="הפעולות שלי">
       <MyList items={items} />
-    </>
+    </ForestPage>
   );
 }
