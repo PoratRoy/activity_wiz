@@ -57,8 +57,17 @@
   letter-spacing: -0.6px;
 }
 .brand svg { flex-shrink: 0; }
-.hero { display: flex; flex-direction: column; flex: 1; text-align: center; }
-.intro { padding: clamp(24px, 5svh, 44px) 24px 24px; }
+.hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  /* Room for the lower part of the illustration; when the screen is short,
+     the rest of it rises behind the buttons instead of being cropped. */
+  padding-bottom: calc(min(66.667%, 220px) - 20px);
+  text-align: center;
+}
+.intro { position: relative; z-index: 1; padding: clamp(24px, 5svh, 44px) 24px 24px; }
 .intro h1 {
   font-size: clamp(36px, 10.6vw, 46px);
   font-weight: 700;
@@ -94,19 +103,17 @@
 }
 
 .landscape {
-  position: relative;
+  position: absolute;
   z-index: 0;
-  margin-top: auto;
   /* Sits 20px lower; the overhang tucks behind the fixed bottom navigation. */
-  margin-bottom: -20px;
-  flex-shrink: 0;
+  bottom: -20px;
+  left: 0;
   display: block;
   width: 100%;
-  height: clamp(220px, calc(var(--app-height) * 0.36), 320px);
-  object-fit: cover;
-  object-position: center bottom;
-  /* Blend the ivory sky into the page; retain the full scene below it. */
-  mask-image: linear-gradient(to bottom, transparent, black 8%);
+  /* Always the whole scene, at its natural 3:2 ratio. */
+  height: auto;
+  /* Blend the ivory sky into the page, stopping above the treetops. */
+  mask-image: linear-gradient(to bottom, transparent, black 4%);
 }
 
 :global(body):has(.home) :global(nav[aria-label="ניווט ראשי"]) {
