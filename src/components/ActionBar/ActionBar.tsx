@@ -54,21 +54,8 @@ export function ActionButton({
   );
 }
 
-/**
- * Page-specific actions (`children`) first, then share and copy. Pinned under the top bar, or with
- * `placement="end"` left in the flow for the route to place after the text.
- */
-export function ActionBar({
-  title,
-  bodyMd,
-  placement = "top",
-  children,
-}: {
-  title: string;
-  bodyMd: string;
-  placement?: "top" | "end";
-  children?: ReactNode;
-}) {
+/** Bar pinned under the top bar: page-specific actions (`children`) first, then share and copy. */
+export function ActionBar({ title, bodyMd, children }: { title: string; bodyMd: string; children?: ReactNode }) {
   const toast = useToast();
 
   const onCopy = async () => {
@@ -89,7 +76,7 @@ export function ActionBar({
   };
 
   return (
-    <div className={styles.bar} data-actionbar data-placement={placement}>
+    <div className={styles.bar} data-actionbar>
       {children}
       <ActionButton icon={<Share2 size={20} aria-hidden />} label="שיתוף" onClick={onShare} accent />
       <ActionButton icon={<Copy size={20} aria-hidden />} label="העתקה" onClick={onCopy} />
