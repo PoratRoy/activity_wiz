@@ -10,8 +10,9 @@
   height: calc(var(--tabbar-h) + env(safe-area-inset-bottom));
   margin-inline: auto;
   padding-bottom: env(safe-area-inset-bottom);
-  border-top: 2px solid var(--border);
-  background: var(--surface);
+  border-top: 1px solid var(--border);
+  background: var(--cream);
+  box-shadow: 0 -4px 18px rgb(37 91 70 / 0.04);
 }
 
 .tab {
@@ -32,7 +33,7 @@
   justify-content: center;
   width: 52px;
   height: 30px;
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius-sm);
   transition: background 150ms ease;
 }
 
@@ -42,7 +43,7 @@
   inset-inline-end: 8px;
   padding: 1px;
   border-radius: 50%;
-  background: var(--surface);
+  background: var(--cream);
 }
 
 .label {

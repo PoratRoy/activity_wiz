@@ -41,7 +41,7 @@ export default async function CategoryPage({ params }: Props) {
 
   return (
     <>
-      <TopBar title={category.title} back="/library" />
+      <TopBar title={category.title} fallback="/library" />
       <main className={styles.main}>
         <h1 className={styles.heading}>{category.title}</h1>
         {activities.length === 0 ? (

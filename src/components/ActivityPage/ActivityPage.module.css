@@ -1,21 +1,6 @@
 /* Personal and library activity pages in the approved forest/ivory look. Reading comes first: no artwork, and every
-   accent (section markers, step times, callouts) helps scan the text while guiding.
-   Route-local palette keeps the shell, toasts and navigation in the home theme. */
+   accent (section markers, step times, callouts) helps scan the text while guiding. */
 :global(body):has(.page) {
-  --green: #32765b;
-  --green-dark: #255b46;
-  --green-light: #e7efdf;
-  --yellow: #f4d675;
-  --yellow-dark: #a98225;
-  --yellow-light: #fbf2cf;
-  --cream: #faf8f1;
-  --backdrop: #eeefe8;
-  --text: #303a34;
-  --text-muted: #626d65;
-  --border: #dde1d8;
-  --danger: #b8453b;
-  --danger-dark: #92342d;
-  --lip: 0 2px 0;
   --topbar-h: 64px;
   --actionbar-h: 60px;
 }
@@ -29,15 +14,6 @@
   color: var(--text);
 }
 
-/* Pulling past the top (phone bounce, or the desktop frame's scroll bounce) shows green,
-   continuing the header instead of revealing the light page backdrop. */
-:global(html):has(.page) { background: #255b46; }
-:global(.app):has(.page) { background: var(--green-dark); }
-
-@media (max-width: 480px) {
-  :global(body):has(.page) { background: var(--green-dark); }
-}
-
 /* Edit mode has no title block: the corners round over the ivory editor instead. */
 .page:has(div[data-activity]) { background: var(--cream); }
 
@@ -47,28 +23,6 @@
 }
 
 /* ---- Masthead: top bar and actions on forest green ---- */
-
-.page > header {
-  padding: 8px 16px;
-  border-bottom: 0;
-  background: var(--green-dark);
-}
-
-.page > header h1 {
-  color: var(--cream);
-  font-size: 22px;
-  letter-spacing: -0.4px;
-}
-
-.page > header > div:first-child button,
-.page > header > div:first-child a {
-  color: var(--yellow);
-  transition: background 120ms ease;
-}
-
-/* A soft press on the dark header instead of the default light-gray circle. */
-.page > header > div:first-child button:active,
-.page > header > div:first-child a:active { background: rgb(250 248 241 / 0.14); }
 
 /* The bar's label ("הפעולה", or the library category) gives way to the activity's name once the big title scrolls under the bar. */
 .barTitle {
@@ -102,7 +56,6 @@
   transform: none;
 }
 
-.page > header :focus-visible,
 .page [data-actionbar] :focus-visible,
 .page [data-activity-head] :focus-visible { outline-color: var(--yellow); }
 
@@ -391,26 +344,12 @@
   border-color: var(--green);
 }
 
-/* ---- Navigation in the home theme ---- */
-
-:global(body):has(.page) :global(nav[aria-label="ניווט ראשי"]) {
-  border-top: 1px solid var(--border);
-  border-radius: 22px 22px 0 0;
-  background: var(--cream);
-  box-shadow: 0 -4px 18px rgb(37 91 70 / 0.04);
-}
-
-:global(body):has(.page) :global(nav[aria-label="ניווט ראשי"] a[aria-current="page"] > span:first-child) {
-  border-radius: 12px;
-}
-
 @media (hover: hover) {
   .page [data-actionbar] button:hover:not(:disabled) { background: rgb(250 248 241 / 0.16); }
   .page [data-actionbar] button[data-variant="accent"]:hover:not(:disabled) { background: #f7df8e; }
 }
 
 @media (max-width: 359px) {
-  .page > header { padding-inline: 8px; }
   .page [data-actionbar] { padding-inline: 12px; gap: 6px; }
   .page [data-actionbar] button { gap: 6px; padding-inline: 8px; font-size: 14px; }
   .page [data-activity-head] { padding-inline: 16px; }

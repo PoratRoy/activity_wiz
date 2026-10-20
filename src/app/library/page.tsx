@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 export default async function LibraryPage() {
   const categories = await listCategories();
   return (
-    <ForestPage title="מאגר פעולות" backButton>
+    <ForestPage title="מאגר פעולות">
       {categories.length === 0 ? (
         <EmptyState text="המאגר מתמלא בקרוב" />
       ) : (

@@ -21,7 +21,7 @@ export function PersonalActivity({ id, title, bodyMd, chips }: { id: string; tit
   }, []);
 
   return (
-    <ActivityPage label="הפעולה" back="/my" name={name}>
+    <ActivityPage label="הפעולה" fallback="/my" name={name}>
       <EditableActivity
         initial={{ title, bodyMd }}
         chips={chips}
