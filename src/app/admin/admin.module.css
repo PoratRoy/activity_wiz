@@ -163,33 +163,13 @@
 
 .thumbBtn:active { transform: translateY(1px); }
 
-.picker {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(76px, 1fr));
-  gap: var(--space-2);
-}
-
-.pickerOption {
+.keyPreview {
   display: flex;
-  justify-content: center;
-  padding: 3px;
-  border: 2px solid transparent;
-  border-radius: 13px;
-  background: none;
-}
-
-.pickerOption img {
-  width: 100%;
-  max-width: 72px;
-  height: auto;
-  aspect-ratio: 72 / 52;
-  border-radius: 10px;
-  object-fit: cover;
-}
-
-.pickerOption[aria-checked="true"] {
-  border-color: var(--green-dark);
-  background: var(--green-light);
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: calc(-1 * var(--space-2));
+  color: var(--text-muted);
+  font-size: var(--fs-small);
 }
 
 .thumb {

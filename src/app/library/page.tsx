@@ -24,7 +24,7 @@ export default async function LibraryPage() {
         <ul className={`${styles.list} ${styles.rows}`}>
           {categories.map((c) => (
             <li key={c.id}>
-              <CategoryCard title={c.title} image={c.image} href={categoryPath(c)} />
+              <CategoryCard title={c.title} categoryKey={c.key} href={categoryPath(c)} />
             </li>
           ))}
         </ul>

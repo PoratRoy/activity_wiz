@@ -1,6 +1,6 @@
 "use server";
 
-import { isLibraryImage } from "@/data/libraryImages";
+import { CATEGORY_KEY_PATTERN } from "@/data/libraryImages";
 import { DURATIONS, EQUIPMENT, GENERIC_TYPE_LABELS, NOTES_MAX, PLACES, SHABBAT, TEAMS } from "@/data/options";
 import { requireAdmin } from "@/lib/auth/admin";
 import {
@@ -10,8 +10,9 @@ import {
   getCategory,
   insertCategory,
   insertPublicActivity,
+  categoryKeyTaken,
   setCategoryOrder,
-  updateCategoryImage,
+  updateCategoryKey,
 } from "@/lib/db/queries";
 import { BODY_MAX, TITLE_MAX } from "@/lib/draft";
 
@@ -20,18 +21,31 @@ import { BODY_MAX, TITLE_MAX } from "@/lib/draft";
 const str = (v: unknown) => (typeof v === "string" ? v.trim() : "");
 const ADMIN_SUBJECT_MAX = 60;
 
-/** `image` is a name from LIBRARY_IMAGES, or null for the shared default. */
-export async function createCategory(title: string, image: string | null): Promise<{ id: string } | { error: string }> {
+/** Error message for an invalid or duplicate English key, or null when it can be used. */
+async function keyError(key: string, exceptId?: string): Promise<string | null> {
+  if (!key) return "צריך שם באנגלית";
+  if (!CATEGORY_KEY_PATTERN.test(key)) return "רק אותיות באנגלית, ספרות, - ו-_, ומתחיל באות";
+  if (await categoryKeyTaken(key, exceptId)) return "השם באנגלית כבר בשימוש";
+  return null;
+}
+
+/** `key` is the English name; it also picks the category's artwork (src/data/libraryImages.ts). */
+export async function createCategory(title: string, key: string): Promise<{ id: string } | { error: string }> {
   await requireAdmin();
   const t = str(title).slice(0, TITLE_MAX);
   if (!t) return { error: "צריך שם לקטגוריה" };
-  return { id: await insertCategory(t, isLibraryImage(image) ? image : null) };
+  const k = str(key);
+  const error = await keyError(k);
+  if (error) return { error };
+  return { id: await insertCategory(t, k) };
 }
 
-export async function setCategoryImage(id: string, image: string | null): Promise<boolean> {
+export async function setCategoryKey(id: string, key: string): Promise<{ ok: true } | { error: string }> {
   await requireAdmin();
-  if (image !== null && !isLibraryImage(image)) return false;
-  return updateCategoryImage(str(id), image);
+  const k = str(key);
+  const error = await keyError(k, str(id));
+  if (error) return { error };
+  return (await updateCategoryKey(str(id), k)) ? { ok: true } : { error: "הקטגוריה לא נמצאה" };
 }
 
 /** Deletes the category and (FK cascade) its public activities. Personal copies are unaffected (R23). */

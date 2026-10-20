@@ -59,7 +59,7 @@ export function AdminRows({
               <div className={styles.rowLink}>{content}</div>
             )}
             {r.image && onImageClick && (
-              <button type="button" className={styles.thumbBtn} aria-label={`החלפת התמונה של ${r.title}`} onClick={() => onImageClick(r)}>
+              <button type="button" className={styles.thumbBtn} aria-label={`עריכת השם באנגלית של ${r.title}`} onClick={() => onImageClick(r)}>
                 <Image src={r.image} alt="" width={72} height={52} unoptimized className={styles.thumb} />
               </button>
             )}
