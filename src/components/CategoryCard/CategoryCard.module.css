@@ -1,18 +1,20 @@
-/* Rows share the artwork's sky color, so the edge-to-edge image reads as part of the row. */
+/* Rows share the artwork's sky color; the transparent art sits on the row like a banner scene. */
 .card {
-  --art-w: 130px;
   position: relative;
   display: flex;
   align-items: center;
-  min-height: 76px;
-  padding-block: 10px;
-  padding-inline: 24px calc(var(--art-w) + 16px);
+  justify-content: flex-start;
+  /* About 4.2 : 1 of the row's width (the 480px column less the sheet's 20px gutters), never under 84px.
+     Not aspect-ratio: with a min-height it forces a minimum width that overflows narrow phones. */
+  min-height: max(84px, calc((min(100vw, var(--column)) - 40px) / 4.2));
+  padding-block: 12px;
+  padding-inline: 24px;
   overflow: hidden;
   border: 2px solid #ced7c9;
-  border-radius: 16px;
+  border-radius: 20px;
   background: #f9f4e8;
   box-shadow: 0 2px 0 #ced7c9;
-  color: var(--text);
+  color: var(--green-dark);
   transition: transform 100ms ease, box-shadow 100ms ease, border-color 120ms ease;
 }
 
@@ -21,23 +23,34 @@
   box-shadow: none;
 }
 
+/* Over the art's empty sky on the right; long names wrap rather than run into the scene. */
 .title {
-  min-width: 0;
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 24px;
+  position: relative;
+  z-index: 1;
+  max-width: 55%;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.25;
   overflow-wrap: anywhere;
 }
 
-/* Pinned to the row's left edge (inline end) at full height, however tall a wrapped name makes the row. */
+/* Anchored to the row's lower left corner across 70% of its width; the art's empty top is clipped by the row. */
 .thumb {
+  position: absolute;
+  bottom: 0;
+  inset-inline-end: 0;
+  width: 70%;
+  height: auto;
+}
+
+/* The shared default is an opaque landscape, so it fills a strip at the row's left edge instead. */
+.fallback {
   position: absolute;
   inset-block: 0;
   inset-inline-end: 0;
-  width: var(--art-w);
+  width: 36%;
   height: 100%;
   object-fit: cover;
-  object-position: center 60%;
 }
 
 @media (hover: hover) {
