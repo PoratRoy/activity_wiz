@@ -148,7 +148,7 @@ The visual reference is the original proposal's woodland landscape and small com
 
 - **Home:** a substantial outdoor scene in the existing hero region gives the app its most memorable visual. Keep all specified buttons. Do not add a library preview or category section to the landing page; access remains in bottom navigation (owner clarification, 2026-10-19). The scene scales/crops without covering content or navigation.
 - **Group and activity forms:** a compact compass, leaves, trail marker or similar vignette in the existing heading region adds character. For the approved group page, use the placement and dimensions above. For other forms, a 64–96px-high vignette is a starting point; reduce as needed rather than moving fields. Do not add a large blank illustration panel.
-- **Library:** keep the specified two-column category grid. Give each card a meaningful, coordinated illustration and quiet tinted surface, with dark legible titles. Replace arbitrary saturated color/icon hashing with stable category artwork or a neutral thematic fallback.
+- **Library:** "Raised rows" (approved 2026-10-20, reference `design-references/library-raised-rows.png`). A compact forest masthead with the single title «מאגר פעולות» and no back arrow; an ivory sheet (24px top corners, overlapping the masthead by 16px) holding one column of full-width white rows with 12px gaps. Each row: 76px min height, 2px `#CED7C9` border, 16px radius, `0 2px 0 #CED7C9` lower edge, category name 16px/500 on the right and a 72 × 52px, 10px-radius thumbnail on the left; it presses down 2px. No counts, subtitles, chevrons or random colors/icons. All categories share the landing `home-trail.webp` artwork; only games, new year and holidays may later get their own art, mapped explicitly by category id.
 - **My activities and empty/error states:** use a small backpack, folded map, campfire or other relevant scene with the existing message and action.
 - **Loading:** use a small illustrated companion or camp scene with restrained progress feedback. Match the same palette; retain existing tips, AI notice and outcome behavior.
 - **Activity reading/editing:** keep the body quiet and unobstructed. Any decorative detail is confined to the heading; no artwork behind reading text or editor controls.
@@ -184,7 +184,7 @@ Owner requirement, superseding the earlier "ads paused" rule: every page except 
 - A gray (`#E8EAE4`) strip with a 1px `#D9DCD5` top border and a small muted "פרסומת" label, aligned with the app column on phones and inside the desktop frame. It is decorative for now (`aria-hidden`) and ignores taps.
 - Its height is the minimum for a real ad: 50px, the smallest standard mobile banner (320 × 50). It extends behind the tabs so rounded tab bars show gray in their corners.
 - While it is shown, `--adbar-h` (otherwise `0px`) adds its height to content bottom padding, sticky footers, toasts and full-height layouts, so nothing sits behind it. The create-flow continue/create buttons are sticky just above it.
-- In-content `AdSlot` placements (library grids, activity view) stay no-ops; no other ad space is reserved.
+- In-content `AdSlot` placements (category list, activity view) stay no-ops; no other ad space is reserved.
 
 ## Motion and copy
 

@@ -117,8 +117,8 @@ Used by `/activity/draft`, `/activity/[id]` and `/library/[cat]/[act]`:
 ## Library `/library`
 
 - Title: «מאגר פעולות»
-- A 2-column grid of category cards (color plus icon, title). Oldest category first.
-- `<AdSlot>` after the first 4 cards.
+- No back arrow (tab root); one visible title in the forest masthead.
+- A single column of full-width category rows (name, shared illustration thumbnail; no activity counts). Oldest category first. No in-list ad slot. See [Design](design.md) → Library.
 - Empty state: «המאגר מתמלא בקרוב».
 
 ## Category `/library/[cat]`

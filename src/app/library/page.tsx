@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
-import { Fragment } from "react";
-import { AdSlot } from "@/components/AdSlot/AdSlot";
 import { CategoryCard } from "@/components/CategoryCard/CategoryCard";
 import { EmptyState } from "@/components/EmptyState/EmptyState";
 import { TopBar } from "@/components/TopBar/TopBar";
-import { listCategoriesWithCounts } from "@/lib/db/queries";
+import { listCategories } from "@/lib/db/queries";
 import { categoryPath } from "@/lib/slug";
 import styles from "./library.module.css";
 
@@ -17,29 +15,25 @@ export const metadata: Metadata = {
 };
 
 export default async function LibraryPage() {
-  const categories = await listCategoriesWithCounts();
+  const categories = await listCategories();
   return (
-    <>
-      <TopBar title="מאגר פעולות" />
-      <main className={styles.main}>
-        <h1 className={styles.heading}>מאגר פעולות מוכנות</h1>
+    <div className={styles.page}>
+      <div className={styles.masthead}>
+        <TopBar title="מאגר פעולות" back={false} />
+      </div>
+      <main className={styles.rows}>
         {categories.length === 0 ? (
           <EmptyState text="המאגר מתמלא בקרוב" />
         ) : (
-          <div className={styles.grid}>
-            {categories.map((c, i) => (
-              <Fragment key={c.id}>
-                <CategoryCard id={c.id} index={i} title={c.title} href={categoryPath(c)} count={c.count} />
-                {i === 3 && (
-                  <div className={styles.full}>
-                    <AdSlot />
-                  </div>
-                )}
-              </Fragment>
+          <ul className={styles.list}>
+            {categories.map((c) => (
+              <li key={c.id}>
+                <CategoryCard id={c.id} title={c.title} href={categoryPath(c)} />
+              </li>
             ))}
-          </div>
+          </ul>
         )}
       </main>
-    </>
+    </div>
   );
 }
