@@ -24,7 +24,7 @@ All screens share the app shell from [Design](design.md): a top bar (back arrow 
 
 ## Shell behavior
 
-- **Back arrow:** shown on every page that isn't a tab root (`/`, `/create/group`, `/library`, `/my`, `/admin`). It goes to the logical parent: activity page → group page, category → library, public activity → category, and so on.
+- **Back arrow:** shown on every page that isn't a tab root (`/`, `/create/group`, `/my`, `/admin`); `/library` also shows it (owner request, 2026-10-20) and goes back in history, or home. It goes to the logical parent: activity page → group page, category → library, public activity → category, and so on.
 - **Avatar menu (top left):**
   - Signed in: their Google photo in a circle. Tapping it opens a menu with **התנתקות** (sign out) and, for admins only, **ניהול** (admin).
   - Guest: a generic person icon. Tapping it opens a menu with **התחברות עם Google** (sign in with Google).
@@ -117,7 +117,7 @@ Used by `/activity/draft`, `/activity/[id]` and `/library/[cat]/[act]`:
 ## Library `/library`
 
 - Title: «מאגר פעולות»
-- No back arrow (tab root); one visible title in the forest masthead.
+- Back arrow (previous in-app page, or home) and one visible title in the pinned forest masthead.
 - A single column of full-width category rows (name, the category's illustration thumbnail; no activity counts). In the admin-set order (R19). No in-list ad slot. See [Design](design.md) → Library.
 - Empty state: «המאגר מתמלא בקרוב».
 

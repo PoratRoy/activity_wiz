@@ -42,6 +42,17 @@
   background: var(--green-dark);
 }
 
+/* Short ivory fade under the seam, so rows scrolling up under the masthead don't end in a hard edge. */
+.masthead::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  bottom: -20px;
+  height: 12px;
+  background: linear-gradient(var(--cream), transparent);
+  pointer-events: none;
+}
+
 .masthead::after {
   content: "";
   position: absolute;
@@ -73,6 +84,19 @@
   overflow-wrap: anywhere;
 }
 
+/* Back arrow in butter yellow on the forest masthead, as on the other forest pages. */
+.masthead > header > div:first-child button,
+.masthead > header > div:first-child a {
+  width: 40px;
+  height: 40px;
+  margin-top: -4px;
+  color: var(--yellow);
+  transition: background 120ms ease;
+}
+
+.masthead > header > div:first-child button:active,
+.masthead > header > div:first-child a:active { background: rgb(250 248 241 / 0.14); }
+
 .masthead > header > div:last-child button {
   width: 32px;
   height: 32px;
@@ -89,7 +113,8 @@
 .masthead :focus-visible { outline-color: var(--yellow); }
 
 .sheet {
-  padding: 8px 20px 24px;
+  /* Clears the seam and its fade. */
+  padding: 20px 20px 24px;
 }
 
 :global(body):has(.page) :global(nav[aria-label="ניווט ראשי"]) {
