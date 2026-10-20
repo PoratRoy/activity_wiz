@@ -46,7 +46,6 @@ export function AdminRows({
                 <span className={styles.rowTitle}>{r.title}</span>
                 {r.subtitle && <span className={styles.rowSub}>{r.subtitle}</span>}
               </span>
-              {r.image && !onImageClick && <Image src={r.image} alt="" width={72} height={52} unoptimized className={styles.thumb} />}
             </>
           );
           return (
@@ -58,14 +57,19 @@ export function AdminRows({
             ) : (
               <div className={styles.rowLink}>{content}</div>
             )}
-            {r.image && onImageClick && (
-              <button type="button" className={styles.thumbBtn} aria-label={`עריכת השם באנגלית של ${r.title}`} onClick={() => onImageClick(r)}>
-                <Image src={r.image} alt="" width={72} height={52} unoptimized className={styles.thumb} />
-              </button>
-            )}
             <button type="button" className={styles.trash} aria-label={`מחיקת ${r.title}`} onClick={() => setTarget(r)}>
               <Trash2 size={20} aria-hidden />
             </button>
+            {r.image &&
+              (onImageClick ? (
+                <button type="button" className={styles.rowArt} aria-label={`עריכת השם באנגלית של ${r.title}`} onClick={() => onImageClick(r)}>
+                  <Image src={r.image} alt="" width={130} height={72} unoptimized />
+                </button>
+              ) : (
+                <span className={styles.rowArt}>
+                  <Image src={r.image} alt="" width={130} height={72} unoptimized />
+                </span>
+              ))}
           </li>
           );
         })}

@@ -8,7 +8,7 @@ export function CategoryCard({ title, categoryKey, href }: { title: string; cate
   return (
     <Link href={href} className={styles.card}>
       <span className={styles.title}>{title}</span>
-      <Image src={categoryThumb(categoryKey)} alt="" width={72} height={52} unoptimized className={styles.thumb} />
+      <Image src={categoryThumb(categoryKey)} alt="" width={130} height={72} unoptimized className={styles.thumb} />
     </Link>
   );
 }
