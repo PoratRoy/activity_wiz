@@ -28,17 +28,40 @@
   display: flex;
   flex-direction: column;
   min-height: calc(var(--app-height) - var(--tabbar-h) - var(--adbar-h) - env(safe-area-inset-bottom));
-  background: var(--green-dark);
+  background: var(--cream);
   color: var(--text);
 }
 
+/* On short screens the form scrolls, so the rounded ivory seam belongs to the sticky masthead
+   (as on /create/activity) and fields slide under it instead of showing behind the compass. */
 .masthead {
   position: sticky;
   top: 0;
   z-index: 30;
   flex-shrink: 0;
   padding-bottom: 40px;
-  background: linear-gradient(to bottom, var(--green-dark) calc(100% - 24px), transparent calc(100% - 24px));
+  background: var(--green-dark);
+}
+
+.masthead::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 24px;
+  border-radius: 32px 32px 0 0;
+  background: var(--cream);
+}
+
+/* Fields fade out just below the seam instead of meeting it with a hard edge. At rest it only
+   covers the form's top padding. */
+.masthead::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: 100%;
+  height: 16px;
+  background: linear-gradient(to bottom, var(--cream), rgb(250 248 241 / 0));
+  pointer-events: none;
 }
 
 /* Above the compass (z-index 32), so the avatar menu opens over the artwork. */
@@ -85,11 +108,7 @@
   flex: 1;
   flex-direction: column;
   gap: 16px;
-  position: relative;
-  margin-top: -24px;
-  padding: 52px 24px 24px;
-  border-radius: 32px 32px 0 0;
-  background: var(--cream);
+  padding: 28px 24px 24px;
 }
 
 /* Artwork overlaps the green/ivory seam, away from labels and controls. */
@@ -184,17 +203,8 @@
   border-radius: 12px;
 }
 
-/* Pinned above the ad bar and tabs on short screens; on tall ones it simply rests at the bottom. */
-.footer {
-  position: sticky;
-  bottom: calc(var(--tabbar-h) + var(--adbar-h) + env(safe-area-inset-bottom));
-  z-index: 5;
-  margin-top: auto;
-  margin-inline: -24px;
-  margin-bottom: -24px;
-  padding: 8px 24px 12px;
-  background: linear-gradient(to top, var(--cream) 78%, transparent);
-}
+/* A short form: the button follows the fields rather than pinning over them on short screens. */
+.footer { margin-top: 16px; }
 
 .footer button {
   min-height: 50px;
@@ -235,7 +245,6 @@
 
 @media (max-width: 359px) {
   .form { padding-inline: 16px; }
-  .footer { margin-inline: -16px; padding-inline: 16px; }
   .masthead > header { padding-inline: 8px; }
   .masthead h1 { font-size: 22px; }
   .form button[role="radio"] { padding-inline: 16px; }
