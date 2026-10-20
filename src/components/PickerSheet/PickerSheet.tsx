@@ -1,7 +1,7 @@
 "use client";
 
 import { Check, ChevronDown } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Sheet } from "react-modal-sheet";
 import type { TileOption } from "@/components/Tile/Tile";
 import styles from "./PickerSheet.module.css";
@@ -18,7 +18,13 @@ type Props = {
 export function PickerSheet({ label, placeholder, options, value, onChange }: Props) {
   const [open, setOpen] = useState(false);
   const current = options.find((o) => o.value === value);
-  const close = () => setOpen(false);
+  const closeTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const close = () => {
+    clearTimeout(closeTimer.current);
+    setOpen(false);
+  };
+
+  useEffect(() => () => clearTimeout(closeTimer.current), []);
 
   useEffect(() => {
     if (!open) return;
@@ -52,7 +58,9 @@ export function PickerSheet({ label, placeholder, options, value, onChange }: Pr
                     className={styles.item}
                     onClick={() => {
                       onChange(o.value);
-                      close();
+                      // Leave the sheet up for a moment so the choice is seen before it closes.
+                      clearTimeout(closeTimer.current);
+                      closeTimer.current = setTimeout(close, 1000);
                     }}
                   >
                     <span>{o.label}</span>
