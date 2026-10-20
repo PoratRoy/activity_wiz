@@ -1,16 +1,19 @@
+/* Rows share the artwork's sky color, so the edge-to-edge image reads as part of the row. */
 .card {
+  --art-w: 130px;
+  position: relative;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 16px;
   min-height: 76px;
-  padding: 10px 14px;
+  padding-block: 10px;
+  padding-inline: 14px calc(var(--art-w) + 16px);
+  overflow: hidden;
   border: 2px solid #ced7c9;
   border-radius: 16px;
-  background: #fff;
+  background: #f9f4e8;
   box-shadow: 0 2px 0 #ced7c9;
   color: var(--text);
-  transition: transform 100ms ease, box-shadow 100ms ease, border-color 120ms ease, background 120ms ease;
+  transition: transform 100ms ease, box-shadow 100ms ease, border-color 120ms ease;
 }
 
 .card:active {
@@ -26,19 +29,22 @@
   overflow-wrap: anywhere;
 }
 
+/* Pinned to the row's left edge (inline end) at full height, however tall a wrapped name makes the row. */
 .thumb {
-  flex-shrink: 0;
-  width: 72px;
-  height: 52px;
-  border-radius: 10px;
+  position: absolute;
+  inset-block: 0;
+  inset-inline-end: 0;
+  width: var(--art-w);
+  height: 100%;
   object-fit: cover;
-  object-position: center;
+  object-position: center 60%;
+  /* Short fade on the inner edge (toward the name) blends the scene into the sky-colored row. */
+  mask-image: linear-gradient(to right, #000 75%, transparent);
 }
 
 @media (hover: hover) {
   .card:hover {
     border-color: var(--green-dark);
-    background: #f7faf4;
   }
 }
 

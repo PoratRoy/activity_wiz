@@ -1,4 +1,4 @@
-import { index, integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { index, integer, sqliteTable, text, uniqueIndex } from "drizzle-orm/sqlite-core";
 
 // The 4 tables of docs/data-model.md. Timestamps are Unix milliseconds.
 
@@ -43,13 +43,20 @@ export const activity = sqliteTable(
   (t) => [index("activity_user_created_idx").on(t.userId, t.createdAt)],
 );
 
-export const publicCategory = sqliteTable("public_category", {
-  id: text("id").primaryKey(),
-  title: text("title").notNull(),
-  /** Display order set by the admin, ascending; new categories go last. */
-  position: integer("position").notNull().default(0),
-  createdAt: integer("created_at").notNull(),
-});
+export const publicCategory = sqliteTable(
+  "public_category",
+  {
+    id: text("id").primaryKey(),
+    /** Hebrew name shown to users. */
+    title: text("title").notNull(),
+    /** English name; picks the artwork in public/library with the same name (src/data/libraryImages.ts). */
+    key: text("key"),
+    /** Display order set by the admin, ascending; new categories go last. */
+    position: integer("position").notNull().default(0),
+    createdAt: integer("created_at").notNull(),
+  },
+  (t) => [uniqueIndex("public_category_key_unique").on(t.key)],
+);
 
 export const publicActivity = sqliteTable(
   "public_activity",

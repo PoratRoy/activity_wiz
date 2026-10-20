@@ -1,5 +1,5 @@
 import "server-only";
-import { and, asc, count, desc, eq, max } from "drizzle-orm";
+import { and, asc, count, desc, eq, max, ne, sql } from "drizzle-orm";
 import { getDb, newId } from "./client";
 import { activity, publicActivity, publicCategory, users } from "./schema";
 
@@ -137,7 +137,13 @@ export async function listCategories() {
 /** Categories in display order, with their public activity counts. */
 export async function listCategoriesWithCounts() {
   return getDb()
-    .select({ id: publicCategory.id, title: publicCategory.title, createdAt: publicCategory.createdAt, count: count(publicActivity.id) })
+    .select({
+      id: publicCategory.id,
+      title: publicCategory.title,
+      key: publicCategory.key,
+      createdAt: publicCategory.createdAt,
+      count: count(publicActivity.id),
+    })
     .from(publicCategory)
     .leftJoin(publicActivity, eq(publicActivity.categoryId, publicCategory.id))
     .groupBy(publicCategory.id)
@@ -148,12 +154,26 @@ export async function getCategory(id: string) {
   return (await getDb().select().from(publicCategory).where(eq(publicCategory.id, id)).get()) ?? null;
 }
 
-export async function insertCategory(title: string): Promise<string> {
+export async function insertCategory(title: string, key: string): Promise<string> {
   const id = newId();
   const db = getDb();
   const last = await db.select({ position: max(publicCategory.position) }).from(publicCategory).get();
-  await db.insert(publicCategory).values({ id, title, position: (last?.position ?? -1) + 1, createdAt: Date.now() });
+  await db.insert(publicCategory).values({ id, title, key, position: (last?.position ?? -1) + 1, createdAt: Date.now() });
   return id;
+}
+
+export async function updateCategoryKey(id: string, key: string): Promise<boolean> {
+  const rows = await getDb().update(publicCategory).set({ key }).where(eq(publicCategory.id, id)).returning({ id: publicCategory.id });
+  return rows.length > 0;
+}
+
+/** True when another category already uses this key, ignoring case. */
+export async function categoryKeyTaken(key: string, exceptId?: string): Promise<boolean> {
+  const match = and(
+    sql`lower(${publicCategory.key}) = ${key.toLowerCase()}`,
+    exceptId ? ne(publicCategory.id, exceptId) : undefined,
+  );
+  return !!(await getDb().select({ id: publicCategory.id }).from(publicCategory).where(match).get());
 }
 
 /** Saves a full category order. Returns false unless `ids` is exactly the current set of categories. */

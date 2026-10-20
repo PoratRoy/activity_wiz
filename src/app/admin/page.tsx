@@ -15,7 +15,7 @@ export default async function AdminPage() {
   return (
     <ForestPage title="ניהול">
       <div className={styles.stack}>
-        <AdminHome categories={categories.map((c) => ({ id: c.id, title: c.title, count: c.count }))} />
+        <AdminHome categories={categories.map((c) => ({ id: c.id, title: c.title, key: c.key, count: c.count }))} />
         {categories.length === 0 && <EmptyState text="אין עדיין קטגוריות. התחילו בהוספת קטגוריה." />}
       </div>
     </ForestPage>

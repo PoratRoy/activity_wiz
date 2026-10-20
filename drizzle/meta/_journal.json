@@ -15,6 +15,20 @@
       "when": 1792481944537,
       "tag": "0001_category_position",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1792483467083,
+      "tag": "0002_category_image",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1792484703086,
+      "tag": "0003_category_key",
+      "breakpoints": true
     }
   ]
 }

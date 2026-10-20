@@ -49,6 +49,7 @@ Deletes are hard deletes.
 | `id` | text PK | |
 | `title` | text, not null | |
 | `position` | integer, not null, default 0 | Admin-set display order; sort ascending. New categories get max + 1. Migration `0001` backfilled existing rows oldest first |
+| `key` | text, nullable, unique | English name, required when creating. Picks the artwork `public/library/<key>.webp` (case-insensitive, names listed in `src/data/libraryImages.json`); no match shows the shared default. Null only for older categories that were never given one. Migration `0003` renamed it from `image` |
 | `created_at` | integer, not null | Tie-breaker after `position` |
 
 ## `public_activity`

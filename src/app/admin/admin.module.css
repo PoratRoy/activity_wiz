@@ -85,9 +85,13 @@
 }
 
 .raised .row {
+  --art-w: 130px;
+  position: relative;
   min-height: 76px;
+  padding-inline-end: var(--art-w);
+  overflow: hidden;
   border-color: #ced7c9;
-  background: #fff;
+  background: #f9f4e8;
   box-shadow: 0 2px 0 #ced7c9;
   transition: transform 100ms ease, box-shadow 100ms ease, border-color 120ms ease;
 }
@@ -151,6 +155,39 @@
 .moveBtn:last-child { margin-inline-end: 6px; }
 .moveBtn:active:not(:disabled) { background: var(--green-light); }
 .moveBtn:disabled { color: #c3cbc0; cursor: default; }
+
+/* Row artwork, edge to edge at the row's left (inline end), as on the library page. */
+.rowArt {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-end: 0;
+  width: var(--art-w);
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+}
+
+.rowArt img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 60%;
+  /* Short fade on the inner edge (toward the name) blends the scene into the sky-colored row. */
+  mask-image: linear-gradient(to right, #000 75%, transparent);
+}
+
+.rowArt:focus-visible { outline-offset: -4px; }
+
+.keyPreview {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: calc(-1 * var(--space-2));
+  color: var(--text-muted);
+  font-size: var(--fs-small);
+}
 
 .thumb {
   flex-shrink: 0;
