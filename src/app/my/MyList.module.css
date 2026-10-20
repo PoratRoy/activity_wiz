@@ -1,34 +1,105 @@
-.main {
-  padding: var(--space-4) var(--space-4) var(--space-6);
-}
-
-.count {
-  margin: 0 0 var(--space-3);
-  color: var(--text-muted);
-  font-size: var(--fs-small);
-}
-
+/* Library "Raised rows" (docs/design.md → Library) without artwork: white rows on the ivory sheet. */
 .list {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  gap: 12px;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
+.row {
+  position: relative;
+  border: 2px solid #ced7c9;
+  border-radius: 16px;
+  background: var(--surface);
+  box-shadow: 0 2px 0 #ced7c9;
+  transition: transform 100ms ease, box-shadow 100ms ease, border-color 120ms ease;
+}
+
+/* Pressing the row (not the trash button) moves it down by its lower edge, like the library rows. */
+.row:has(.link:active) {
+  transform: translateY(2px);
+  box-shadow: none;
+}
+
+/* The whole row is the link; the end padding leaves room for the trash button laid over it. */
+.link {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  min-height: 72px;
+  padding-block: 12px;
+  padding-inline: 20px 56px;
+  border-radius: 14px;
+  color: var(--text);
+}
+
+.title {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  overflow-wrap: anywhere;
+}
+
+.date {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-muted);
+  font-size: 13px;
+  line-height: 18px;
+}
+
+.date svg {
+  flex-shrink: 0;
+  color: #9eb79b;
+}
+
+/* Quiet trash: muted icon, no fill until hovered or pressed. */
 .trash {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-end: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 44px;
-  height: 44px;
+  width: 32px;
+  height: 32px;
+  margin-block-start: -16px;
   border: 0;
-  border-radius: 50%;
+  border-radius: 10px;
   background: none;
-  color: var(--danger-dark);
+  color: #87918a;
+  transition: background 120ms ease, color 120ms ease;
+}
+
+/* Enlarges the tap target to 44px without growing the visible button. */
+.trash::before {
+  content: "";
+  position: absolute;
+  inset: -6px;
 }
 
 .trash:active {
-  background: var(--cream);
+  background: #f6e7e4;
+  color: var(--danger-dark);
+}
+
+@media (hover: hover) {
+  .row:has(.link:hover) {
+    border-color: var(--green-dark);
+  }
+
+  .trash:hover {
+    background: #f6e7e4;
+    color: var(--danger-dark);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .row,
+  .trash { transition: none; }
+  .row:has(.link:active) { transform: none; }
 }

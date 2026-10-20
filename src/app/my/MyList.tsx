@@ -1,8 +1,9 @@
 "use client";
 
-import { Trash2 } from "lucide-react";
+import { CalendarDays, Trash2 } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
-import { ActivityCard, formatDate } from "@/components/ActivityCard/ActivityCard";
+import { formatDate } from "@/components/ActivityCard/ActivityCard";
 import { ButtonLink } from "@/components/Button/Button";
 import { EmptyState } from "@/components/EmptyState/EmptyState";
 import { ConfirmModal } from "@/components/Modal/Modal";
@@ -12,7 +13,7 @@ import styles from "./MyList.module.css";
 
 type Item = { id: string; title: string; createdAt: number };
 
-/** Newest first (R17). Delete via the trash icon, with confirmation (R18). */
+/** Raised rows like the library, newest first (R17). Delete via the small trash icon, with confirmation (R18). */
 export function MyList({ items: all }: { items: Item[] }) {
   const toast = useToast();
   // Track deletions rather than copying the list, so a refresh (e.g. a title saved on the way here) shows through.
@@ -35,21 +36,20 @@ export function MyList({ items: all }: { items: Item[] }) {
   }
 
   return (
-    <main className={styles.main}>
-      <p className={styles.count}>{items.length} פעולות</p>
+    <>
       <ul className={styles.list}>
         {items.map((item) => (
-          <li key={item.id}>
-            <ActivityCard
-              href={`/activity/${item.id}`}
-              title={item.title}
-              subtitle={formatDate(item.createdAt)}
-              aside={
-                <button type="button" className={styles.trash} aria-label={`מחיקת ${item.title}`} onClick={() => setConfirm(item)}>
-                  <Trash2 size={20} aria-hidden />
-                </button>
-              }
-            />
+          <li key={item.id} className={styles.row}>
+            <Link href={`/activity/${item.id}`} className={styles.link}>
+              <span className={styles.title}>{item.title}</span>
+              <span className={styles.date}>
+                <CalendarDays size={14} aria-hidden />
+                {formatDate(item.createdAt)}
+              </span>
+            </Link>
+            <button type="button" className={styles.trash} aria-label={`מחיקת ${item.title}`} onClick={() => setConfirm(item)}>
+              <Trash2 size={16} aria-hidden />
+            </button>
           </li>
         ))}
       </ul>
@@ -74,6 +74,6 @@ export function MyList({ items: all }: { items: Item[] }) {
           setConfirm(null);
         }}
       />
-    </main>
+    </>
   );
 }
