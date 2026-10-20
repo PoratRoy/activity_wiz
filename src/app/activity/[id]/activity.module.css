@@ -178,10 +178,13 @@
   font-size: clamp(26px, 7.4vw, 32px);
   line-height: 1.2;
   letter-spacing: -0.6px;
+  text-align: center;
   text-wrap: balance;
 }
 
+/* Centered under the title. */
 .page [data-activity-head] > div {
+  justify-content: center;
   gap: 6px;
 }
 
