@@ -28,6 +28,7 @@ async function copyText(text: string): Promise<boolean> {
 export function ActionButton({
   icon,
   label,
+  ariaLabel,
   onClick,
   accent,
   danger,
@@ -35,6 +36,8 @@ export function ActionButton({
 }: {
   icon: ReactNode;
   label: string;
+  /** Fuller name for assistive tech when the visible label is shortened. */
+  ariaLabel?: string;
   onClick: () => void;
   accent?: boolean;
   danger?: boolean;
@@ -46,6 +49,7 @@ export function ActionButton({
       className={`${styles.action} ${accent ? styles.accent : ""} ${danger ? styles.danger : ""}`}
       onClick={onClick}
       disabled={disabled}
+      aria-label={ariaLabel}
       data-variant={accent ? "accent" : danger ? "danger" : undefined}
     >
       {icon}

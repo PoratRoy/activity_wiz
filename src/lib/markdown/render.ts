@@ -9,6 +9,11 @@ const escapeHtml = (s: string) =>
 
 const UNDERLINE_TAG = /^<\/?u>$/i;
 // Trailing step length in AI step headings: "### 1. name (10 דק׳)".
+// Sections a page may style differently, by heading text (AI activities, games and pasted library ones).
+const SECTIONS: [RegExp, string][] = [
+  [/^ציוד/, "equipment"],
+  [/^טיפים/, "tips"],
+];
 const STEP_MINUTES = /\s*\((\d+)\s*דק(?:׳|'|&#39;)\)\s*$/;
 
 const md = new Marked({
@@ -32,6 +37,10 @@ const md = new Marked({
   renderer: {
     heading({ tokens, depth }) {
       const inner = this.parser.parseInline(tokens);
+      if (depth === 2) {
+        const section = SECTIONS.find(([re]) => re.test(inner.trim()))?.[1];
+        return section ? `<h2 data-section="${section}">${inner}</h2>\n` : false;
+      }
       const minutes = depth === 3 ? STEP_MINUTES.exec(inner) : null;
       if (!minutes) return false;
       return `<h3>${inner.slice(0, minutes.index)} <span data-minutes>${minutes[1]} דק׳</span></h3>\n`;

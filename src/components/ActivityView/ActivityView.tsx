@@ -1,13 +1,13 @@
 import type { ReactNode } from "react";
 import { AdSlot } from "@/components/AdSlot/AdSlot";
-import { ChipRow } from "@/components/Chip/Chip";
+import { ChipRow, type ChipItem } from "@/components/Chip/Chip";
 import { renderMarkdown } from "@/lib/markdown/render";
 import styles from "./ActivityView.module.css";
 
 /**
  * Read mode of an activity (draft, personal, public): title, labeled chips, Markdown body, ad slot.
  * The page renders its ActionBar before this (pinned at the top) and may add a banner (`before`).
- * The `data-*` hooks let a route restyle the shared layout (see `src/app/activity/[id]`).
+ * The `data-*` hooks let a page restyle the shared layout (see `ActivityPage`).
  */
 export function ActivityView({
   title,
@@ -17,7 +17,7 @@ export function ActivityView({
 }: {
   title: string;
   bodyMd: string;
-  chips: (string | null | undefined)[];
+  chips: ChipItem[];
   before?: ReactNode;
 }) {
   return (

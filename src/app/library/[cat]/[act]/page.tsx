@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { notFound, permanentRedirect } from "next/navigation";
 import { ActivityView } from "@/components/ActivityView/ActivityView";
-import { TopBar } from "@/components/TopBar/TopBar";
-import { activityChips, typeLabel } from "@/data/options";
+import { ActivityPage } from "@/components/ActivityPage/ActivityPage";
+import { activityDetailChips, typeLabel } from "@/data/options";
 import { getCategory, getPublicActivity } from "@/lib/db/queries";
 import { excerpt } from "@/lib/markdown/excerpt";
 import { getSiteUrl } from "@/lib/site";
@@ -58,8 +58,7 @@ export default async function PublicActivityPage({ params }: Props) {
   };
 
   return (
-    <>
-      <TopBar title={category.title} back={categoryPath(category)} />
+    <ActivityPage label={category.title} back={categoryPath(category)} name={activity.title}>
       <script
         type="application/ld+json"
         // JSON.stringify output with "<" escaped cannot break out of the script tag.
@@ -69,8 +68,8 @@ export default async function PublicActivityPage({ params }: Props) {
       <ActivityView
         title={activity.title}
         bodyMd={activity.bodyMd}
-        chips={activityChips(typeLabel(null, activity.type), activity.place, activity.duration)}
+        chips={activityDetailChips(typeLabel(null, activity.type), activity.place, activity.duration)}
       />
-    </>
+    </ActivityPage>
   );
 }

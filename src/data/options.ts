@@ -1,3 +1,4 @@
+import type { ChipItem } from "@/components/Chip/Chip";
 import movementsJson from "./movements.json";
 
 // Exact form choices from docs/product.md ("Form choices"). Stored values are the Hebrew labels,
@@ -65,6 +66,19 @@ export function activityChips(type: string | null, place: string | null | undefi
     place ? `מקום: ${place}` : null,
     duration ? `זמן: ${duration}` : null,
   ].filter((c): c is string => !!c);
+}
+
+/** Type, place and length as bare values, each tagged with its kind so a page can show an icon instead of a label. */
+export function activityDetailChips(
+  type: string | null,
+  place: string | null | undefined,
+  duration: string | null | undefined,
+): ChipItem[] {
+  return [
+    type ? { label: type, kind: "type" } : null,
+    place ? { label: place, kind: "place" } : null,
+    duration ? { label: duration, kind: "duration" } : null,
+  ];
 }
 
 export const asOptions = (values: string[]) => values.map((v) => ({ value: v, label: v }));

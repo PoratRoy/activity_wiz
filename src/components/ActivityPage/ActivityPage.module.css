@@ -1,4 +1,4 @@
-/* Personal activity in the approved forest/ivory look. Reading comes first: no artwork, and every
+/* Personal and library activity pages in the approved forest/ivory look. Reading comes first: no artwork, and every
    accent (section markers, step times, callouts) helps scan the text while guiding.
    Route-local palette keeps the shell, toasts and navigation in the home theme. */
 :global(body):has(.page) {
@@ -70,7 +70,7 @@
 .page > header > div:first-child button:active,
 .page > header > div:first-child a:active { background: rgb(250 248 241 / 0.14); }
 
-/* "הפעולה" gives way to the activity's name once the big title scrolls under the bar. */
+/* The bar's label ("הפעולה", or the library category) gives way to the activity's name once the big title scrolls under the bar. */
 .barTitle {
   display: grid;
   min-width: 0;
@@ -199,7 +199,7 @@
 }
 
 /* Type, place and length, each with an icon instead of a "סוג:" style label, to fit one row. */
-.page [data-activity-head] > div:has(> span:nth-child(3)) > span::before {
+.page [data-activity-head] [data-kind]::before {
   content: "";
   flex-shrink: 0;
   width: 15px;
@@ -208,15 +208,15 @@
   mask: var(--icon) center / contain no-repeat;
 }
 
-.page [data-activity-head] > div > span:nth-child(1) {
+.page [data-activity-head] [data-kind="type"] {
   --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z'/%3E%3Ccircle cx='7.5' cy='7.5' r='.5' fill='black'/%3E%3C/svg%3E");
 }
 
-.page [data-activity-head] > div > span:nth-child(2) {
+.page [data-activity-head] [data-kind="place"] {
   --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0'/%3E%3Ccircle cx='12' cy='10' r='3'/%3E%3C/svg%3E");
 }
 
-.page [data-activity-head] > div > span:nth-child(3) {
+.page [data-activity-head] [data-kind="duration"] {
   --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cpath d='M12 6v6l4 2'/%3E%3C/svg%3E");
 }
 
@@ -327,8 +327,8 @@
 .page [data-reading] li::marker { color: var(--green); }
 .page [data-reading] ol > li::marker { color: var(--green-dark); font-weight: 700; }
 
-/* Equipment (the first section, when present): a quiet white checklist card. */
-.page [data-reading] > h2:first-of-type + ul {
+/* Equipment (found by its heading, see renderMarkdown): a quiet white checklist card. */
+.page [data-reading] > h2[data-section="equipment"] + ul {
   padding: 8px 16px;
   padding-inline-start: 36px;
   border: 2px solid #e3e8de;
@@ -336,18 +336,18 @@
   background: var(--surface);
 }
 
-.page [data-reading] > h2:first-of-type + ul > li { margin: 0; padding-block: 6px; }
-.page [data-reading] > h2:first-of-type + ul > li + li { border-top: 1px dashed #e3e8de; }
+.page [data-reading] > h2[data-section="equipment"] + ul > li { margin: 0; padding-block: 6px; }
+.page [data-reading] > h2[data-section="equipment"] + ul > li + li { border-top: 1px dashed #e3e8de; }
 
-/* Leader tips (the last section): a soft sage card. */
-.page [data-reading] > h2:last-of-type + ul {
+/* Leader tips: a soft sage card. */
+.page [data-reading] > h2[data-section="tips"] + ul {
   padding: 14px 16px;
   padding-inline-start: 36px;
   border-radius: 18px;
   background: #f1f6ec;
 }
 
-.page [data-reading] > h2:last-of-type + ul > li:last-child { margin-bottom: 0; }
+.page [data-reading] > h2[data-section="tips"] + ul > li:last-child { margin-bottom: 0; }
 
 /* ---- Edit mode: the editor in the form field look ---- */
 

@@ -20,7 +20,9 @@ export function PublicActions({ publicId, title, bodyMd }: { publicId: string; t
       {signedIn && (
         <ActionButton
           icon={<BookmarkPlus size={20} aria-hidden />}
-          label={saving ? "שומרים…" : "שמירה לפעולות שלי"}
+          // Short so the three actions fit one row; the full name stays for screen readers and the toast.
+          label={saving ? "שומרים…" : "שמירה"}
+          ariaLabel="שמירה לפעולות שלי"
           disabled={saving}
           onClick={async () => {
             setSaving(true);

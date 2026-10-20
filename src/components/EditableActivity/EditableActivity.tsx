@@ -7,7 +7,7 @@ import { ActionBar, ActionButton } from "@/components/ActionBar/ActionBar";
 import barStyles from "@/components/ActionBar/ActionBar.module.css";
 import { ActivityView } from "@/components/ActivityView/ActivityView";
 import viewStyles from "@/components/ActivityView/ActivityView.module.css";
-import { ChipRow } from "@/components/Chip/Chip";
+import { ChipRow, type ChipItem } from "@/components/Chip/Chip";
 import styles from "./EditableActivity.module.css";
 
 // Tiptap only downloads when the user enters edit mode.
@@ -32,7 +32,7 @@ export function EditableActivity({
   onSave,
 }: {
   initial: Content;
-  chips: (string | null | undefined)[];
+  chips: ChipItem[];
   before?: ReactNode;
   onSave: (c: Content) => Promise<boolean>;
 }) {
