@@ -54,6 +54,18 @@
   background: var(--cream);
 }
 
+/* Fields fade out just below the seam instead of meeting it with a hard edge. At rest it only
+   covers the form's top padding. */
+.masthead::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: 100%;
+  height: 16px;
+  background: linear-gradient(to bottom, var(--cream), rgb(250 248 241 / 0));
+  pointer-events: none;
+}
+
 /* Above the compass (z-index 32), so the avatar menu opens over the artwork. */
 .masthead > header {
   z-index: 33;
@@ -210,10 +222,17 @@
   border-radius: 18px;
   background: var(--surface);
   box-shadow: 0 3px 0 #ced7c9;
-  overflow: hidden;
+  overflow: clip;
 }
 
-.more > div { border: 0; border-radius: 0; background: none; }
+.more > div {
+  border: 0;
+  border-radius: 0;
+  background: none;
+  /* Opening it scrolls the card into view clear of the sticky masthead and the pinned button. */
+  scroll-margin-top: 136px;
+  scroll-margin-bottom: calc(98px + var(--tabbar-h) + var(--adbar-h) + env(safe-area-inset-bottom));
+}
 
 .more > div > button {
   min-height: 52px;
@@ -268,8 +287,20 @@
   z-index: 5;
   margin-top: auto;
   margin-inline: -24px;
-  padding: 10px 24px 12px;
-  background: linear-gradient(to top, var(--cream) 78%, transparent);
+  padding: 16px 24px;
+  background: var(--cream);
+}
+
+/* Fields scrolling under the pinned button fade out over the form's 16px gap instead of being
+   cut off. At rest it only covers that gap, so it never overlaps the last field. */
+.footer::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  bottom: 100%;
+  height: 16px;
+  background: linear-gradient(to top, var(--cream), rgb(250 248 241 / 0));
+  pointer-events: none;
 }
 
 .footer button {
