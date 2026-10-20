@@ -1,43 +1,18 @@
-import { Compass, Flame, Heart, Leaf, Mountain, Snowflake, Star, Sun, Tent, Users } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import styles from "./CategoryCard.module.css";
 
-// Yellow gets dark text for contrast.
-const COLORS = [
-  { bg: "var(--green)", fg: "#fff" },
-  { bg: "var(--yellow)", fg: "var(--text)" },
-  { bg: "var(--card-blue)", fg: "#fff" },
-  { bg: "var(--card-orange)", fg: "#fff" },
-];
-const ICONS = [Tent, Sun, Leaf, Star, Flame, Compass, Heart, Users, Mountain, Snowflake];
+// Shared landing artwork until approved category art exists. Map it here by category id
+// (only games, new year and holidays may get their own); never by hash or position.
+const FALLBACK_ART = "/illustrations/home-trail.webp";
+const ART: Record<string, string> = {};
 
-function hash(s: string): number {
-  let h = 0;
-  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0;
-  return h;
-}
-
-/** Square category tile: colors rotate by position, the icon is picked from the id so it stays stable. */
-export function CategoryCard({
-  id,
-  index,
-  title,
-  href,
-  count,
-}: {
-  id: string;
-  index: number;
-  title: string;
-  href: string;
-  count?: number;
-}) {
-  const Icon = ICONS[hash(id) % ICONS.length];
-  const color = COLORS[index % COLORS.length];
+/** Full-width raised row: category name on the right, a small illustration thumbnail on the left. */
+export function CategoryCard({ id, title, href }: { id: string; title: string; href: string }) {
   return (
-    <Link href={href} className={styles.card} style={{ background: color.bg, color: color.fg }}>
-      <Icon size={40} strokeWidth={2.2} aria-hidden className={styles.icon} />
+    <Link href={href} className={styles.card}>
       <span className={styles.title}>{title}</span>
-      {count !== undefined && <span className={styles.count}>{count} פעולות</span>}
+      <Image src={ART[id] ?? FALLBACK_ART} alt="" width={72} height={52} unoptimized className={styles.thumb} />
     </Link>
   );
 }
