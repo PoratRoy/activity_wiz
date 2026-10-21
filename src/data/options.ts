@@ -21,6 +21,9 @@ export const DURATION_MINUTES: Record<string, number> = { "חצי שעה": 30, "
 export const GROUP_SIZE_MAX: Record<string, number> = { "1-5": 5, "5-10": 10, "10-20": 20, "20-30": 30, "30+": 35 };
 
 export const EQUIPMENT = ["לא משנה", "ללא ציוד"];
+/** Which ages a library activity fits. Public activities only: saving a copy doesn't carry it. */
+export const AGES = ["כיתות א - ה", "כיתות ו - ט", "כיתות י - יב", "לא משנה"];
+export const ANY_AGE = "לא משנה";
 export const TEAMS = ["לא משנה", "עם חלוקה לקבוצות", "ללא חלוקה לקבוצות"];
 export const SHABBAT = ["לא משנה", "מותאם לשומרי שבת"];
 /** Values the create form's switches store when on; off stores "" (no preference). */
@@ -72,18 +75,23 @@ export function activityChips(type: string | null, place: string | null | undefi
   ].filter((c): c is string => !!c);
 }
 
-/** Type, place and length as bare values, each tagged with its kind so a page can show an icon instead of a label.
- * Missing and "לא משנה" values are left empty, and ChipRow skips them. */
+/** Type, place, length and (library only) age as bare values, each tagged with its kind so a page can show an icon
+ * instead of a label. Missing and "לא משנה" values are left empty, and ChipRow skips them. */
 export function activityDetailChips(
   type: string | null,
   place: string | null | undefined,
   duration: string | null | undefined,
+  age?: string | null,
 ): ChipItem[] {
   return [
     { label: shown(type) ?? "", kind: "type" },
     { label: shown(place) ?? "", kind: "place" },
     { label: shown(duration) ?? "", kind: "duration" },
+    { label: shown(age) ?? "", kind: "age" },
   ];
 }
+
+/** An age worth showing: null for "לא משנה" or missing. */
+export const shownAge = (age: string | null | undefined) => shown(age);
 
 export const asOptions = (values: string[]) => values.map((v) => ({ value: v, label: v }));

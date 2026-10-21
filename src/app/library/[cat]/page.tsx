@@ -5,6 +5,7 @@ import { ActivityCard } from "@/components/ActivityCard/ActivityCard";
 import { AdSlot } from "@/components/AdSlot/AdSlot";
 import { EmptyState } from "@/components/EmptyState/EmptyState";
 import { ForestPage } from "@/components/ForestPage/ForestPage";
+import { shownAge } from "@/data/options";
 import { getCategory, listPublicActivities } from "@/lib/db/queries";
 import { excerpt } from "@/lib/markdown/excerpt";
 import { categoryPath, parseId, publicActivityPath, sameSegment } from "@/lib/slug";
@@ -48,7 +49,12 @@ export default async function CategoryPage({ params }: Props) {
           {activities.map((a, i) => (
             <Fragment key={a.id}>
               <li>
-                <ActivityCard href={publicActivityPath(category, a)} title={a.title} subtitle={excerpt(a.bodyMd, 110)} />
+                <ActivityCard
+                  href={publicActivityPath(category, a)}
+                  title={a.title}
+                  subtitle={excerpt(a.bodyMd, 110)}
+                  aside={shownAge(a.age) && <span className={styles.age}>{a.age}</span>}
+                />
               </li>
               {i === 2 && (
                 <li>

@@ -201,6 +201,7 @@ export async function listPublicActivities(categoryId: string) {
       id: publicActivity.id,
       title: publicActivity.title,
       bodyMd: publicActivity.bodyMd,
+      age: publicActivity.age,
       createdAt: publicActivity.createdAt,
     })
     .from(publicActivity)
@@ -225,7 +226,7 @@ export async function getPublicActivity(id: string) {
 
 export async function insertPublicActivity(
   categoryId: string,
-  data: ActivityDetails & { title: string; bodyMd: string },
+  data: ActivityDetails & { title: string; bodyMd: string; age: string },
 ): Promise<string> {
   const id = newId();
   await getDb()
@@ -243,6 +244,7 @@ export async function insertPublicActivity(
       teams: data.teams ?? null,
       shabbat: data.shabbat ?? null,
       notes: data.notes ?? null,
+      age: data.age,
       createdAt: Date.now(),
     });
   return id;

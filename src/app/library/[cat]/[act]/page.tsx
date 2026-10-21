@@ -68,7 +68,7 @@ export default async function PublicActivityPage({ params }: Props) {
       <ActivityView
         title={activity.title}
         bodyMd={activity.bodyMd}
-        chips={activityDetailChips(typeLabel(null, activity.type), activity.place, activity.duration)}
+        chips={activityDetailChips(typeLabel(null, activity.type), activity.place, activity.duration, activity.age)}
       />
     </ActivityPage>
   );

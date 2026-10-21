@@ -9,3 +9,16 @@
 
 /* Library root category rows and a category's activity rows. */
 .rows { gap: 12px; }
+
+/* Which ages an activity fits, at the row's end; hidden for "לא משנה". */
+.age {
+  display: block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--green-light);
+  color: var(--green-dark);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 18px;
+  white-space: nowrap;
+}

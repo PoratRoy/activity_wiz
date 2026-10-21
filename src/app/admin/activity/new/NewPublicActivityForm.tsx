@@ -9,7 +9,7 @@ import { PickerSheet } from "@/components/PickerSheet/PickerSheet";
 import { TextArea, TextField } from "@/components/TextField/TextField";
 import { TileGroup, type TileOption } from "@/components/Tile/Tile";
 import { useToast } from "@/components/Toast/Toast";
-import { asOptions, DURATIONS, EQUIPMENT, GENERIC_TYPE_LABELS, NOTES_MAX, PLACES, SHABBAT, TEAMS } from "@/data/options";
+import { AGES, ANY_AGE, asOptions, DURATIONS, EQUIPMENT, GENERIC_TYPE_LABELS, NOTES_MAX, PLACES, SHABBAT, TEAMS } from "@/data/options";
 import { TITLE_MAX } from "@/lib/draft";
 import { renderMarkdown } from "@/lib/markdown/render";
 import { createPublicActivity, type FieldErrors, type PublicActivityInput } from "../../actions";
@@ -32,6 +32,7 @@ export function NewPublicActivityForm({ categories, initialCategory }: { categor
     teams: "",
     shabbat: "",
     notes: "",
+    age: ANY_AGE,
   });
   const [errors, setErrors] = useState<FieldErrors>({});
   const [pending, setPending] = useState(false);
@@ -75,6 +76,8 @@ export function NewPublicActivityForm({ categories, initialCategory }: { categor
       {err("place")}
       <TileGroup name="duration" label="משך" columns={3} options={asOptions(DURATIONS)} value={form.duration} onChange={set("duration")} />
       {err("duration")}
+      <TileGroup name="age" label="גיל" options={asOptions(AGES)} value={form.age} onChange={set("age")} />
+      {err("age")}
       <Collapsible title="עוד אפשרויות">
         <TileGroup name="equipment" label="ציוד" allowClear options={asOptions(EQUIPMENT)} value={form.equipment} onChange={set("equipment")} />
         <TileGroup name="teams" label="חלוקה לקבוצות" allowClear options={asOptions(TEAMS)} value={form.teams} onChange={set("teams")} />

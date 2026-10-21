@@ -74,6 +74,8 @@ export const publicActivity = sqliteTable(
     teams: text("teams"),
     shabbat: text("shabbat"),
     notes: text("notes"),
+    /** Which ages it fits (AGES in src/data/options.ts). Shown in the library only; not copied when saved. */
+    age: text("age").notNull().default("לא משנה"),
     createdAt: integer("created_at").notNull(),
   },
   (t) => [index("public_activity_category_created_idx").on(t.categoryId, t.createdAt)],

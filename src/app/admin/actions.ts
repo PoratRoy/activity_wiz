@@ -1,7 +1,7 @@
 "use server";
 
 import { CATEGORY_KEY_PATTERN } from "@/data/libraryImages";
-import { DURATIONS, EQUIPMENT, GENERIC_TYPE_LABELS, NOTES_MAX, PLACES, SHABBAT, TEAMS } from "@/data/options";
+import { AGES, DURATIONS, EQUIPMENT, GENERIC_TYPE_LABELS, NOTES_MAX, PLACES, SHABBAT, TEAMS } from "@/data/options";
 import { requireAdmin } from "@/lib/auth/admin";
 import {
   countPublicActivities,
@@ -79,6 +79,7 @@ export type PublicActivityInput = {
   teams: string;
   shabbat: string;
   notes: string;
+  age: string;
 };
 
 export type FieldErrors = Partial<Record<keyof PublicActivityInput, string>>;
@@ -99,6 +100,7 @@ function validate(a: PublicActivityInput): FieldErrors {
   if (a.teams && !TEAMS.includes(a.teams)) e.teams = "יש לבחור אפשרות";
   if (a.shabbat && !SHABBAT.includes(a.shabbat)) e.shabbat = "יש לבחור אפשרות";
   if (a.notes.length > NOTES_MAX) e.notes = `עד ${NOTES_MAX} תווים`;
+  if (!AGES.includes(a.age)) e.age = "יש לבחור גיל";
   return e;
 }
 
@@ -117,6 +119,7 @@ export async function createPublicActivity(input: PublicActivityInput): Promise<
     teams: str(input?.teams),
     shabbat: str(input?.shabbat),
     notes: str(input?.notes),
+    age: str(input?.age),
   };
   const errors = validate(a);
   if (Object.keys(errors).length) return { errors };
@@ -132,6 +135,7 @@ export async function createPublicActivity(input: PublicActivityInput): Promise<
     teams: a.teams || null,
     shabbat: a.shabbat || null,
     notes: a.notes || null,
+    age: a.age,
   });
   return { id, categoryId: a.categoryId };
 }

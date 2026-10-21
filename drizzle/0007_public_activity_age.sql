@@ -1,0 +1,1 @@
+ALTER TABLE `public_activity` ADD `age` text DEFAULT 'לא משנה' NOT NULL;
