@@ -91,7 +91,7 @@
   padding: 10px 8px;
   border: 2px solid #ced7c9;
   border-radius: 16px;
-  background: #f9f4e8;
+  background: var(--surface);
   box-shadow: 0 3px 0 #ced7c9;
   font-weight: 500;
   line-height: 1.3;

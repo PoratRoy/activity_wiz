@@ -1,11 +1,11 @@
-/* The raised rows of "My activities" (docs/design.md → Library): cream rows like the category cards. */
+/* The raised rows of "My activities" (docs/design.md → Library): white rows on the ivory sheet. */
 .card {
   position: relative;
   display: flex;
   align-items: center;
   border: 2px solid #ced7c9;
   border-radius: 16px;
-  background: #f9f4e8;
+  background: var(--surface);
   box-shadow: 0 2px 0 #ced7c9;
   transition: transform 100ms ease, box-shadow 100ms ease, border-color 120ms ease;
 }
