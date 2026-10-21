@@ -23,13 +23,14 @@
   box-shadow: none;
 }
 
-/* The whole row is the link; the end padding leaves room for the trash button laid over it. */
+/* The whole row is the link; the end padding leaves room for the trash button laid over it.
+   One-line title and date, so every row has the same height. */
 .link {
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 2px;
-  min-height: 72px;
+  height: 72px;
   padding-block: 12px;
   padding-inline: 20px 56px;
   border-radius: 14px;
@@ -40,7 +41,9 @@
   font-size: 17px;
   font-weight: 700;
   line-height: 24px;
-  overflow-wrap: anywhere;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 /* Quieter than the title, so the name leads. */
