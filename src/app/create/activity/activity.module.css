@@ -214,13 +214,6 @@
   margin-block: -8px -4px;
 }
 
-.error {
-  margin: -8px 0 0;
-  color: var(--danger-dark);
-  font-size: 14px;
-  font-weight: 500;
-}
-
 /* Follows the fields when they fit; when they don't, it pins above the bottom navigation. */
 .footer {
   position: sticky;
@@ -258,7 +251,15 @@
 }
 
 .footer button svg { order: 1; flex-shrink: 0; color: var(--yellow); }
+.footer button:disabled svg { color: currentColor; }
 .footer button:active:not(:disabled) { transform: translateY(2px); }
+/* Disabled until every required field is filled: a quiet, flat placeholder that doesn't compete with the form. */
+.footer button:disabled {
+  --btn-bg: #eef0ea;
+  --btn-fg: #87918a;
+  --btn-border: #e2e6dd;
+  box-shadow: none;
+}
 
 @media (hover: hover) {
   .form button[role="radio"]:hover { border-color: var(--green); background: var(--green-light); }

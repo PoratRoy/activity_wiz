@@ -41,7 +41,6 @@ export function ActivityForm({ accountGroup }: { accountGroup: GroupInput | null
   const [group, setGroup] = useState<GroupInput | null>(accountGroup);
   const [form, setForm] = useState<ActivityInput>(EMPTY);
   const [ready, setReady] = useState(false);
-  const [touched, setTouched] = useState(false);
 
   // Load the group (account first, then this browser) and any in-progress values.
   useEffect(() => {
@@ -79,11 +78,10 @@ export function ActivityForm({ accountGroup }: { accountGroup: GroupInput | null
     onChange: (checked: boolean) => set(field)(checked ? on : ""),
   });
   const isGame = form.type === "playTime";
-  const show = (field: keyof ActivityInput) => (touched || form[field] !== "") && errors[field];
+  const complete = !hasErrors(errors);
 
   const onSubmit = () => {
-    setTouched(true);
-    if (hasErrors(errors)) return;
+    if (!complete) return;
     const duration = isGame ? "" : form.duration;
     requestStore.save({ group, activity: { ...form, duration, subject: form.subject.trim(), notes: form.notes.trim() } });
     router.push("/create/generating");
@@ -102,16 +100,11 @@ export function ActivityForm({ accountGroup }: { accountGroup: GroupInput | null
       />
 
       <SubjectField value={form.subject} onChange={set("subject")} type={(form.type || null) as TypeKey | null} />
-      {show("subject") && <p className={styles.error}>{errors.subject}</p>}
 
       <TileGroup name="place" label="מקום" columns={3} options={asOptions(PLACES)} value={form.place} onChange={set("place")} />
-      {touched && errors.place && <p className={styles.error}>{errors.place}</p>}
 
       {!isGame && (
-        <>
-          <TileGroup name="duration" label="משך" columns={3} options={asOptions(DURATIONS)} value={form.duration} onChange={set("duration")} />
-          {touched && errors.duration && <p className={styles.error}>{errors.duration}</p>}
-        </>
+        <TileGroup name="duration" label="משך" columns={3} options={asOptions(DURATIONS)} value={form.duration} onChange={set("duration")} />
       )}
 
       <div className={styles.more}>
@@ -129,12 +122,11 @@ export function ActivityForm({ accountGroup }: { accountGroup: GroupInput | null
             value={form.notes}
             onChange={(e) => set("notes")(e.target.value)}
           />
-          {show("notes") && <p className={styles.error}>{errors.notes}</p>}
         </Collapsible>
       </div>
 
       <div className={styles.footer}>
-        <Button type="submit" icon={<Sparkles size={20} aria-hidden />}>
+        <Button type="submit" disabled={!complete} icon={<Sparkles size={20} aria-hidden />}>
           יצירת הפעולה
         </Button>
       </div>
