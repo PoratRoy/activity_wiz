@@ -69,7 +69,7 @@
   height: 88px;
   object-fit: contain;
   pointer-events: none;
-  transform: rotate(-9deg);
+  transform: translate(10px, -5px) rotate(-9deg);
 }
 
 .form legend,
