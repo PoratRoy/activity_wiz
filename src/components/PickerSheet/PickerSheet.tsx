@@ -59,7 +59,7 @@ export function PickerSheet({ label, placeholder, options, value, onChange }: Pr
                     onClick={() => {
                       onChange(o.value);
                       clearTimeout(closeTimer.current);
-                      closeTimer.current = setTimeout(close, 5);
+                      closeTimer.current = setTimeout(close, 15);
                     }}
                   >
                     <span>{o.label}</span>

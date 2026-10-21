@@ -10,10 +10,10 @@
   height: 36px;
   padding: 0;
   overflow: hidden;
-  border: 2px solid var(--border);
+  border: 2px solid var(--green);
   border-radius: 50%;
-  background: var(--surface);
-  color: var(--text-muted);
+  background: var(--green);
+  color: #fff;
 }
 
 .avatar img {
