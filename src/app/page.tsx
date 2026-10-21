@@ -53,6 +53,14 @@ export default async function HomePage() {
               </ButtonLink>
               {!signedIn && <GoogleSignInButton />}
             </div>
+            {/* <details> keeps the text in the server HTML for search engines while it stays folded. */}
+            <details className={styles.about}>
+              <summary>אודות</summary>
+              <p>
+                יצירת פעולות מותאמות אישית לתנועות הנוער בעזרת בינה מלאכותית. מתאים למדריכים שרוצים להעשיר את הפעילות החינוכית
+                והחברתית.
+              </p>
+            </details>
           </div>
           <Image
             src="/illustrations/home-trail.webp"

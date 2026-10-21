@@ -117,6 +117,46 @@
   .actions > a:hover { background: var(--green-dark); }
 }
 
+/* "אודות": an underlined text link; the text opens below it as an overlay, so the hero doesn't move. */
+.about {
+  position: relative;
+  align-self: center;
+  margin-top: 14px;
+}
+.about summary {
+  list-style: none;
+  cursor: pointer;
+  color: var(--green-dark);
+  font-size: 15px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.about summary::-webkit-details-marker { display: none; }
+.about p {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  z-index: 2;
+  width: min(300px, 80vw);
+  margin: 0;
+  padding: 12px 16px;
+  border: 2px solid #ced7c9;
+  border-radius: 16px;
+  background: var(--surface);
+  box-shadow: 0 3px 0 #ced7c9;
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.5;
+  transform: translateX(-50%);
+  animation: about-open 160ms ease-out;
+}
+@keyframes about-open {
+  from { opacity: 0; transform: translate(-50%, -6px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .about p { animation: none; }
+}
+
 .landscape {
   position: absolute;
   z-index: 0;
