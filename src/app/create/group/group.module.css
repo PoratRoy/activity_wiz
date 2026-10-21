@@ -38,8 +38,12 @@
   pointer-events: none;
 }
 
-/* Above the compass (z-index 32), so the avatar menu opens over the artwork. */
-.masthead > header { z-index: 33; }
+/* Above the compass (z-index 32), so the avatar menu opens over the artwork. Transparent (the
+   masthead is already green) so the bar itself doesn't hide the top of the compass. */
+.masthead > header {
+  z-index: 33;
+  background: transparent;
+}
 
 .form :focus-visible {
   outline: 3px solid var(--green-dark);
