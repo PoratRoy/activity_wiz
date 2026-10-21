@@ -10,9 +10,9 @@ import { SignInGate } from "@/components/SignInGate/SignInGate";
 import styles from "./BottomNav.module.css";
 
 const tabs = [
-  { href: "/", label: "בית", Icon: House, match: (p: string) => p === "/" },
-  { href: "/create/group", label: "יצירה", Icon: MagicWand, match: (p: string) => p.startsWith("/create") || p === "/activity/draft" },
-  { href: "/library", label: "מאגר", Icon: Notepad, match: (p: string) => p.startsWith("/library") },
+  { href: "/", label: "מסך הבית", Icon: House, match: (p: string) => p === "/" },
+  { href: "/create/group", label: "יצירת פעולות", Icon: MagicWand, match: (p: string) => p.startsWith("/create") || p === "/activity/draft" },
+  { href: "/library", label: "פעולות מוכנות", Icon: Notepad, match: (p: string) => p.startsWith("/library") },
   { href: "/my", label: "הפעולות שלי", Icon: Bookmark, match: (p: string) => p.startsWith("/my") || (p.startsWith("/activity/") && p !== "/activity/draft") },
 ];
 
