@@ -145,6 +145,8 @@ export class RateLimiter extends DurableObject {
 }
 ```
 
+Every write also sets `expiresAt` and an alarm for the end of the window. `alarm()` calls `storage.deleteAll()` once the window is over (or moves the alarm if a newer write extended it), so keys that stop being used leave no data behind.
+
 It also has `count(max, windowMs)`, a fixed-window counter used for the per-IP attempt guard (`ip:gen:{ip}`, 20 per minute, checked first in `generateActivity`) and the per-user add and autosave limits.
 
 Each Durable Object instance handles its requests one at a time, which makes the check and the update atomic for each key. Use the helpers in `src/lib/rate-limit.ts`: `hitRateLimit(key)` and `hitBurstLimit(key, max, windowMs)`. `clientIp()` reads `cf-connecting-ip`.

@@ -73,7 +73,7 @@ D1 enforces foreign keys, so deleting a category cascades to its activities. Slu
 
 | Data | Where | Shape |
 | --- | --- | --- |
-| Rate limit | Durable Object `RateLimiter`, one instance per key: `u:{userId}` / `g:{guestId}` (30-second window), `ip:gen:{ip}` (attempts per minute), `add:{userId}` (copies and claims), `save:{userId}` (autosave) | `lastAt` for single-window keys; `window: { start, n }` for counted keys |
+| Rate limit | Durable Object `RateLimiter`, one instance per key: `u:{userId}` / `g:{guestId}` (30-second window), `ip:gen:{ip}` (attempts per minute), `add:{userId}` (copies and claims), `save:{userId}` (autosave) | `lastAt` for single-window keys; `window: { start, n }` for counted keys; `expiresAt` on both. An alarm deletes the object's storage when the window ends. |
 | Guest identity + trial | Signed HttpOnly cookie `aw_guest` (HMAC with `GUEST_COOKIE_SECRET`) | `{ id, trialStart? }`. `trialStart` is set at the first generation. Max-age 1 year. |
 | Group (cache) | `localStorage['aw.group']` | `{ movement, grade, groupSize, gender }` |
 | Guest draft activity | `localStorage['aw.draft']` | `{ title, bodyMd, type, subject, place, duration, equipment?, teams?, shabbat?, notes?, createdAt }` |
