@@ -79,6 +79,9 @@ export function ActivityForm({ accountGroup }: { accountGroup: GroupInput | null
   });
   const isGame = form.type === "playTime";
   const complete = !hasErrors(errors);
+  // Empty fields only keep the button disabled; text that fails a check (too long, has a link) says why.
+  const textError =
+    (form.subject.trim() && errors.subject && `נושא: ${errors.subject}`) || (errors.notes && `הערות: ${errors.notes}`);
 
   const onSubmit = () => {
     if (!complete) return;
@@ -129,6 +132,11 @@ export function ActivityForm({ accountGroup }: { accountGroup: GroupInput | null
         <Button type="submit" disabled={!complete} icon={<Sparkles size={20} aria-hidden />}>
           יצירת הפעולה
         </Button>
+        {textError && (
+          <p className={styles.error} role="alert">
+            {textError}
+          </p>
+        )}
       </div>
     </form>
   );
