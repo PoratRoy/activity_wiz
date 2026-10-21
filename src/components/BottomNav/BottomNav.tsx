@@ -1,6 +1,6 @@
 "use client";
 
-import { BookOpen, Home, ListChecks, Lock, Sparkles } from "lucide-react";
+import { Bookmark, House, Lock, NotepadText, WandSparkles } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
@@ -9,10 +9,10 @@ import { SignInGate } from "@/components/SignInGate/SignInGate";
 import styles from "./BottomNav.module.css";
 
 const tabs = [
-  { href: "/", label: "בית", Icon: Home, match: (p: string) => p === "/" },
-  { href: "/create/group", label: "יצירה", Icon: Sparkles, match: (p: string) => p.startsWith("/create") || p === "/activity/draft" },
-  { href: "/library", label: "מאגר", Icon: BookOpen, match: (p: string) => p.startsWith("/library") },
-  { href: "/my", label: "הפעולות שלי", Icon: ListChecks, match: (p: string) => p.startsWith("/my") || (p.startsWith("/activity/") && p !== "/activity/draft") },
+  { href: "/", label: "בית", Icon: House, match: (p: string) => p === "/" },
+  { href: "/create/group", label: "יצירה", Icon: WandSparkles, match: (p: string) => p.startsWith("/create") || p === "/activity/draft" },
+  { href: "/library", label: "מאגר", Icon: NotepadText, match: (p: string) => p.startsWith("/library") },
+  { href: "/my", label: "הפעולות שלי", Icon: Bookmark, match: (p: string) => p.startsWith("/my") || (p.startsWith("/activity/") && p !== "/activity/draft") },
 ];
 
 /** Fixed bottom tabs. Guests see "הפעולות שלי" locked; tapping it opens the sign-in popup. */

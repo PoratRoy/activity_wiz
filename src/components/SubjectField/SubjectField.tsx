@@ -1,6 +1,6 @@
 "use client";
 
-import { Sparkles } from "lucide-react";
+import { WandSparkles } from "lucide-react";
 import { useRef, useState } from "react";
 import { TextField } from "@/components/TextField/TextField";
 import { useToast } from "@/components/Toast/Toast";
@@ -55,7 +55,7 @@ export function SubjectField({
       }}
       endSlot={
         <button type="button" className={styles.magic} onClick={suggest} aria-label="הצעה לנושא">
-          <Sparkles size={22} className={spinning ? styles.spin : undefined} aria-hidden />
+          <WandSparkles size={22} className={spinning ? styles.spin : undefined} aria-hidden />
         </button>
       }
     />

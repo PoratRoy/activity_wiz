@@ -1,6 +1,6 @@
 "use client";
 
-import { BookmarkPlus } from "lucide-react";
+import { Bookmark } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { ActionBar, ActionButton } from "@/components/ActionBar/ActionBar";
@@ -20,7 +20,7 @@ export function PublicActions({ publicId, title, bodyMd }: { publicId: string; t
     <ActionBar title={title} bodyMd={bodyMd}>
       {signedIn && (
         <ActionButton
-          icon={<BookmarkPlus size={20} aria-hidden />}
+          icon={<Bookmark size={20} aria-hidden />}
           // Short so the three actions fit one row; the full name stays for screen readers and the toast.
           label={saving ? "שומרים…" : "שמירה"}
           ariaLabel="שמירה לפעולות שלי"
