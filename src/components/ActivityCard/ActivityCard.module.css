@@ -23,7 +23,7 @@
   justify-content: center;
   gap: 2px;
   min-width: 0;
-  /* One line each for title, tags and excerpt, so every row has the same height. */
+  /* One line each for title, excerpt and tags, so every row has the same height. */
   min-height: 72px;
   padding: 12px 20px;
   border-radius: 14px;
@@ -39,12 +39,12 @@
   text-overflow: ellipsis;
 }
 
-/* Place, time and age, each with its icon (as on the activity page); one line, clipped when too long. */
+/* Age, place and time (place and time with the activity page's icons); one line, clipped when too long. */
 .tags {
   display: flex;
   gap: 6px;
   height: 22px;
-  margin-block: 2px;
+  margin-block-start: 4px;
   overflow: hidden;
 }
 
