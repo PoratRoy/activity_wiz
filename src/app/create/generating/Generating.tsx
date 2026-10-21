@@ -1,9 +1,9 @@
 "use client";
 
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Button, ButtonLink } from "@/components/Button/Button";
-import { Mascot } from "@/components/illustrations/Mascot";
 import { Oops } from "@/components/illustrations/Oops";
 import { SignInGate } from "@/components/SignInGate/SignInGate";
 import type { GenerateResult } from "@/lib/draft";
@@ -79,7 +79,7 @@ export function Generating() {
   if (view.kind === "loading") {
     return (
       <main className={styles.main} aria-busy="true">
-        <Mascot size={130} variant="bounce" />
+        <Image className={styles.animation} src="/animations/generating.webp" width={500} height={320} alt="" unoptimized priority />
         <h2 className={styles.title}>אנחנו על זה…</h2>
         <div className={styles.bar} role="progressbar" aria-label="יוצרים את הפעולה">
           <div className={styles.fill} />

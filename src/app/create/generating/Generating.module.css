@@ -9,6 +9,13 @@
   text-align: center;
 }
 
+/* The animation has a white background; multiply blends it into the page color. */
+.animation {
+  width: 220px;
+  height: auto;
+  mix-blend-mode: multiply;
+}
+
 .title {
   font-size: var(--fs-h2);
 }
