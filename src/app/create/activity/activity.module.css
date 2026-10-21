@@ -7,7 +7,7 @@
 }
 
 /* Unlike the short group form, this one scrolls: the rounded ivory seam belongs to the sticky
-   masthead, so fields slide under it instead of showing behind the compass. */
+   masthead, so fields slide under it instead of showing behind the illustration. */
 .masthead {
   position: sticky;
   top: 0;
@@ -38,8 +38,8 @@
   pointer-events: none;
 }
 
-/* Above the compass (z-index 32), so the avatar menu opens over the artwork. Transparent (the
-   masthead is already green) so the bar itself doesn't hide the top of the compass. */
+/* Above the illustration (z-index 32), so the avatar menu opens over the artwork. Transparent (the
+   masthead is already green) so the bar itself doesn't hide the top of the illustration. */
 .masthead > header {
   z-index: 33;
   background: transparent;
@@ -55,12 +55,12 @@
   flex: 1;
   flex-direction: column;
   gap: 16px;
-  /* The first row is tiles, so this only has to clear the compass (30px below the seam). */
+  /* The first row is tiles, so this only has to clear the illustration (30px below the seam). */
   padding: 38px 24px 0;
 }
 
 /* Artwork overlaps the green/ivory seam, away from labels and controls. */
-.compass {
+.illustration {
   position: absolute;
   inset-inline-end: 28px;
   bottom: -30px;
@@ -294,5 +294,5 @@
 }
 
 @media (max-height: 740px) {
-  .compass { width: 120px; height: 80px; }
+  .illustration { width: 120px; height: 80px; }
 }
