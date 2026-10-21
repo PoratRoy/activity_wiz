@@ -2,25 +2,27 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import styles from "./ActivityCard.module.css";
 
-/** A tappable card: bold title plus a muted second line (date or excerpt). `aside` sits at the end. */
-export function ActivityCard({
-  href,
-  title,
-  subtitle,
-  aside,
-}: {
-  href: string;
-  title: string;
-  subtitle?: string;
-  aside?: ReactNode;
-}) {
+export type CardTag = { icon: ReactNode; label: string };
+
+/** A tappable card: bold title, a line of small icon tags (when `tags` is given, even empty, so rows in a list keep
+ * one height), then a muted line (date or excerpt). */
+export function ActivityCard({ href, title, tags, subtitle }: { href: string; title: string; tags?: CardTag[]; subtitle?: string }) {
   return (
     <div className={styles.card}>
       <Link href={href} className={styles.link}>
         <span className={styles.title}>{title}</span>
+        {tags && (
+          <span className={styles.tags}>
+            {tags.map((t) => (
+              <span key={t.label} className={styles.tag}>
+                {t.icon}
+                {t.label}
+              </span>
+            ))}
+          </span>
+        )}
         {subtitle && <span className={styles.subtitle}>{subtitle}</span>}
       </Link>
-      {aside && <div className={styles.aside}>{aside}</div>}
     </div>
   );
 }

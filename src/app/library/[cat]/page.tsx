@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import { notFound, permanentRedirect } from "next/navigation";
-import { Fragment } from "react";
-import { ActivityCard } from "@/components/ActivityCard/ActivityCard";
+import { Clock, GraduationCap, MapPin } from "lucide-react";
+import { Fragment, type ReactNode } from "react";
+import { ActivityCard, type CardTag } from "@/components/ActivityCard/ActivityCard";
 import { AdSlot } from "@/components/AdSlot/AdSlot";
 import { EmptyState } from "@/components/EmptyState/EmptyState";
 import { ForestPage } from "@/components/ForestPage/ForestPage";
-import { shownAge } from "@/data/options";
+import { shown } from "@/data/options";
 import { getCategory, listPublicActivities } from "@/lib/db/queries";
 import { excerpt } from "@/lib/markdown/excerpt";
 import { categoryPath, parseId, publicActivityPath, sameSegment } from "@/lib/slug";
@@ -31,6 +32,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
+/** Place, time and age with the activity page's icons; "לא משנה" values are left out. */
+function tagsFor(a: { place: string; duration: string; age: string }): CardTag[] {
+  const tag = (icon: ReactNode, value: string) => {
+    const label = shown(value);
+    return label ? [{ icon, label }] : [];
+  };
+  return [
+    ...tag(<MapPin size={13} aria-hidden />, a.place),
+    ...tag(<Clock size={13} aria-hidden />, a.duration),
+    ...tag(<GraduationCap size={13} aria-hidden />, a.age),
+  ];
+}
+
 export default async function CategoryPage({ params }: Props) {
   const segment = (await params).cat;
   const category = await load(segment);
@@ -52,8 +66,8 @@ export default async function CategoryPage({ params }: Props) {
                 <ActivityCard
                   href={publicActivityPath(category, a)}
                   title={a.title}
+                  tags={tagsFor(a)}
                   subtitle={excerpt(a.bodyMd, 110)}
-                  aside={shownAge(a.age) && <span className={styles.age}>{a.age}</span>}
                 />
               </li>
               {i === 2 && (

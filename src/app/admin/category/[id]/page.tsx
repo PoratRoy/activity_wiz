@@ -5,7 +5,7 @@ import { ButtonLink } from "@/components/Button/Button";
 import { formatDate } from "@/components/ActivityCard/ActivityCard";
 import { EmptyState } from "@/components/EmptyState/EmptyState";
 import { TopBar } from "@/components/TopBar/TopBar";
-import { shownAge } from "@/data/options";
+import { shown } from "@/data/options";
 import { requireAdmin } from "@/lib/auth/admin";
 import { getCategory, listPublicActivities } from "@/lib/db/queries";
 import { removePublicActivity } from "../../actions";
@@ -35,7 +35,7 @@ export default async function AdminCategoryPage({ params }: { params: Promise<{ 
             rows={activities.map((a) => ({
               id: a.id,
               title: a.title,
-              subtitle: shownAge(a.age) ? `${formatDate(a.createdAt)} · ${a.age}` : formatDate(a.createdAt),
+              subtitle: shown(a.age) ? `${formatDate(a.createdAt)} · ${a.age}` : formatDate(a.createdAt),
               confirmMessage: `«${a.title}» תימחק מהמאגר. פעולות שמורות של משתמשים לא יימחקו.`,
             }))}
             confirmTitle="למחוק את הפעולה?"

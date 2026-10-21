@@ -201,6 +201,8 @@ export async function listPublicActivities(categoryId: string) {
       id: publicActivity.id,
       title: publicActivity.title,
       bodyMd: publicActivity.bodyMd,
+      place: publicActivity.place,
+      duration: publicActivity.duration,
       age: publicActivity.age,
       createdAt: publicActivity.createdAt,
     })

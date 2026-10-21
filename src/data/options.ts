@@ -64,7 +64,7 @@ export function typeLabel(movementKey: string | null | undefined, typeKey: strin
 
 /** A "no preference" answer says nothing about the activity, so it never becomes a chip. */
 const NO_PREFERENCE = "לא משנה";
-const shown = (v: string | null | undefined) => (v && v !== NO_PREFERENCE ? v : null);
+export const shown = (v: string | null | undefined) => (v && v !== NO_PREFERENCE ? v : null);
 
 /** Chips shown under an activity's title, e.g. "זמן: חצי שעה". Missing and "לא משנה" values are skipped. */
 export function activityChips(type: string | null, place: string | null | undefined, duration: string | null | undefined): string[] {
@@ -90,8 +90,5 @@ export function activityDetailChips(
     { label: shown(age) ?? "", kind: "age" },
   ];
 }
-
-/** An age worth showing: null for "לא משנה" or missing. */
-export const shownAge = (age: string | null | undefined) => shown(age);
 
 export const asOptions = (values: string[]) => values.map((v) => ({ value: v, label: v }));

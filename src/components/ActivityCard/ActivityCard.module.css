@@ -23,8 +23,8 @@
   justify-content: center;
   gap: 2px;
   min-width: 0;
-  /* One line each for title and excerpt, so every row has the same height. */
-  height: 72px;
+  /* One line each for title, tags and excerpt, so every row has the same height. */
+  min-height: 72px;
   padding: 12px 20px;
   border-radius: 14px;
   color: var(--text);
@@ -39,6 +39,30 @@
   text-overflow: ellipsis;
 }
 
+/* Place, time and age, each with its icon (as on the activity page); one line, clipped when too long. */
+.tags {
+  display: flex;
+  gap: 6px;
+  height: 22px;
+  margin-block: 2px;
+  overflow: hidden;
+}
+
+.tag {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 4px;
+  padding: 0 8px;
+  border-radius: 999px;
+  background: var(--green-light);
+  color: var(--green-dark);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 22px;
+  white-space: nowrap;
+}
+
 /* Quieter than the title, so the name leads. */
 .subtitle {
   display: -webkit-box;
@@ -48,11 +72,6 @@
   line-height: 18px;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
-}
-
-.aside {
-  flex-shrink: 0;
-  padding-inline-end: 12px;
 }
 
 @media (hover: hover) {
