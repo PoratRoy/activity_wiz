@@ -120,7 +120,7 @@ Locally, use `.dev.vars` for Wrangler and `.env.local` for `next dev`. Under `ne
 
 ## Security headers
 
-`next.config.ts` sends these on every page: a Content Security Policy (self only; inline scripts and styles for Next.js; Google avatar images; no frames; forms post only to self and Google sign-in), `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin`, a `Permissions-Policy` that turns off camera, microphone, location, payment and USB, and HSTS. Real ads will need their origins added to the CSP.
+`next.config.ts` sends these on every page: a Content Security Policy (self plus Google AdSense hosts for scripts, requests and frames; inline scripts and styles for Next.js; images from any https source, because ad creatives come from many hosts; forms post only to self and Google sign-in), `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin`, a `Permissions-Policy` that turns off camera, microphone, location, payment and USB, and HSTS. The AdSense host list is `ADSENSE` in `next.config.ts`; add to it if the browser console reports a blocked Google ad host.
 
 ## Wrangler config (`wrangler.jsonc`) essentials
 

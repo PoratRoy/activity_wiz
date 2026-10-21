@@ -2,16 +2,32 @@ import type { NextConfig } from "next";
 import { initOpenNextCloudflareForDev } from "@opennextjs/cloudflare";
 
 // Content Security Policy. Next.js injects inline scripts and styles, so those need 'unsafe-inline'
-// (no nonces: pages render per request without a middleware). Google avatars are the only remote images.
-// Real ads (AdSense etc.) will need their script, frame and image origins added here.
+// (no nonces: pages render per request without a middleware). Google avatars are the only remote
+// images of our own. Google AdSense needs its script, frame and request hosts below; ad images come
+// from many hosts, so img-src allows any https source.
+const ADSENSE = [
+  "https://pagead2.googlesyndication.com",
+  "https://tpc.googlesyndication.com",
+  "https://*.googlesyndication.com",
+  "https://*.doubleclick.net",
+  "https://*.googleadservices.com",
+  "https://*.googletagservices.com",
+  "https://*.adtrafficquality.google",
+  "https://fundingchoicesmessages.google.com",
+  "https://adservice.google.com",
+  "https://adservice.google.co.il",
+  "https://www.google.com",
+  "https://www.gstatic.com",
+].join(" ");
+
 const csp = [
   "default-src 'self'",
-  `script-src 'self' 'unsafe-inline'${process.env.NODE_ENV === "development" ? " 'unsafe-eval'" : ""}`,
+  `script-src 'self' 'unsafe-inline'${process.env.NODE_ENV === "development" ? " 'unsafe-eval'" : ""} ${ADSENSE}`,
   "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: blob: https://*.googleusercontent.com",
+  "img-src 'self' data: blob: https:",
   "font-src 'self' data:",
-  "connect-src 'self'",
-  "frame-src 'none'",
+  `connect-src 'self' ${ADSENSE}`,
+  `frame-src ${ADSENSE}`,
   "frame-ancestors 'none'",
   "object-src 'none'",
   "base-uri 'self'",
