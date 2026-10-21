@@ -37,15 +37,6 @@
   transition: background 150ms ease;
 }
 
-.lock {
-  position: absolute;
-  top: 0;
-  inset-inline-end: 8px;
-  padding: 1px;
-  border-radius: 50%;
-  background: var(--cream);
-}
-
 .label {
   font-size: 12px;
   font-weight: 500;

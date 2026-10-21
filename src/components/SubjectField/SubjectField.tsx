@@ -1,7 +1,7 @@
 "use client";
 
-import { WandSparkles } from "lucide-react";
 import { useRef, useState } from "react";
+import { MagicWand } from "@/components/icons/icons";
 import { TextField } from "@/components/TextField/TextField";
 import { useToast } from "@/components/Toast/Toast";
 import { SUBJECT_MAX, type TypeKey } from "@/data/options";
@@ -55,7 +55,7 @@ export function SubjectField({
       }}
       endSlot={
         <button type="button" className={styles.magic} onClick={suggest} aria-label="הצעה לנושא">
-          <WandSparkles size={22} className={spinning ? styles.spin : undefined} aria-hidden />
+          <MagicWand size={22} className={spinning ? styles.spin : undefined} aria-hidden />
         </button>
       }
     />

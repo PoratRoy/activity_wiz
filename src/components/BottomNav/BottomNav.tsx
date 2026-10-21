@@ -1,21 +1,22 @@
 "use client";
 
-import { Bookmark, House, Lock, NotepadText, WandSparkles } from "lucide-react";
+import { Bookmark, House } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { useViewer } from "@/components/AppShell/viewer";
+import { MagicWand, Notepad } from "@/components/icons/icons";
 import { SignInGate } from "@/components/SignInGate/SignInGate";
 import styles from "./BottomNav.module.css";
 
 const tabs = [
   { href: "/", label: "בית", Icon: House, match: (p: string) => p === "/" },
-  { href: "/create/group", label: "יצירה", Icon: WandSparkles, match: (p: string) => p.startsWith("/create") || p === "/activity/draft" },
-  { href: "/library", label: "מאגר", Icon: NotepadText, match: (p: string) => p.startsWith("/library") },
+  { href: "/create/group", label: "יצירה", Icon: MagicWand, match: (p: string) => p.startsWith("/create") || p === "/activity/draft" },
+  { href: "/library", label: "מאגר", Icon: Notepad, match: (p: string) => p.startsWith("/library") },
   { href: "/my", label: "הפעולות שלי", Icon: Bookmark, match: (p: string) => p.startsWith("/my") || (p.startsWith("/activity/") && p !== "/activity/draft") },
 ];
 
-/** Fixed bottom tabs. Guests see "הפעולות שלי" locked; tapping it opens the sign-in popup. */
+/** Fixed bottom tabs. For guests, tapping "הפעולות שלי" opens the sign-in popup. */
 export function BottomNav() {
   const pathname = usePathname();
   const { signedIn } = useViewer();
@@ -30,8 +31,7 @@ export function BottomNav() {
         const content = (
           <>
             <span className={styles.pill}>
-              <Icon size={22} aria-hidden />
-              {locked && <Lock size={12} className={styles.lock} aria-hidden />}
+              <Icon size={22} strokeWidth={1.75} aria-hidden />
             </span>
             <span className={styles.label}>{label}</span>
           </>
