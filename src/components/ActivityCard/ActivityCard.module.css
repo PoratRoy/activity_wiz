@@ -1,42 +1,64 @@
+/* The raised rows of "My activities" (docs/design.md → Library): white rows on the ivory sheet. */
 .card {
   position: relative;
   display: flex;
   align-items: center;
-  border: 2px solid var(--border);
-  border-radius: var(--radius);
+  border: 2px solid #ced7c9;
+  border-radius: 16px;
   background: var(--surface);
-  box-shadow: var(--lip) var(--border);
+  box-shadow: 0 2px 0 #ced7c9;
+  transition: transform 100ms ease, box-shadow 100ms ease, border-color 120ms ease;
+}
+
+/* Pressing the row moves it down by its lower edge. */
+.card:has(.link:active) {
+  transform: translateY(2px);
+  box-shadow: none;
 }
 
 .link {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
+  justify-content: center;
+  gap: 2px;
   min-width: 0;
-  padding: var(--space-4);
-}
-
-.link:active {
-  background: var(--cream);
-  border-radius: var(--radius);
+  min-height: 72px;
+  padding: 12px 20px;
+  border-radius: 14px;
+  color: var(--text);
 }
 
 .title {
+  font-size: 17px;
   font-weight: 700;
-  line-height: 1.35;
+  line-height: 24px;
+  overflow-wrap: anywhere;
 }
 
+/* Quieter than the title, so the name leads. */
 .subtitle {
   display: -webkit-box;
   overflow: hidden;
   color: var(--text-muted);
-  font-size: var(--fs-small);
+  font-size: 13px;
+  line-height: 18px;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
 }
 
 .aside {
   flex-shrink: 0;
-  padding-inline-end: var(--space-2);
+  padding-inline-end: 12px;
+}
+
+@media (hover: hover) {
+  .card:has(.link:hover) {
+    border-color: var(--green-dark);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card { transition: none; }
+  .card:has(.link:active) { transform: none; }
 }

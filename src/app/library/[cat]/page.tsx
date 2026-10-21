@@ -4,7 +4,7 @@ import { Fragment } from "react";
 import { ActivityCard } from "@/components/ActivityCard/ActivityCard";
 import { AdSlot } from "@/components/AdSlot/AdSlot";
 import { EmptyState } from "@/components/EmptyState/EmptyState";
-import { TopBar } from "@/components/TopBar/TopBar";
+import { ForestPage } from "@/components/ForestPage/ForestPage";
 import { getCategory, listPublicActivities } from "@/lib/db/queries";
 import { excerpt } from "@/lib/markdown/excerpt";
 import { categoryPath, parseId, publicActivityPath, sameSegment } from "@/lib/slug";
@@ -40,29 +40,25 @@ export default async function CategoryPage({ params }: Props) {
   const activities = await listPublicActivities(category.id);
 
   return (
-    <>
-      <TopBar title={category.title} fallback="/library" />
-      <main className={styles.main}>
-        <h1 className={styles.heading}>{category.title}</h1>
-        {activities.length === 0 ? (
-          <EmptyState text="אין עדיין פעולות בקטגוריה" />
-        ) : (
-          <ul className={styles.list}>
-            {activities.map((a, i) => (
-              <Fragment key={a.id}>
+    <ForestPage title={category.title} fallback="/library">
+      {activities.length === 0 ? (
+        <EmptyState text="אין עדיין פעולות בקטגוריה" />
+      ) : (
+        <ul className={`${styles.list} ${styles.rows}`}>
+          {activities.map((a, i) => (
+            <Fragment key={a.id}>
+              <li>
+                <ActivityCard href={publicActivityPath(category, a)} title={a.title} subtitle={excerpt(a.bodyMd, 110)} />
+              </li>
+              {i === 2 && (
                 <li>
-                  <ActivityCard href={publicActivityPath(category, a)} title={a.title} subtitle={excerpt(a.bodyMd, 110)} />
+                  <AdSlot />
                 </li>
-                {i === 2 && (
-                  <li>
-                    <AdSlot />
-                  </li>
-                )}
-              </Fragment>
-            ))}
-          </ul>
-        )}
-      </main>
-    </>
+              )}
+            </Fragment>
+          ))}
+        </ul>
+      )}
+    </ForestPage>
   );
 }
