@@ -6,6 +6,7 @@ import { useState } from "react";
 import { ActionBar, ActionButton } from "@/components/ActionBar/ActionBar";
 import { useViewer } from "@/components/AppShell/viewer";
 import { useToast } from "@/components/Toast/Toast";
+import { LIST_FULL_MESSAGE } from "@/lib/draft";
 import { copyPublicActivity } from "../../actions";
 
 /** Copy + share for everyone; "save to my activities" for signed-in users (R20). */
@@ -27,9 +28,9 @@ export function PublicActions({ publicId, title, bodyMd }: { publicId: string; t
           onClick={async () => {
             setSaving(true);
             const res = await copyPublicActivity(publicId).catch(() => null);
-            if (!res) {
+            if (!res || "error" in res) {
               setSaving(false);
-              toast("לא הצלחנו לשמור, נסו שוב");
+              toast(res ? LIST_FULL_MESSAGE : "לא הצלחנו לשמור, נסו שוב");
               return;
             }
             toast("נשמר לפעולות שלי");

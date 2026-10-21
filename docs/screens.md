@@ -77,6 +77,7 @@ All screens share the app shell from [Design](design.md): a top bar (back arrow 
   - **Success, guest:** save the draft to localStorage, then `router.replace('/activity/draft')`.
   - **Refused (R11):** illustration plus «הנושא הזה לא מתאים לפעולה עם חניכים. נסו נושא אחר 🙂». The **נושא אחר** (another topic) button goes back to `/create/activity` with the values kept.
   - **Rate limited:** «רגע… אפשר ליצור פעולה חדשה בעוד X שניות», with a countdown and then **נסו שוב** (try again).
+  - **List full (R8b):** «הגעתם ל-200 פעולות שמורות. מחקו פעולות ישנות כדי לשמור חדשות», with **לפעולות שלי** and **חזרה**.
   - **High demand (R28):** «יש עומס כרגע, נסו שוב בעוד רגע», with **נסו שוב**.
   - **Error/timeout (R12):** «משהו השתבש», with **נסו שוב** (calls the action again, subject to the rate limit) and **חזרה** (back to the activity page).
 

@@ -2,13 +2,17 @@
 
 import { getUserId } from "@/lib/auth/session";
 import { getPublicActivity, insertActivity } from "@/lib/db/queries";
+import type { AddResult } from "@/lib/draft";
+import { addBlocked } from "@/lib/personal-limits";
 
 /** "Save to my activities" (R20): a new, independent personal copy with all activity fields. */
-export async function copyPublicActivity(publicId: string): Promise<{ id: string } | null> {
+export async function copyPublicActivity(publicId: string): Promise<AddResult> {
   const userId = await getUserId();
   if (!userId) return null;
   const src = await getPublicActivity(String(publicId));
   if (!src) return null;
+  const blocked = await addBlocked(userId);
+  if (blocked) return blocked === "limited" ? null : blocked;
   const id = await insertActivity(userId, {
     title: src.title,
     bodyMd: src.bodyMd,

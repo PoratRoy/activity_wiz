@@ -2,10 +2,10 @@
 
 import { generateWithGemini } from "@/lib/ai/gemini";
 import { getAccountGroup, getUserId } from "@/lib/auth/session";
-import { insertActivity, updateGroup } from "@/lib/db/queries";
-import type { GenerateResult } from "@/lib/draft";
+import { countActivities, insertActivity, updateGroup } from "@/lib/db/queries";
+import { MAX_PERSONAL_ACTIVITIES, type GenerateResult } from "@/lib/draft";
 import { ensureGuest, isTrialExpired, writeGuest, type Guest } from "@/lib/guest/cookie";
-import { hitRateLimit } from "@/lib/rate-limit";
+import { clientIp, hitBurstLimit, hitRateLimit } from "@/lib/rate-limit";
 import { hasErrors, validateActivity, validateGroup, type ActivityInput, type GroupInput } from "@/lib/validate";
 import { buildGeneration } from "@/prompts/build";
 
@@ -24,6 +24,10 @@ export async function saveGroup(group: GroupInput): Promise<{ ok: boolean }> {
   return { ok: true };
 }
 
+// Generation attempts per IP per minute, valid or not. A whole branch can share one IP, so this is
+// a flood guard; the 30-second window per user or guest is the real limit.
+const IP_ATTEMPTS_PER_MINUTE = 20;
+
 const orNull = (v: string) => (v.trim() === "" ? null : v.trim());
 
 /**
@@ -31,6 +35,10 @@ const orNull = (v: string) => (v.trim() === "" ? null : v.trim());
  * that the client keeps in localStorage.
  */
 export async function generateActivity(input: { group: GroupInput; activity: ActivityInput }): Promise<GenerateResult> {
+  // 0. Cheap per-IP guard before any other work, so invalid or cookieless floods are throttled too.
+  const ipLimit = await hitBurstLimit(`ip:gen:${await clientIp()}`, IP_ATTEMPTS_PER_MINUTE, 60_000);
+  if (!ipLimit.ok) return { status: "rate_limited", retryInSec: ipLimit.retryInSec };
+
   // 1. Identify the caller.
   const userId = await getUserId();
   let guest: Guest | null = null;
@@ -49,6 +57,9 @@ export async function generateActivity(input: { group: GroupInput; activity: Act
   if (hasErrors(validateGroup(group)) || hasErrors(validateActivity(activity, group.movement))) {
     return { status: "invalid" };
   }
+
+  // The saved list is capped; don't spend a Gemini call that can't be stored.
+  if (userId && (await countActivities(userId)) >= MAX_PERSONAL_ACTIVITIES) return { status: "list_full" };
 
   // 4. Rate limit: every admitted attempt counts (R7, R8).
   const limit = await hitRateLimit(userId ? `u:${userId}` : `g:${guest!.id}`);

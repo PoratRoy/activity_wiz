@@ -69,6 +69,11 @@ export async function listActivities(userId: string) {
     .orderBy(desc(activity.createdAt));
 }
 
+export async function countActivities(userId: string): Promise<number> {
+  const row = await getDb().select({ n: count() }).from(activity).where(eq(activity.userId, userId)).get();
+  return row?.n ?? 0;
+}
+
 export async function getActivity(id: string, userId: string) {
   return (
     (await getDb()

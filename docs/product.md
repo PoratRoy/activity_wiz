@@ -37,6 +37,8 @@ Google is the only sign-in method.
 ### Generation
 - **R7.** There is at least **30 seconds** between generations per user, or per guest cookie. There are no daily or total quotas.
 - **R8.** Every attempt that reaches Gemini counts toward the 30 seconds, including refusals and failures.
+- **R8a.** Flood guard: at most **20 generation attempts per minute per IP**, valid or not, checked before anything else. A whole branch can share one IP, so the limit is loose; it stops scripts that drop the guest cookie.
+- **R8b.** "My activities" holds at most **200 activities** per account. At the cap, generating, saving a draft and saving from the library all show «הגעתם ל-200 פעולות שמורות. מחקו פעולות ישנות כדי לשמור חדשות»; generation stops before calling Gemini. Saving a draft or a library activity is also limited to 10 per minute per user, and autosave to 60 saves per minute per user.
 - **R9.** One Gemini call per attempt, with a 60-second timeout. The output is not streamed; a loading page shows until it finishes.
 - **R10.** Registered user: the result is saved to their list automatically and opens at `/activity/[id]`. Guest: the result is kept in localStorage and opens at `/activity/draft`.
 - **R11.** If the topic is unsafe or inappropriate for kids, show a friendly Hebrew refusal with a "try another topic" button.

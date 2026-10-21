@@ -140,7 +140,9 @@ export class RateLimiter extends DurableObject {
 }
 ```
 
-Each Durable Object instance handles its requests one at a time, which makes the check and the update atomic for each key. Access it with `env.RATE_LIMITER.get(env.RATE_LIMITER.idFromName(key)).hit(30_000)`.
+It also has `count(max, windowMs)`, a fixed-window counter used for the per-IP attempt guard (`ip:gen:{ip}`, 20 per minute, checked first in `generateActivity`) and the per-user add and autosave limits.
+
+Each Durable Object instance handles its requests one at a time, which makes the check and the update atomic for each key. Use the helpers in `src/lib/rate-limit.ts`: `hitRateLimit(key)` and `hitBurstLimit(key, max, windowMs)`. `clientIp()` reads `cf-connecting-ip`.
 
 ## Share text (`src/lib/markdown/toWhatsApp.ts`)
 

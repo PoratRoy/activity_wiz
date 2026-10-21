@@ -6,7 +6,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Button, ButtonLink } from "@/components/Button/Button";
 import { Oops } from "@/components/illustrations/Oops";
 import { SignInGate } from "@/components/SignInGate/SignInGate";
-import type { GenerateResult } from "@/lib/draft";
+import { LIST_FULL_MESSAGE, type GenerateResult } from "@/lib/draft";
 import { draftStore, requestStore, type GenerationRequest } from "@/lib/guest/storage";
 import { generateActivity } from "../actions";
 import styles from "./Generating.module.css";
@@ -19,6 +19,7 @@ type View =
   | { kind: "refused" }
   | { kind: "busy" }
   | { kind: "error" }
+  | { kind: "list_full" }
   | { kind: "rate_limited"; until: number }
   | { kind: "trial_expired" };
 
@@ -98,6 +99,7 @@ export function Generating() {
     refused: "הנושא הזה לא מתאים לפעולה עם חניכים. נסו נושא אחר 🙂",
     busy: "יש עומס כרגע, נסו שוב בעוד רגע",
     error: "משהו השתבש",
+    list_full: LIST_FULL_MESSAGE,
     rate_limited: secondsLeft > 0 ? `רגע… אפשר ליצור פעולה חדשה בעוד ${secondsLeft} שניות` : "אפשר לנסות שוב",
   }[view.kind];
 
@@ -108,6 +110,8 @@ export function Generating() {
       <div className={styles.actions}>
         {view.kind === "refused" ? (
           <ButtonLink href="/create/activity">נושא אחר</ButtonLink>
+        ) : view.kind === "list_full" ? (
+          <ButtonLink href="/my">לפעולות שלי</ButtonLink>
         ) : (
           <Button onClick={retry} disabled={view.kind === "rate_limited" && secondsLeft > 0}>
             נסו שוב

@@ -8,7 +8,7 @@ import { Mascot } from "@/components/illustrations/Mascot";
 import { useToast } from "@/components/Toast/Toast";
 import { activityChips, typeLabel } from "@/data/options";
 import { signInWithGoogle } from "@/lib/auth/actions";
-import type { Draft } from "@/lib/draft";
+import { LIST_FULL_MESSAGE, type Draft } from "@/lib/draft";
 import { draftStore, groupStore } from "@/lib/guest/storage";
 import { claimDraft } from "../actions";
 import styles from "./DraftView.module.css";
@@ -41,6 +41,12 @@ export function DraftView() {
     setClaiming(true);
     claimDraft(draft)
       .then((res) => {
+        if (res && "error" in res) {
+          setClaiming(false);
+          toast(LIST_FULL_MESSAGE);
+          router.replace("/activity/draft");
+          return;
+        }
         if (!res) throw new Error("claim failed");
         draftStore.clear();
         toast("נשמר לפעולות שלי");

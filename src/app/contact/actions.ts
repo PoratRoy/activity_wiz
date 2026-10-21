@@ -8,7 +8,14 @@ import { CONTACT_LIMITS } from "./limits";
 
 export type ContactResult = { ok: true } | { ok: false; error: string };
 
-const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+// One address, no display name or list: no spaces, quotes, brackets, commas or semicolons; a letter TLD.
+const EMAIL = /^[^\s@"<>(),;:\\]+@[a-z0-9-]+(\.[a-z0-9-]+)*\.[a-z]{2,}$/i;
+const EMAIL_MAX = 254;
+
+/** One line of text: control characters (newlines included) become spaces, runs of spaces collapse. */
+const oneLine = (v: unknown) => String(v ?? "").replace(/[\u0000-\u001f\u007f-\u009f\u2028\u2029]/g, " ").replace(/\s+/g, " ").trim();
+/** Multi-line text: keeps line breaks and tabs, drops other control characters. */
+const multiLine = (v: unknown) => String(v ?? "").replace(/\r\n?/g, "\n").replace(/[\u0000-\u0008\u000b-\u001f\u007f-\u009f]/g, "").trim();
 
 /** Sends a contact message to CONTACT_TO_EMAIL through Resend (docs/architecture.md). */
 export async function sendContactMessage(input: { email: string; name: string; message: string; website?: string }): Promise<ContactResult> {
@@ -16,10 +23,10 @@ export async function sendContactMessage(input: { email: string; name: string; m
   if (input?.website) return { ok: true };
 
   const user = await getSessionUser();
-  const email = (user?.email ?? String(input?.email ?? "")).trim().slice(0, 200);
-  const name = String(input?.name ?? "").trim().slice(0, CONTACT_LIMITS.name);
-  const message = String(input?.message ?? "").trim().slice(0, CONTACT_LIMITS.message);
-  if (!EMAIL.test(email)) return { ok: false, error: "כתובת האימייל לא תקינה" };
+  const email = oneLine(user?.email ?? input?.email);
+  const name = oneLine(input?.name).slice(0, CONTACT_LIMITS.name);
+  const message = multiLine(input?.message).slice(0, CONTACT_LIMITS.message);
+  if (email.length > EMAIL_MAX || !EMAIL.test(email)) return { ok: false, error: "כתובת האימייל לא תקינה" };
   if (!name) return { ok: false, error: "צריך למלא שם" };
   if (!message) return { ok: false, error: "צריך לכתוב הודעה" };
 
