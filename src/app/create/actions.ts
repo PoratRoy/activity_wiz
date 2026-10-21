@@ -3,10 +3,10 @@
 import { generateWithGemini } from "@/lib/ai/gemini";
 import { getAccountGroup, getUserId } from "@/lib/auth/session";
 import { countActivities, insertActivity, updateGroup } from "@/lib/db/queries";
-import { MAX_PERSONAL_ACTIVITIES, type GenerateResult } from "@/lib/draft";
+import { BODY_MAX, MAX_PERSONAL_ACTIVITIES, TITLE_MAX, type GenerateResult } from "@/lib/draft";
 import { ensureGuest, isTrialExpired, writeGuest, type Guest } from "@/lib/guest/cookie";
 import { clientIp, hitBurstLimit, hitRateLimit } from "@/lib/rate-limit";
-import { hasErrors, validateActivity, validateGroup, type ActivityInput, type GroupInput } from "@/lib/validate";
+import { hasErrors, removeLinks, validateActivity, validateGroup, type ActivityInput, type GroupInput } from "@/lib/validate";
 import { buildGeneration } from "@/prompts/build";
 
 /** Saves the signed-in user's one group. Guests keep it in localStorage only. */
@@ -84,10 +84,18 @@ export async function generateActivity(input: { group: GroupInput; activity: Act
     return { status: "error" };
   }
 
-  // 8-9. Convert and persist.
+  // 8. Never trust the model's output: no links, one-line title, both within the stored limits.
+  const title = removeLinks(result.title).replace(/\s+/g, " ").trim().slice(0, TITLE_MAX);
+  const bodyMd = removeLinks(result.bodyMd).slice(0, BODY_MAX).trim();
+  if (!title || !bodyMd) {
+    console.error("generateActivity failed: empty after cleaning");
+    return { status: "error" };
+  }
+
+  // 9. Persist.
   const content = {
-    title: result.title,
-    bodyMd: result.bodyMd,
+    title,
+    bodyMd,
     type: activity.type,
     subject: activity.subject.trim(),
     place: activity.place,

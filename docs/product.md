@@ -104,7 +104,7 @@ Google is the only sign-in method.
 | Equipment (ציוד) | No | Switch **ללא ציוד**: on stores ללא ציוד; off (default) means equipment may be used |
 | Teams (חלוקה לקבוצות) | No | Switch **ללא קבוצות**: on stores ללא חלוקה לקבוצות; off (default) means teams may be used |
 | Shabbat (שבת) | No | Switch **מותאם לשמירת שבת**: on stores מותאם לשומרי שבת; off (default) is a regular, non-adapted activity |
-| Notes (הערות) | No | Free text, up to 1000 characters |
+| Notes (הערות) | No | Free text, up to 200 words (hard cap 1500 characters), no links |
 
 The create form offers only these on/off switches (owner decision, 2026-10-19); "עם חלוקה לקבוצות" is no longer offered there. Off stores an empty value, which the prompt treats as לא משנה. The admin public-activity form keeps the full lists (לא משנה, עם/ללא חלוקה לקבוצות, etc.).
 

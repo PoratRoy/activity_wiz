@@ -5,6 +5,7 @@ import { aiToMarkdown } from "@/lib/markdown/fromAi";
 import type { ActivityInput, GroupInput } from "@/lib/validate";
 import { buildContentPrompt, parseContentActivity, type ContentPromptInput } from "./content";
 import { buildGamePrompt, GAME_SCHEMA, gameToMarkdown, parseGameActivity, type GamePromptInput } from "./playTime";
+import { guideText } from "./guideText";
 import { gradeBand, stepsForDuration, STRUCTURE } from "./structure";
 import { SYSTEM_PROMPT } from "./system";
 
@@ -106,10 +107,10 @@ function legacyGeneration(group: GroupInput, a: ActivityInput): Generation {
     line("Movement", findMovement(group.movement)?.label ?? ""),
     line("Activity type", typeLabel(group.movement, a.type) ?? ""),
     `Participants grade: ${group.grade} | Group size: ${group.groupSize} | Gender: ${group.gender}`,
-    line("Subject", a.subject),
+    `Subject: ${guideText(a.subject)}`,
     `Place: ${a.place} | Duration: ${a.duration} (${minutes} minutes)`,
     `${line("Equipment", a.equipment)} | ${line("Teams", a.teams)} | ${line("Shabbat", a.shabbat)}`,
-    `Notes: ${a.notes || "-"}`,
+    `Notes: ${guideText(a.notes, "-")}`,
     "END USER DATA",
   ].join("\n");
 

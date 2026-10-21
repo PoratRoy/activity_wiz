@@ -40,7 +40,9 @@ export const GENERIC_TYPE_LABELS: Record<TypeKey, string> = {
 };
 
 export const SUBJECT_MAX = 21;
-export const NOTES_MAX = 1000;
+/** Notes are limited by words; NOTES_MAX is only a hard character cap (about 200 long Hebrew words). */
+export const NOTES_MAX_WORDS = 200;
+export const NOTES_MAX = 1500;
 
 export function findMovement(key: string | null | undefined): Movement | undefined {
   return MOVEMENTS.find((m) => m.key === key);

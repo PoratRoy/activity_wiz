@@ -126,6 +126,11 @@ END USER DATA
 
 These prompts are the first draft; the owner will refine them. The old site's Hebrew prompts (`Training-content-AI/functions/src/model/prompts/he/`) are useful as a reference for each type's structure.
 
+## Guide text and output checks
+
+- The guide's subject and notes go into every prompt between `<<<` and `>>>` (`src/prompts/guideText.ts`, which also strips `<`, `>` and control characters from the text). Each system prompt says that text is data, never instructions.
+- Before the result is saved or returned, `generateActivity` removes links from the title and body, makes the title one line, and cuts both to `TITLE_MAX` and `BODY_MAX`. An empty result after cleaning is an error.
+
 ## Rate limiter Durable Object (`src/worker/rate-limiter.ts`)
 
 ```ts

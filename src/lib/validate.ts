@@ -6,6 +6,7 @@ import {
   GRADES,
   GROUP_SIZES,
   NOTES_MAX,
+  NOTES_MAX_WORDS,
   PLACES,
   SHABBAT,
   SUBJECT_MAX,
@@ -43,9 +44,22 @@ export function containsLink(text: string): boolean {
   return /[a-z0-9-]\s*\.\s*(com|net|org|io|co|il|ly|me|app|dev|xyz|info|biz|gg|tv|ru|uk|us|link|site|online|club|top)\b/.test(t);
 }
 
-function freeText(value: string, max: number, required: boolean): string | undefined {
+export const countWords = (text: string) => text.trim().split(/\s+/).filter(Boolean).length;
+
+/** Removes links (URLs, www., bare domains) from text the model wrote. */
+export function removeLinks(text: string): string {
+  return text
+    .replace(/(?:https?:\/\/|ftp:\/\/|www\.)[^\s)\]]*/gi, "")
+    .replace(LINK_DOMAIN, "");
+}
+
+const LINK_DOMAIN =
+  /\b[a-z0-9-]+(?:\.[a-z0-9-]+)*\.(?:com|net|org|io|co|il|ly|me|app|dev|xyz|info|biz|gg|tv|ru|uk|us|link|site|online|club|top)\b(?:\/[^\s)\]]*)?/gi;
+
+function freeText(value: string, max: number, required: boolean, maxWords?: number): string | undefined {
   const v = value.trim();
   if (required && v.length === 0) return "שדה חובה";
+  if (maxWords && countWords(v) > maxWords) return `עד ${maxWords} מילים`;
   if ([...v].length > max) return `עד ${max} תווים`;
   if (containsLink(v)) return "בלי קישורים, רק טקסט";
   return undefined;
@@ -75,7 +89,7 @@ export function validateActivity(a: ActivityInput, movementKey: string): FieldEr
   if (oneOf(EQUIPMENT, a.equipment, true)) errors.equipment = "יש לבחור אפשרות";
   if (oneOf(TEAMS, a.teams, true)) errors.teams = "יש לבחור אפשרות";
   if (oneOf(SHABBAT, a.shabbat, true)) errors.shabbat = "יש לבחור אפשרות";
-  const notes = freeText(a.notes, NOTES_MAX, false);
+  const notes = freeText(a.notes, NOTES_MAX, false, NOTES_MAX_WORDS);
   if (notes) errors.notes = notes;
   return errors;
 }

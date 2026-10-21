@@ -118,6 +118,10 @@ drizzle.config.ts
 
 Locally, use `.dev.vars` for Wrangler and `.env.local` for `next dev`. Under `next dev` the rate limiter uses process memory instead of the Durable Object; use `npm run preview` to exercise the real one. `initOpenNextCloudflareForDev()` in `next.config.ts` exposes the local D1 and Durable Object bindings to `next dev`. Both files are gitignored, and `.dev.vars.example` lists the names.
 
+## Security headers
+
+`next.config.ts` sends these on every page: a Content Security Policy (self only; inline scripts and styles for Next.js; Google avatar images; no frames; forms post only to self and Google sign-in), `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin`, a `Permissions-Policy` that turns off camera, microphone, location, payment and USB, and HSTS. Real ads will need their origins added to the CSP.
+
 ## Wrangler config (`wrangler.jsonc`) essentials
 
 - `main: "worker.ts"`, `compatibility_flags: ["nodejs_compat"]`, and a current pinned `compatibility_date`.
