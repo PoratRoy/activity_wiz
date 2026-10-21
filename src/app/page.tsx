@@ -34,7 +34,7 @@ export default async function HomePage() {
     <div className={styles.home}>
       <header className={styles.header}>
         <Link href="/" className={styles.brand} aria-label="ActivityWiz — בית">
-          <Image src="/brand/activity-wiz-fresh-green.svg" width={36} height={36} alt="" />
+          <Image src="/brand/activity-wiz-fresh-green.svg" width={28} height={28} alt="" />
           <span dir="ltr">ActivityWiz</span>
         </Link>
         <AvatarMenu />
@@ -43,13 +43,13 @@ export default async function HomePage() {
       <main className={styles.main}>
         <section className={styles.hero} aria-labelledby="home-title">
           <div className={styles.intro}>
-            <h1 id="home-title">פחות לתכנן.<br />יותר להדריך.</h1>
+            <h1 id="home-title">פחות לתכנן.<br /><span className={styles.marker}>יותר להדריך.</span></h1>
             <p className={styles.pitch}>
-              <span aria-hidden>♦</span> מותאם, פשוט ומהיר <span aria-hidden>♦</span>
+              פעולה מוכנה בדקה,<br />מותאמת לגיל ולקבוצה שלכם.
             </p>
             <div className={styles.actions}>
               <ButtonLink href="/create/group" icon={<Sparkles size={22} aria-hidden />}>
-                יצירת פעולה
+                יצירת פעולה עם AI
               </ButtonLink>
               {!signedIn && <GoogleSignInButton />}
             </div>

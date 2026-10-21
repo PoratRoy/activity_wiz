@@ -31,43 +31,75 @@
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 7px;
   min-height: 48px;
   color: var(--green-dark);
-  font-size: 21px;
+  font-size: 18px;
   font-weight: 700;
-  letter-spacing: -0.6px;
+  letter-spacing: -0.4px;
 }
-.brand img { flex-shrink: 0; border-radius: 8px; }
+.brand img { flex-shrink: 0; border-radius: 7px; }
 .hero {
   position: relative;
   display: flex;
   flex-direction: column;
   flex: 1;
-  /* Room for the lower part of the illustration; when the screen is short,
-     the rest of it rises behind the buttons instead of being cropped. */
-  padding-bottom: calc(min(66.667%, 220px) - 20px);
+  /* Reserve the illustration below its sun (the top 11% is empty sky), so the
+     intro centers between the header and the scene at any screen height. */
+  padding-bottom: calc(66.667% * 0.89 - 20px);
   text-align: center;
 }
-.intro { position: relative; z-index: 1; padding: clamp(24px, 5svh, 44px) 24px 24px; }
+.intro {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1;
+  padding: 24px;
+}
 .intro h1 {
   font-size: clamp(36px, 10.6vw, 46px);
   font-weight: 700;
   letter-spacing: -1px;
-  line-height: 1.15;
+  line-height: 1.2;
   color: var(--green-dark);
   text-wrap: balance;
 }
-.pitch {
-  max-width: 28ch;
-  margin: 18px auto 0;
-  color: var(--text-muted);
-  font-size: 16px;
-  line-height: 1.6;
-  text-wrap: pretty;
+/* A hand-drawn highlighter stroke: tilted, uneven ends, with a lighter second pass. */
+.marker {
+  position: relative;
+  z-index: 0;
+  display: inline-block;
+  padding-inline: 4px;
+  white-space: nowrap;
 }
-.pitch span { color: var(--yellow-dark); }
+.marker::before,
+.marker::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  background: rgb(244 214 117 / 0.42);
+  transform: rotate(-1.6deg) skewX(-10deg);
+}
+.marker::before {
+  inset: 30% -10px 6% -8px;
+  border-radius: 6px 22px 8px 26px / 14px 8px 18px 6px;
+}
+.marker::after {
+  inset: 46% -2px 14% 14px;
+  border-radius: 4px 16px 6px 18px / 10px 6px 12px 4px;
+  background: rgb(244 214 117 / 0.12);
+  transform: rotate(-0.6deg) skewX(-10deg);
+}
+.pitch {
+  margin: 16px auto 0;
+  color: var(--text-muted);
+  font-size: 17px;
+  line-height: 1.5;
+}
 .actions { display: grid; gap: 12px; width: 81%; margin: 26px auto 0; }
+.actions > button { justify-self: center; }
 .actions > a {
   min-height: 52px;
   padding: 12px 16px;
@@ -104,5 +136,5 @@
   .header, .intro { padding-inline: 16px; }
 }
 @media (max-height: 550px) {
-  .intro { padding-top: 24px; }
+  .intro { padding-block: 16px; }
 }
