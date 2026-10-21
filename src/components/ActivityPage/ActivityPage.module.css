@@ -284,18 +284,6 @@
 .page [data-reading] li::marker { color: var(--green); }
 .page [data-reading] ol > li::marker { color: var(--green-dark); font-weight: 700; }
 
-/* Equipment (found by its heading, see renderMarkdown): a quiet white checklist card. */
-.page [data-reading] > h2[data-section="equipment"] + ul {
-  padding: 8px 16px;
-  padding-inline-start: 36px;
-  border: 2px solid #e3e8de;
-  border-radius: 18px;
-  background: var(--surface);
-}
-
-.page [data-reading] > h2[data-section="equipment"] + ul > li { margin: 0; padding-block: 6px; }
-.page [data-reading] > h2[data-section="equipment"] + ul > li + li { border-top: 1px dashed #e3e8de; }
-
 /* Leader tips: a soft sage card. */
 .page [data-reading] > h2[data-section="tips"] + ul {
   padding: 14px 16px;

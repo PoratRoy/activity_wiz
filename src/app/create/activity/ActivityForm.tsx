@@ -16,7 +16,6 @@ import {
   NO_EQUIPMENT,
   NO_TEAMS,
   NOTES_MAX,
-  NOTES_MAX_WORDS,
   PLACES,
   resolveType,
   SHABBAT_OBSERVANT,
@@ -120,7 +119,7 @@ export function ActivityForm({ accountGroup }: { accountGroup: GroupInput | null
           </div>
           <TextArea
             id="notes"
-            label={`הערות (עד ${NOTES_MAX_WORDS} מילים)`}
+            label="הערות"
             placeholder="משהו שחשוב שנדע?"
             maxLength={NOTES_MAX}
             value={form.notes}

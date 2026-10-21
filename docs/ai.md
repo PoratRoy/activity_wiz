@@ -153,7 +153,7 @@ Each Durable Object instance handles its requests one at a time, which makes the
 
 ## Share text (`src/lib/markdown/toWhatsApp.ts`)
 
-The share button and the `wa.me` fallback both use this format, with `\n\n{NEXT_PUBLIC_SITE_URL}` added at the end.
+The share button and the `wa.me` fallback both use this format, with `\n\nנוצר בעזרת:\nhttps://activitywiz.com` added at the end.
 
 - `**x**` → `*x*`
 - Headings `#…` → `*text*` on their own line
@@ -161,4 +161,4 @@ The share button and the `wa.me` fallback both use this format, with `\n\n{NEXT_
 - Underline is dropped
 - The title is prepended as `*{title}*`
 
-The **copy** button uses a plain-text version: Markdown symbols stripped, list bullets kept.
+The **copy** button uses a plain-text version: Markdown symbols stripped, list bullets kept, with the same credit line at the end.

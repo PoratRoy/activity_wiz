@@ -58,9 +58,8 @@ export function PickerSheet({ label, placeholder, options, value, onChange }: Pr
                     className={styles.item}
                     onClick={() => {
                       onChange(o.value);
-                      // Leave the sheet up for a moment so the choice is seen before it closes.
                       clearTimeout(closeTimer.current);
-                      closeTimer.current = setTimeout(close, 1000);
+                      closeTimer.current = setTimeout(close, 5);
                     }}
                   >
                     <span>{o.label}</span>

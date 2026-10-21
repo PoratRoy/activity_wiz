@@ -7,6 +7,8 @@ import { toPlainText } from "@/lib/markdown/toPlain";
 import { toWhatsApp } from "@/lib/markdown/toWhatsApp";
 import styles from "./ActionBar.module.css";
 
+const CREDIT = "נוצר בעזרת:\nhttps://activitywiz.com";
+
 async function copyText(text: string): Promise<boolean> {
   try {
     await navigator.clipboard.writeText(text);
@@ -63,11 +65,11 @@ export function ActionBar({ title, bodyMd, children }: { title: string; bodyMd: 
   const toast = useToast();
 
   const onCopy = async () => {
-    toast((await copyText(toPlainText(title, bodyMd))) ? "הועתק!" : "לא הצלחנו להעתיק");
+    toast((await copyText(`${toPlainText(title, bodyMd)}\n\n${CREDIT}`)) ? "הועתק!" : "לא הצלחנו להעתיק");
   };
 
   const onShare = async () => {
-    const text = toWhatsApp(title, bodyMd, window.location.origin);
+    const text = `${toWhatsApp(title, bodyMd)}\n\n${CREDIT}`;
     if (navigator.share) {
       try {
         await navigator.share({ title, text });
