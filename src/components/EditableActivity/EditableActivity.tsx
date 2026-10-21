@@ -1,6 +1,6 @@
 "use client";
 
-import { Pencil } from "lucide-react";
+import { Check, LoaderCircle, Pencil } from "lucide-react";
 import dynamic from "next/dynamic";
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { ActionBar, ActionButton } from "@/components/ActionBar/ActionBar";
@@ -95,7 +95,7 @@ export function EditableActivity({
   const statusText = {
     idle: "",
     saving: "שומר…",
-    saved: "נשמר ✓",
+    saved: "נשמר",
     error: "שגיאה בשמירה",
   }[status];
 
@@ -105,6 +105,11 @@ export function EditableActivity({
         <div className={barStyles.bar} data-actionbar>
           <ActionButton icon={<Pencil size={20} aria-hidden />} label="סיום עריכה" onClick={finishEditing} accent />
           <span className={`${styles.status} ${status === "error" ? styles.statusError : ""}`} role="status" data-state={status}>
+            {content.title.trim() && (status === "saving" || status === "saved") && (
+              <span className={styles.statusIcon} aria-hidden>
+                {status === "saving" ? <LoaderCircle size={16} className={styles.spinner} /> : <Check size={16} />}
+              </span>
+            )}
             {!content.title.trim() ? "צריך כותרת" : statusText}
           </span>
         </div>
