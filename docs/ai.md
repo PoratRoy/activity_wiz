@@ -35,7 +35,13 @@
 
 The code decides the timing (`planTiming`) and then overwrites the step names and minutes in the answer (`applyTiming`).
 
-**pointOfView, survival and playTime** still use the legacy schema below until their own prompts are written:
+**pointOfView** uses its own schema, defined in `src/prompts/pointOfView.ts`:
+- A hidden `plan` (`question`, 2–4 `sides` of `{position, argument}`, exactly 3 `twists`), generated first and never shown to the guide.
+- `title`, `goal`, and `materials` (at most 6).
+- Exactly 4 steps: הדילמה, הצפת עמדות, העמקה, סיכום. The code decides the minutes (30: 5/5/15/5, 45: 5/10/20/10, 60: 5/15/30/10, 90: 10/20/45/15) and overwrites the step names and minutes, as for content.
+- The stored Markdown is the same as content's.
+
+**playTime** uses its own schema in `src/prompts/playTime.ts` (see below). **survival** still uses the legacy schema below until its own prompt is written:
 
 ```ts
 {
@@ -87,7 +93,8 @@ The step minutes must add up to the chosen duration (30, 60 or 90). The server c
   - Code sends `Known game name: yes` when the subject is in the form's game list, otherwise `unknown`.
   - The answer has `plan{mechanic, themeLink}` (hidden), `title`, `description`, `materials`, `setup`, `rules` (3–6) and `ending` (1–3).
   - It is stored as Markdown with these sections: תיאור המשחק, ציוד, הכנה, חוקים, מתי זה נגמר.
-- pointOfView and survival still use the legacy prompt described below. Each will get its own file like `content.ts`.
+- **pointOfView** uses `pointOfView.ts` (v1), built like `content.ts`: one dilemma with no right answer, positions taken with the body (a line for 2 sides, corners for 3–4), 3 "ומה אם...?" twists, and a closing sentence that never decides. Example A (4 sides, corners) for grades א׳–ט׳, example B (2 sides, a line) for י׳–י״ב.
+- survival still uses the legacy prompt described below. It will get its own file like `content.ts`.
 
 ### Legacy prompt
 
@@ -105,7 +112,6 @@ The instructions are written in **English**, and the output must be **natural Is
   - Return only JSON that matches the schema.
 - `structure.ts`: one map, `typeKey → structure block`, a few lines each:
   - **content**: a value-themed activity with an opening hook, then methods (מתודות), then a discussion.
-  - **pointOfView**: short perspective or discussion-opening methods built around one dilemma or idea.
   - **survival**: scouting skills (knots, orientation, building, fire safety, nature) taught practically, with a challenge.
   - **playTime**: one or more games with clear rules, setup and variations. A short wrap-up instead of a deep discussion.
 - **Duration** sets the number of steps: about 3 for 30 minutes, 4–5 for 60, and 5–6 for 90. Step minutes must add up to the total.

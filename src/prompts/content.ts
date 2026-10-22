@@ -435,7 +435,7 @@ const AGE_LEVELS = {
 const GRADE_ORDER = ["א", "ב", "ג", "ד", "ה", "ו", "ז", "ח", "ט", "י", "יא", "יב"];
 
 /** 0-11 for א׳-י״ב (-1 if unknown). */
-function gradeIndex(grade: string): number {
+export function gradeIndex(grade: string): number {
   return GRADE_ORDER.indexOf(grade.replace("כיתה", "").replace(/[׳״'"\s]/g, ""));
 }
 

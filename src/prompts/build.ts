@@ -4,6 +4,7 @@ import type { GeminiRequest } from "@/lib/ai/gemini";
 import { aiToMarkdown } from "@/lib/markdown/fromAi";
 import type { ActivityInput, GroupInput } from "@/lib/validate";
 import { buildContentPrompt, parseContentActivity, type ContentPromptInput } from "./content";
+import { buildPointOfViewPrompt, parsePointOfViewActivity } from "./pointOfView";
 import { buildGamePrompt, GAME_SCHEMA, gameToMarkdown, parseGameActivity, type GamePromptInput } from "./playTime";
 import { guideText } from "./guideText";
 import { gradeBand, stepsForDuration, STRUCTURE } from "./structure";
@@ -17,6 +18,7 @@ export type Generation = GeminiRequest & { parse: (json: unknown) => Generated |
 
 export function buildGeneration(group: GroupInput, a: ActivityInput): Generation {
   if (a.type === "content") return contentGeneration(group, a);
+  if (a.type === "pointOfView") return pointOfViewGeneration(group, a);
   if (a.type === "playTime") return gameGeneration(group, a);
   return legacyGeneration(group, a);
 }
@@ -60,6 +62,22 @@ function contentGeneration(group: GroupInput, a: ActivityInput): Generation {
   };
 }
 
+/* pointOfView: prompts/pointOfView.ts. Same request fields as content; teams is not used. */
+
+function pointOfViewGeneration(group: GroupInput, a: ActivityInput): Generation {
+  const { systemInstruction, contents, responseJsonSchema, timing } = buildPointOfViewPrompt(toContentInput(group, a));
+  return {
+    systemInstruction,
+    contents,
+    schema: responseJsonSchema,
+    parse: (json) => {
+      const d = parsePointOfViewActivity(json, timing);
+      // The hidden plan is dropped here: it is never shown to the guide.
+      return d && { title: d.title, bodyMd: aiToMarkdown({ ...d, summary: "", tips: [] }) };
+    },
+  };
+}
+
 /* playTime: prompts/playTime.ts. The duration is not used for games. */
 
 function gameGeneration(group: GroupInput, a: ActivityInput): Generation {
@@ -88,11 +106,11 @@ function gameGeneration(group: GroupInput, a: ActivityInput): Generation {
   };
 }
 
-/* pointOfView, survival: the previous generic prompt, until their own prompts exist. */
+/* survival: the previous generic prompt, until its own prompt exists. */
 
 function legacyGeneration(group: GroupInput, a: ActivityInput): Generation {
   const minutes = DURATION_MINUTES[a.duration] ?? 60;
-  const type = a.type as Exclude<TypeKey, "content" | "playTime">;
+  const type = a.type as Exclude<TypeKey, "content" | "pointOfView" | "playTime">;
 
   const systemInstruction = [
     SYSTEM_PROMPT,

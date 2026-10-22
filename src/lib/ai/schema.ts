@@ -12,8 +12,8 @@ export type GeneratedActivity = {
   tips: string[];
 };
 
-// Legacy JSON, still used by pointOfView, survival and playTime until their own prompts exist
-// (content uses prompts/content.ts).
+// Legacy JSON, still used by survival until its own prompt exists
+// (content, pointOfView and playTime use their own files in prompts/).
 
 export type AiActivity = {
   refused: boolean;
