@@ -69,11 +69,11 @@ All screens share the app shell from [Design](design.md): a top bar (back arrow 
 ## Loading `/create/generating`
 
 - If there's no request in sessionStorage, redirect to `/`.
-- Calls the `generateActivity` server action once when the page mounts. While it runs, the page shows:
-  - a bouncing mascot
-  - a progress bar that fills over about 15 seconds and then waits at about 90%
-  - rotating Hebrew tips, every 3 seconds
-  - the AI notice line (R27) at the bottom, in small muted text
+- Calls the `generateActivity` server action once when the page mounts. While it runs, the page is a full-screen sage (`#E7EFDF`) view with no top bar, bottom tabs or ad bar (owner decision, 2026-10-22: the wait is only a few seconds). Centered, it shows only:
+  - the generating animation (`public/animations/generating.webp`, 240px wide)
+  - a thin 160 × 6px progress bar (`#CBDAC2` track, forest-green fill) that fills over about 15 seconds and then waits at about 90%
+  - the AI notice line (R27) below it, 14px muted text
+- The result views (refused, rate limited, errors) show the light top bar; the bottom tabs and ad bar stay hidden on this route.
 - Results:
   - **Success, registered:** clear the request, then `router.replace('/activity/[id]')`.
   - **Success, guest:** save the draft to localStorage, then `router.replace('/activity/draft')`.
