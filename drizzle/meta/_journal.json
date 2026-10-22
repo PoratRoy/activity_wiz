@@ -57,6 +57,13 @@
       "when": 1792593009522,
       "tag": "0007_public_activity_age",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "6",
+      "when": 1792673850687,
+      "tag": "0008_public_activity_age_levels",
+      "breakpoints": true
     }
   ]
 }

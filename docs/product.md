@@ -74,7 +74,7 @@ Google is the only sign-in method.
   - category, title, and pasted Markdown body
   - type, subject, place and duration (required)
   - equipment, teams, Shabbat and notes (optional)
-  - age: כיתות א - ה, כיתות ו - ט, כיתות י - יב or לא משנה (default לא משנה). It is shown only in the library (the first tag on the category row, before place and time, and a chip on the activity page, all hidden for לא משנה) and is not copied by "Save to my activities".
+  - age: לא משנה, שכבה צעירה or שכבה בוגרת (default לא משנה). It is shown only in the library (the first tag on the category row, before place and time, and a chip on the activity page, all hidden for לא משנה) and is not copied by "Save to my activities".
 
   There is no editing and no AI. Type is chosen by key, with generic labels: פעולת תוכן (`content`), נקודת מבט (`pointOfView`), הישרדות (`survival`), משחק (`playTime`).
 
