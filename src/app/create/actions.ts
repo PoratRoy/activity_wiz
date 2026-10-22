@@ -78,7 +78,6 @@ export async function generateActivity(input: { group: GroupInput; activity: Act
     return { status: "error" };
   }
   const result = generation.parse(outcome.json);
-  if (result === "refused") return { status: "refused" };
   if (!result) {
     console.error("generateActivity failed: schema mismatch");
     return { status: "error" };

@@ -1,26 +1,23 @@
-import { DURATION_MINUTES, findMovement, GROUP_SIZE_MAX, typeLabel, type TypeKey } from "@/data/options";
-import { AI_RESPONSE_SCHEMA, parseAiActivity } from "@/lib/ai/schema";
+import { DURATION_MINUTES, findMovement, GROUP_SIZE_MAX, typeLabel } from "@/data/options";
 import type { GeminiRequest } from "@/lib/ai/gemini";
 import { aiToMarkdown } from "@/lib/markdown/fromAi";
 import type { ActivityInput, GroupInput } from "@/lib/validate";
 import { buildContentPrompt, parseContentActivity, type ContentPromptInput } from "./content";
 import { buildPointOfViewPrompt, parsePointOfViewActivity } from "./pointOfView";
 import { buildGamePrompt, GAME_SCHEMA, gameToMarkdown, parseGameActivity, type GamePromptInput } from "./playTime";
-import { guideText } from "./guideText";
-import { gradeBand, stepsForDuration, STRUCTURE } from "./structure";
-import { SYSTEM_PROMPT } from "./system";
+import { buildSurvivalPrompt, parseSurvivalActivity, SURVIVAL_SCHEMA, survivalToMarkdown } from "./survival";
 
 /** What a generation stores: the title and the Markdown body. */
 export type Generated = { title: string; bodyMd: string };
 
 /** One generation: what to send, and how to read the answer (null = unusable answer). */
-export type Generation = GeminiRequest & { parse: (json: unknown) => Generated | "refused" | null };
+export type Generation = GeminiRequest & { parse: (json: unknown) => Generated | null };
 
 export function buildGeneration(group: GroupInput, a: ActivityInput): Generation {
   if (a.type === "content") return contentGeneration(group, a);
   if (a.type === "pointOfView") return pointOfViewGeneration(group, a);
-  if (a.type === "playTime") return gameGeneration(group, a);
-  return legacyGeneration(group, a);
+  if (a.type === "survival") return survivalGeneration(group, a);
+  return gameGeneration(group, a);
 }
 
 const toPlace = (place: string) => (place === "במקום פתוח" ? "outside" : place === "במקום סגור" ? "inside" : "any");
@@ -106,41 +103,15 @@ function gameGeneration(group: GroupInput, a: ActivityInput): Generation {
   };
 }
 
-/* survival: the previous generic prompt, until its own prompt exists. */
+/* survival: prompts/survival.ts. Same request fields as content; the duration only sizes the practical part. */
 
-function legacyGeneration(group: GroupInput, a: ActivityInput): Generation {
-  const minutes = DURATION_MINUTES[a.duration] ?? 60;
-  const type = a.type as Exclude<TypeKey, "content" | "pointOfView" | "playTime">;
-
-  const systemInstruction = [
-    SYSTEM_PROMPT,
-    STRUCTURE[type],
-    `LENGTH: ${minutes} minutes in total, ${stepsForDuration(minutes)}.`,
-    `LEVEL: ${gradeBand(group.grade)}`,
-  ].join("\n\n");
-
-  const line = (label: string, value: string) => `${label}: ${value || "לא משנה"}`;
-  const contents = [
-    "USER DATA",
-    line("Movement", findMovement(group.movement)?.label ?? ""),
-    line("Activity type", typeLabel(group.movement, a.type) ?? ""),
-    `Participants grade: ${group.grade} | Group size: ${group.groupSize} | Gender: ${group.gender}`,
-    `Subject: ${guideText(a.subject)}`,
-    `Place: ${a.place} | Duration: ${a.duration} (${minutes} minutes)`,
-    `${line("Equipment", a.equipment)} | ${line("Teams", a.teams)} | ${line("Shabbat", a.shabbat)}`,
-    `Notes: ${guideText(a.notes, "-")}`,
-    "END USER DATA",
-  ].join("\n");
-
+function survivalGeneration(group: GroupInput, a: ActivityInput): Generation {
   return {
-    systemInstruction,
-    contents,
-    schema: AI_RESPONSE_SCHEMA,
+    ...buildSurvivalPrompt(toContentInput(group, a)),
+    schema: SURVIVAL_SCHEMA,
     parse: (json) => {
-      const r = parseAiActivity(json);
-      if (!r) return null;
-      if (r.refused) return "refused";
-      return { title: r.title, bodyMd: aiToMarkdown(r) };
+      const s = parseSurvivalActivity(json);
+      return s && { title: s.title, bodyMd: survivalToMarkdown(s) };
     },
   };
 }
