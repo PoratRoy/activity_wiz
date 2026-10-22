@@ -3,11 +3,10 @@
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState, useTransition } from "react";
-import { EditableActivity } from "@/components/EditableActivity/EditableActivity";
+import { EditableActivityPage } from "@/components/EditableActivity/EditableActivityPage";
 import { useViewer } from "@/components/AppShell/viewer";
 import { useToast } from "@/components/Toast/Toast";
-import { TopBar } from "@/components/TopBar/TopBar";
-import { activityChips, typeLabel } from "@/data/options";
+import { activityDetailChips, typeLabel } from "@/data/options";
 import { signInWithGoogle } from "@/lib/auth/actions";
 import { LIST_FULL_MESSAGE, type Draft } from "@/lib/draft";
 import { draftStore, groupStore } from "@/lib/guest/storage";
@@ -73,8 +72,7 @@ export function DraftView() {
     );
   }
 
-  const topBar = <TopBar title="הפעולה" fallback="/create/activity" />;
-  if (!draft) return topBar;
+  if (!draft) return null;
 
   const banner = signedIn ? (
     // Signed in without ?claim (e.g. came back later): offer an explicit save.
@@ -99,20 +97,18 @@ export function DraftView() {
   );
 
   return (
-    <>
-      {topBar}
-      <EditableActivity
-        initial={{ title: draft.title, bodyMd: draft.bodyMd }}
-        chips={activityChips(typeLabel(movement, draft.type), draft.place, draft.duration)}
-        before={banner}
-        onSave={async (c) => {
-          // Guest edits stay in this browser until sign-in (R15).
-          const latest = { ...(draftStore.load() ?? draft), ...c };
-          draftStore.save(latest);
-          setDraft(latest);
-          return true;
-        }}
-      />
-    </>
+    <EditableActivityPage
+      fallback="/create/activity"
+      initial={{ title: draft.title, bodyMd: draft.bodyMd }}
+      chips={activityDetailChips(typeLabel(movement, draft.type), draft.place, draft.duration)}
+      before={banner}
+      onSave={async (c) => {
+        // Guest edits stay in this browser until sign-in (R15).
+        const latest = { ...(draftStore.load() ?? draft), ...c };
+        draftStore.save(latest);
+        setDraft(latest);
+        return true;
+      }}
+    />
   );
 }

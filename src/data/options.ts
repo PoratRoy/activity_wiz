@@ -68,15 +68,6 @@ export function typeLabel(movementKey: string | null | undefined, typeKey: strin
 const NO_PREFERENCE = "לא משנה";
 export const shown = (v: string | null | undefined) => (v && v !== NO_PREFERENCE ? v : null);
 
-/** Chips shown under an activity's title, e.g. "זמן: חצי שעה". Missing and "לא משנה" values are skipped. */
-export function activityChips(type: string | null, place: string | null | undefined, duration: string | null | undefined): string[] {
-  return [
-    shown(type) && `סוג: ${type}`,
-    shown(place) && `מקום: ${place}`,
-    shown(duration) && `זמן: ${duration}`,
-  ].filter((c): c is string => !!c);
-}
-
 /** Type, place, length and (library only) age as bare values, each tagged with its kind so a page can show an icon
  * instead of a label. Missing and "לא משנה" values are left empty, and ChipRow skips them. */
 export function activityDetailChips(

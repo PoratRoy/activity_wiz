@@ -78,7 +78,9 @@ Restyled to follow the approved group page; see [page](../src/app/create/activit
 - Inside it, equipment, teams and Shabbat are switch rows ([Switch](../src/components/Switch/Switch.tsx)): label at the start, a 52 × 32px pill switch at the end, thin dividers between rows. The track is `#CED7C9` off and forest green on; the white knob has a small lower edge and slides toward the inline end. Tapping the label also toggles it; motion is off under reduced motion.
 - **יצירת הפעולה** keeps the group button styling with a yellow sparkles icon and stays sticky above the bottom navigation on a soft ivory fade.
 
-## Activity pages: personal `/activity/[id]` and library `/library/[cat]/[act]` (2026-10-20, deployed for user feedback)
+## Activity pages: personal `/activity/[id]`, guest draft `/activity/draft` and library `/library/[cat]/[act]` (2026-10-20, deployed for user feedback)
+
+The guest draft joined this layout on 2026-10-22: the personal and draft pages are the same [EditableActivityPage](../src/components/EditableActivity/EditableActivityPage.tsx), and the draft's save banner sits on the forest masthead above the title.
 
 Restyled in the group-page language with the content first. Both pages share [ActivityPage](../src/components/ActivityPage/ActivityPage.tsx) and its [stylesheet](../src/components/ActivityPage/ActivityPage.module.css), which restyle the shared ActionBar/ActivityView/editor through `data-*` hooks (`data-activity`, `data-activity-head`, `data-reading`, `data-actionbar`, `data-kind`, `data-section`). No illustrations or background shapes: every accent helps scan the text while guiding. Actions, Markdown, editing and autosave are unchanged. The guest draft view `/activity/draft` is not reskinned.
 

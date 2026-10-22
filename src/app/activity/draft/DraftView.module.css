@@ -1,5 +1,7 @@
+/* Sits on the forest masthead, above the title. */
 .banner {
   display: flex;
+  margin: 4px 16px 6px;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-3);

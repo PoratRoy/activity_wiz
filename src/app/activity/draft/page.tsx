@@ -5,7 +5,7 @@ import { DraftView } from "./DraftView";
 export const metadata: Metadata = { title: "הפעולה", robots: { index: false } };
 
 export default function DraftPage() {
-  // DraftView renders the top bar, so the saving screen can go without it.
+  // DraftView renders the activity page (with its masthead) or the full-screen saving view.
   return (
     <Suspense>
       <DraftView />
