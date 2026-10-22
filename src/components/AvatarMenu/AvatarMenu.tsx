@@ -1,13 +1,32 @@
 "use client";
 
-import { CircleHelp, FileText, LogIn, LogOut, Mail, Share2, Shield, UserRound } from "lucide-react";
+import { CircleHelp, FileText, LogIn, LogOut, Mail, Share2, Shield } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { useViewer } from "@/components/AppShell/viewer";
 import { signInWithGoogle, signOutAction } from "@/lib/auth/actions";
 import { shareSite } from "@/lib/shareSite";
 import styles from "./AvatarMenu.module.css";
+
+/** Outline ring with a solid user silhouette inside; the shoulders are cut by the ring's inner edge. */
+function DefaultAvatar() {
+  const clip = useId();
+  return (
+    <svg viewBox="0 0 36 36" width={36} height={36} aria-hidden>
+      <defs>
+        <clipPath id={clip}>
+          <circle cx="18" cy="18" r="15" />
+        </clipPath>
+      </defs>
+      <circle cx="18" cy="18" r="16" fill="none" stroke="currentColor" strokeWidth="2" />
+      <g fill="currentColor" clipPath={`url(#${clip})`}>
+        <circle cx="18" cy="14" r="5.5" />
+        <ellipse cx="18" cy="32" rx="10.5" ry="9" />
+      </g>
+    </svg>
+  );
+}
 
 export function AvatarMenu() {
   const viewer = useViewer();
@@ -36,7 +55,7 @@ export function AvatarMenu() {
           // eslint-disable-next-line @next/next/no-img-element
           <img src={viewer.image} alt="" width={36} height={36} referrerPolicy="no-referrer" />
         ) : (
-          <UserRound size={28} strokeWidth={2.25} aria-hidden />
+          <DefaultAvatar />
         )}
       </button>
 
