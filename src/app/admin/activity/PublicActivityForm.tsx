@@ -12,27 +12,38 @@ import { useToast } from "@/components/Toast/Toast";
 import { AGES, ANY_AGE, asOptions, DURATIONS, EQUIPMENT, GENERIC_TYPE_LABELS, NOTES_MAX, PLACES, SHABBAT, TEAMS } from "@/data/options";
 import { TITLE_MAX } from "@/lib/draft";
 import { renderMarkdown } from "@/lib/markdown/render";
-import { createPublicActivity, type FieldErrors, type PublicActivityInput } from "../../actions";
-import styles from "../../admin.module.css";
+import { createPublicActivity, type FieldErrors, type PublicActivityInput, updatePublicActivity } from "../actions";
+import styles from "../admin.module.css";
 
 const TYPE_OPTIONS = Object.entries(GENERIC_TYPE_LABELS).map(([value, label]) => ({ value, label }));
 
-export function NewPublicActivityForm({ categories, initialCategory }: { categories: TileOption[]; initialCategory: string }) {
+const EMPTY: PublicActivityInput = {
+  categoryId: "",
+  title: "",
+  bodyMd: "",
+  type: "content",
+  place: "",
+  duration: "",
+  equipment: "",
+  teams: "",
+  shabbat: "",
+  notes: "",
+  age: ANY_AGE,
+};
+
+/** Creates a public activity, or edits the one with `activityId`. */
+export function PublicActivityForm({
+  categories,
+  initial,
+  activityId,
+}: {
+  categories: TileOption[];
+  initial: Partial<PublicActivityInput>;
+  activityId?: string;
+}) {
   const router = useRouter();
   const toast = useToast();
-  const [form, setForm] = useState<PublicActivityInput>({
-    categoryId: initialCategory,
-    title: "",
-    bodyMd: "",
-    type: "content",
-    place: "",
-    duration: "",
-    equipment: "",
-    teams: "",
-    shabbat: "",
-    notes: "",
-    age: ANY_AGE,
-  });
+  const [form, setForm] = useState<PublicActivityInput>({ ...EMPTY, ...initial });
   const [errors, setErrors] = useState<FieldErrors>({});
   const [pending, setPending] = useState(false);
   const set = (k: keyof PublicActivityInput) => (v: string) => {
@@ -44,14 +55,16 @@ export function NewPublicActivityForm({ categories, initialCategory }: { categor
 
   const publish = async () => {
     setPending(true);
-    const res = await createPublicActivity(form).catch(() => ({ errors: { title: "הפרסום נכשל, נסו שוב" } as FieldErrors }));
+    const res = await (activityId ? updatePublicActivity(activityId, form) : createPublicActivity(form)).catch(() => ({
+      errors: { title: activityId ? "השמירה נכשלה, נסו שוב" : "הפרסום נכשל, נסו שוב" } as FieldErrors,
+    }));
     setPending(false);
     if ("errors" in res) {
       setErrors(res.errors);
       toast("יש שדות שצריך לתקן");
       return;
     }
-    toast("פורסם");
+    toast(activityId ? "השינויים נשמרו" : "פורסם");
     router.push(`/admin/category/${res.categoryId}`);
   };
 
@@ -98,7 +111,7 @@ export function NewPublicActivityForm({ categories, initialCategory }: { categor
         </div>
       )}
       <Button type="submit" disabled={pending}>
-        {pending ? "מפרסמים…" : "פרסום"}
+        {activityId ? (pending ? "שומרים…" : "שמירה") : pending ? "מפרסמים…" : "פרסום"}
       </Button>
     </form>
   );

@@ -19,6 +19,7 @@ All screens share the app shell from [Design](design.md): a top bar (back arrow 
 | `/admin` | Admin: categories | Admin | No |
 | `/admin/category/[id]` | Admin: category activities | Admin | No |
 | `/admin/activity/new` | Admin: new public activity | Admin | No |
+| `/admin/activity/[id]` | Admin: edit public activity | Admin | No |
 | `/admin/message` | Admin: message to all users | Admin | No |
 
 `[cat]` and `[act]` are `{hebrew-slug}-{id}`, for example `משחקי-פתיחה-k3x9q2`. The page looks up the record by the ID after the last `-`. If the slug part doesn't match the current title, the page redirects to the correct URL.
@@ -155,6 +156,7 @@ Used by `/activity/draft`, `/activity/[id]` and `/library/[cat]/[act]`:
 ## Admin category `/admin/category/[id]`
 
 - A list of the category's public activities, newest first. Each has a trash icon with a confirmation step.
+- Tapping an activity opens `/admin/activity/[id]` to edit it.
 - A **+ פעולה** button opens `/admin/activity/new?category=[id]`.
 
 ## Admin new activity `/admin/activity/new`
@@ -165,3 +167,8 @@ Used by `/activity/draft`, `/activity/[id]` and `/library/[cat]/[act]`:
   - a collapsible "more options" section: equipment, teams, Shabbat and notes
   - body: a large textarea for pasting Markdown, with a live preview under it
 - **פרסום** (publish) creates the activity and goes to `/admin/category/[id]` with the toast «פורסם».
+
+## Admin edit activity `/admin/activity/[id]`
+
+- The same form as the new-activity screen, prefilled with the activity's current values. The category can be changed too.
+- **שמירה** (save) updates the activity in place and goes to `/admin/category/[id]` with the toast «השינויים נשמרו». Personal copies users already saved are unaffected.

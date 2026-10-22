@@ -14,6 +14,7 @@ import {
   categoryKeyTaken,
   setCategoryOrder,
   updateCategoryKey,
+  updatePublicActivity as updatePublicActivityRow,
 } from "@/lib/db/queries";
 import { BODY_MAX, TITLE_MAX } from "@/lib/draft";
 import { MESSAGE_LIMITS } from "@/lib/message/limits";
@@ -102,10 +103,8 @@ function validate(a: PublicActivityInput): FieldErrors {
   return e;
 }
 
-/** Publishes a public activity (R24). Same shape as an AI activity; no AI involved. */
-export async function createPublicActivity(input: PublicActivityInput): Promise<{ id: string; categoryId: string } | { errors: FieldErrors }> {
-  await requireAdmin();
-  const a: PublicActivityInput = {
+function clean(input: PublicActivityInput): PublicActivityInput {
+  return {
     categoryId: str(input?.categoryId),
     title: str(input?.title),
     bodyMd: typeof input?.bodyMd === "string" ? input.bodyMd.replace(/\r\n/g, "\n").trim() : "",
@@ -118,10 +117,17 @@ export async function createPublicActivity(input: PublicActivityInput): Promise<
     notes: str(input?.notes),
     age: str(input?.age),
   };
+}
+
+/** Normalizes and validates the input; returns the DB fields, or the errors to show. */
+async function prepare(
+  input: PublicActivityInput,
+): Promise<{ errors: FieldErrors } | { categoryId: string; data: Parameters<typeof insertPublicActivity>[1] }> {
+  const a = clean(input);
   const errors = validate(a);
   if (Object.keys(errors).length) return { errors };
   if (!(await getCategory(a.categoryId))) return { errors: { categoryId: "הקטגוריה לא קיימת" } };
-  const id = await insertPublicActivity(a.categoryId, {
+  const data = {
     title: a.title,
     bodyMd: a.bodyMd,
     type: a.type,
@@ -134,8 +140,26 @@ export async function createPublicActivity(input: PublicActivityInput): Promise<
     shabbat: a.shabbat || null,
     notes: a.notes || null,
     age: a.age,
-  });
-  return { id, categoryId: a.categoryId };
+  };
+  return { categoryId: a.categoryId, data };
+}
+
+/** Publishes a public activity (R24). Same shape as an AI activity; no AI involved. */
+export async function createPublicActivity(input: PublicActivityInput): Promise<{ id: string; categoryId: string } | { errors: FieldErrors }> {
+  await requireAdmin();
+  const p = await prepare(input);
+  if ("errors" in p) return { errors: p.errors };
+  const id = await insertPublicActivity(p.categoryId, p.data);
+  return { id, categoryId: p.categoryId };
+}
+
+/** Edits a public activity in place (it may move to another category). Personal copies saved from it are unaffected. */
+export async function updatePublicActivity(id: string, input: PublicActivityInput): Promise<{ id: string; categoryId: string } | { errors: FieldErrors }> {
+  await requireAdmin();
+  const p = await prepare(input);
+  if ("errors" in p) return { errors: p.errors };
+  if (!(await updatePublicActivityRow(str(id), p.categoryId, p.data))) return { errors: { title: "הפעולה לא נמצאה" } };
+  return { id: str(id), categoryId: p.categoryId };
 }
 
 export async function removePublicActivity(id: string): Promise<boolean> {

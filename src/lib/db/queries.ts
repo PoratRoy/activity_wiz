@@ -295,6 +295,33 @@ export async function insertPublicActivity(
   return id;
 }
 
+/** Returns false when the activity doesn't exist. */
+export async function updatePublicActivity(
+  id: string,
+  categoryId: string,
+  data: ActivityDetails & { title: string; bodyMd: string; age: string },
+): Promise<boolean> {
+  const rows = await getDb()
+    .update(publicActivity)
+    .set({
+      categoryId,
+      title: data.title,
+      bodyMd: data.bodyMd,
+      type: data.type,
+      subject: data.subject,
+      place: data.place,
+      duration: data.duration,
+      equipment: data.equipment ?? null,
+      teams: data.teams ?? null,
+      shabbat: data.shabbat ?? null,
+      notes: data.notes ?? null,
+      age: data.age,
+    })
+    .where(eq(publicActivity.id, id))
+    .returning({ id: publicActivity.id });
+  return rows.length > 0;
+}
+
 export async function deletePublicActivity(id: string) {
   await getDb().delete(publicActivity).where(eq(publicActivity.id, id));
 }

@@ -35,6 +35,7 @@ export default async function AdminCategoryPage({ params }: { params: Promise<{ 
             rows={activities.map((a) => ({
               id: a.id,
               title: a.title,
+              href: `/admin/activity/${a.id}`,
               subtitle: shown(a.age) ? `${formatDate(a.createdAt)} · ${a.age}` : formatDate(a.createdAt),
               confirmMessage: `«${a.title}» תימחק מהמאגר. פעולות שמורות של משתמשים לא יימחקו.`,
             }))}
