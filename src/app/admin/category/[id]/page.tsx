@@ -8,9 +8,10 @@ import { TopBar } from "@/components/TopBar/TopBar";
 import { shown } from "@/data/options";
 import { requireAdmin } from "@/lib/auth/admin";
 import { getCategory, listPublicActivities } from "@/lib/db/queries";
-import { removePublicActivity } from "../../actions";
+import { removePublicActivity, reorderPublicActivities } from "../../actions";
 import styles from "../../admin.module.css";
 import { AdminRows } from "../../AdminRows";
+import { Reorderable } from "../../Reorderable";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = { title: "ניהול קטגוריה", robots: { index: false } };
@@ -31,18 +32,25 @@ export default async function AdminCategoryPage({ params }: { params: Promise<{ 
         {activities.length === 0 ? (
           <EmptyState text="אין עדיין פעולות בקטגוריה" />
         ) : (
-          <AdminRows
-            rows={activities.map((a) => ({
-              id: a.id,
-              title: a.title,
-              href: `/admin/activity/${a.id}`,
-              subtitle: shown(a.age) ? `${formatDate(a.createdAt)} · ${a.age}` : formatDate(a.createdAt),
-              confirmMessage: `«${a.title}» תימחק מהמאגר. פעולות שמורות של משתמשים לא יימחקו.`,
-            }))}
-            confirmTitle="למחוק את הפעולה?"
-            onDelete={removePublicActivity}
-            deletedToast="הפעולה נמחקה"
-          />
+          <Reorderable
+            key={activities.map((a) => a.id).sort().join()}
+            items={activities.map((a) => ({ id: a.id, title: a.title }))}
+            save={reorderPublicActivities.bind(null, category.id)}
+            label="סדר הפעולות"
+          >
+            <AdminRows
+              rows={activities.map((a) => ({
+                id: a.id,
+                title: a.title,
+                href: `/admin/activity/${a.id}`,
+                subtitle: shown(a.age) ? `${formatDate(a.createdAt)} · ${a.age}` : formatDate(a.createdAt),
+                confirmMessage: `«${a.title}» תימחק מהמאגר. פעולות שמורות של משתמשים לא יימחקו.`,
+              }))}
+              confirmTitle="למחוק את הפעולה?"
+              onDelete={removePublicActivity}
+              deletedToast="הפעולה נמחקה"
+            />
+          </Reorderable>
         )}
       </main>
     </>

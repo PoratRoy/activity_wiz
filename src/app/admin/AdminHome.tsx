@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowDown, ArrowUp, ArrowUpDown, Check, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -12,6 +12,7 @@ import { categoryThumb, imageForKey } from "@/data/libraryImages";
 import { createCategory, removeCategory, reorderCategories, setCategoryKey } from "./actions";
 import styles from "./admin.module.css";
 import { AdminRows } from "./AdminRows";
+import { Reorderable } from "./Reorderable";
 
 type Category = { id: string; title: string; key: string | null; count: number };
 
@@ -50,25 +51,6 @@ export function AdminHome({ categories }: { categories: Category[] }) {
   const [editError, setEditError] = useState("");
   const [error, setError] = useState("");
   const [pending, setPending] = useState(false);
-  // Reorder mode: a local copy of the order, saved after every move.
-  const [order, setOrder] = useState<typeof categories | null>(null);
-  const [saving, setSaving] = useState(false);
-
-  const move = async (index: number, delta: -1 | 1) => {
-    if (!order) return;
-    const next = [...order];
-    [next[index], next[index + delta]] = [next[index + delta], next[index]];
-    setOrder(next);
-    setSaving(true);
-    const ok = await reorderCategories(next.map((c) => c.id)).catch(() => false);
-    setSaving(false);
-    if (!ok) {
-      toast("שמירת הסדר נכשלה, נסו שוב");
-      setOrder(null);
-    }
-    router.refresh();
-  };
-
   const add = async () => {
     setPending(true);
     const res = await createCategory(title, key).catch(() => ({ error: "ההוספה נכשלה, נסו שוב" }));
@@ -78,7 +60,6 @@ export function AdminHome({ categories }: { categories: Category[] }) {
       return;
     }
     setOpen(false);
-    setOrder(null);
     setTitle("");
     setKey("");
     setError("");
@@ -120,48 +101,13 @@ export function AdminHome({ categories }: { categories: Category[] }) {
         )}
       </div>
 
-      {categories.length > 1 && (
-        <button
-          type="button"
-          className={styles.reorderToggle}
-          aria-pressed={!!order}
-          disabled={saving}
-          onClick={() => setOrder(order ? null : categories)}
-        >
-          {order ? <Check size={18} aria-hidden /> : <ArrowUpDown size={18} aria-hidden />}
-          {order ? "סיום" : "שינוי סדר"}
-        </button>
-      )}
-
-      {order ? (
-        <ul className={`${styles.list} ${styles.raised}`} aria-label="סדר הקטגוריות">
-          {order.map((c, i) => (
-            <li key={c.id} className={styles.row}>
-              <span className={styles.rowLink}>
-                <span className={styles.rowTitle}>{c.title}</span>
-              </span>
-              <button
-                type="button"
-                className={styles.moveBtn}
-                aria-label={`הזזת ${c.title} למעלה`}
-                disabled={saving || i === 0}
-                onClick={() => void move(i, -1)}
-              >
-                <ArrowUp size={20} aria-hidden />
-              </button>
-              <button
-                type="button"
-                className={styles.moveBtn}
-                aria-label={`הזזת ${c.title} למטה`}
-                disabled={saving || i === order.length - 1}
-                onClick={() => void move(i, 1)}
-              >
-                <ArrowDown size={20} aria-hidden />
-              </button>
-            </li>
-          ))}
-        </ul>
-      ) : (
+      <Reorderable
+        key={categories.map((c) => c.id).sort().join()}
+        items={categories}
+        save={reorderCategories}
+        label="סדר הקטגוריות"
+        raised
+      >
         <AdminRows
           rows={categories.map((c) => ({
             id: c.id,
@@ -182,7 +128,7 @@ export function AdminHome({ categories }: { categories: Category[] }) {
             setEditing({ id: c.id, title: c.title, key: c.key ?? "" });
           }}
         />
-      )}
+      </Reorderable>
 
       <Modal open={open} onClose={() => setOpen(false)} title="קטגוריה חדשה">
         <form

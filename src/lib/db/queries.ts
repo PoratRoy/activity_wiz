@@ -1,5 +1,5 @@
 import "server-only";
-import { and, asc, count, desc, eq, max, ne, sql } from "drizzle-orm";
+import { and, asc, count, desc, eq, max, min, ne, sql } from "drizzle-orm";
 import { getDb, newId } from "./client";
 import { activity, broadcastMessage, publicActivity, publicCategory, users } from "./schema";
 
@@ -238,6 +238,18 @@ export async function deleteCategory(id: string) {
   await getDb().delete(publicCategory).where(eq(publicCategory.id, id));
 }
 
+const publicActivityOrder = [asc(publicActivity.position), desc(publicActivity.createdAt)];
+
+/** Position that puts a new or moved activity first in its category. */
+async function firstPosition(categoryId: string): Promise<number> {
+  const row = await getDb()
+    .select({ position: min(publicActivity.position) })
+    .from(publicActivity)
+    .where(eq(publicActivity.categoryId, categoryId))
+    .get();
+  return (row?.position ?? 1) - 1;
+}
+
 export async function listPublicActivities(categoryId: string) {
   return getDb()
     .select({
@@ -251,7 +263,7 @@ export async function listPublicActivities(categoryId: string) {
     })
     .from(publicActivity)
     .where(eq(publicActivity.categoryId, categoryId))
-    .orderBy(desc(publicActivity.createdAt));
+    .orderBy(...publicActivityOrder);
 }
 
 export async function listAllPublicActivityRefs() {
@@ -290,6 +302,7 @@ export async function insertPublicActivity(
       shabbat: data.shabbat ?? null,
       notes: data.notes ?? null,
       age: data.age,
+      position: await firstPosition(categoryId),
       createdAt: Date.now(),
     });
   return id;
@@ -301,9 +314,13 @@ export async function updatePublicActivity(
   categoryId: string,
   data: ActivityDetails & { title: string; bodyMd: string; age: string },
 ): Promise<boolean> {
+  const current = await getDb().select({ categoryId: publicActivity.categoryId }).from(publicActivity).where(eq(publicActivity.id, id)).get();
+  if (!current) return false;
+  const moved = current.categoryId !== categoryId;
   const rows = await getDb()
     .update(publicActivity)
     .set({
+      ...(moved && { position: await firstPosition(categoryId) }),
       categoryId,
       title: data.title,
       bodyMd: data.bodyMd,
@@ -320,6 +337,20 @@ export async function updatePublicActivity(
     .where(eq(publicActivity.id, id))
     .returning({ id: publicActivity.id });
   return rows.length > 0;
+}
+
+/** Saves a category's full activity order. Returns false unless `ids` is exactly that category's current activities. */
+export async function setPublicActivityOrder(categoryId: string, ids: string[]): Promise<boolean> {
+  const db = getDb();
+  const current = await db.select({ id: publicActivity.id }).from(publicActivity).where(eq(publicActivity.categoryId, categoryId));
+  const known = new Set(current.map((a) => a.id));
+  if (ids.length !== known.size || new Set(ids).size !== ids.length || !ids.every((id) => known.has(id))) return false;
+  if (ids.length === 0) return true;
+  const [first, ...rest] = ids.map((id, position) =>
+    db.update(publicActivity).set({ position }).where(and(eq(publicActivity.id, id), eq(publicActivity.categoryId, categoryId))),
+  );
+  await db.batch([first, ...rest]);
+  return true;
 }
 
 export async function deletePublicActivity(id: string) {

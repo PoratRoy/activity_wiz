@@ -127,7 +127,7 @@ Used by `/activity/draft`, `/activity/[id]` and `/library/[cat]/[act]`:
 ## Category `/library/[cat]`
 
 - Title: the category title.
-- A list of activity cards (title plus a 2-line excerpt), newest first. `<AdSlot>` after the 3rd card.
+- A list of activity cards (title plus a 2-line excerpt), in the admin's order (new ones first). `<AdSlot>` after the 3rd card.
 - Empty state: «אין עדיין פעולות בקטגוריה».
 
 ## Public activity `/library/[cat]/[act]`
@@ -155,7 +155,8 @@ Used by `/activity/draft`, `/activity/[id]` and `/library/[cat]/[act]`:
 
 ## Admin category `/admin/category/[id]`
 
-- A list of the category's public activities, newest first. Each has a trash icon with a confirmation step.
+- A list of the category's public activities in the admin's order (new ones first). Each has a trash icon with a confirmation step.
+- **שינוי סדר** (shown with 2+ activities) works like the category list: up/down arrows, each move saved immediately, **סיום** to return. The library category page uses the same order.
 - Tapping an activity opens `/admin/activity/[id]` to edit it.
 - A **+ פעולה** button opens `/admin/activity/new?category=[id]`.
 

@@ -107,3 +107,7 @@ Each step ends with `npm run typecheck && npm run build`, then a commit and push
 - Migration `0009`: the `broadcast_message` table (one row, new ID on every send) and `users.last_seen_message_id`.
 - `/admin/message`: title, body and "with feedback form", sent to everyone after a confirmation, with sent date and seen count.
 - `MessageGate` in the shell: checked once per Google sign-in (`checkMessage` in the session token, cleared with `unstable_update`), shown after the terms popup, dismissed for good by any close. The feedback form emails through the shared `src/lib/email.ts` helper, which the contact form uses too.
+
+## ☑ 17. Reorder public activities
+- Migration `0010`: `public_activity.position`, backfilled newest first per category. New and moved activities go first.
+- `/admin/category/[id]` gets the same **שינוי סדר** mode as `/admin`, through the shared `Reorderable` component; the library follows the order.

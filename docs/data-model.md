@@ -64,7 +64,8 @@ Deletes are hard deletes.
 | `type`, `subject`, `place`, `duration` | text, not null | Same values as `activity` |
 | `equipment`, `teams`, `shabbat`, `notes` | text, nullable | Same values as `activity` |
 | `age` | text, not null, default `לא משנה` | Which ages it fits: `לא משנה`, `שכבה צעירה` or `שכבה בוגרת` |
-| `created_at` | integer, not null | Sort descending |
+| `position` | integer, not null, default 0 | Admin-set order within the category; sort ascending. A new activity, or one moved to another category, gets min − 1 so it shows first. Migration `0010` backfilled existing rows newest first |
+| `created_at` | integer, not null | Tie-breaker after `position`, descending |
 
 `public_activity` has the same content columns as `activity`. A library copy copies every one of them. `age` is library-only: it is not a content column and is not copied.
 
@@ -102,6 +103,6 @@ The admin's message to signed-in users (`/admin/message`). At most one row: ever
 - `insertActivity(userId, data)`, `updateActivity(id, userId, { title, bodyMd })` (sets `updated_at`), `deleteActivity(id, userId)`
 - `getBroadcastMessage()`, `sendBroadcastMessage({ title, body, withForm })` (replaces the row with a new ID), `getUnseenBroadcastMessage(userId)`, `markBroadcastMessageSeen(userId, messageId)`, `broadcastMessageStats(messageId)` → `{ seen, total }`
 - `listCategories()`, `getCategory(id)`, `insertCategory(title)`, `deleteCategory(id)`
-- `listPublicActivities(categoryId)`, `getPublicActivity(id)`, `insertPublicActivity(...)`, `deletePublicActivity(id)`, `countPublicActivities(categoryId)`
+- `listPublicActivities(categoryId)` (by `position`), `setPublicActivityOrder(categoryId, ids)`, `getPublicActivity(id)`, `insertPublicActivity(...)`, `deletePublicActivity(id)`, `countPublicActivities(categoryId)`
 
 Every write that touches a personal activity includes `user_id = ?` in its `WHERE` clause.

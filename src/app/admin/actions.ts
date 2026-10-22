@@ -13,6 +13,7 @@ import {
   sendBroadcastMessage,
   categoryKeyTaken,
   setCategoryOrder,
+  setPublicActivityOrder,
   updateCategoryKey,
   updatePublicActivity as updatePublicActivityRow,
 } from "@/lib/db/queries";
@@ -62,6 +63,12 @@ export async function reorderCategories(ids: string[]): Promise<boolean> {
   await requireAdmin();
   if (!Array.isArray(ids)) return false;
   return setCategoryOrder(ids.map(str));
+}
+
+export async function reorderPublicActivities(categoryId: string, ids: string[]): Promise<boolean> {
+  await requireAdmin();
+  if (!Array.isArray(ids)) return false;
+  return setPublicActivityOrder(str(categoryId), ids.map(str));
 }
 
 export async function categoryActivityCount(id: string): Promise<number> {
