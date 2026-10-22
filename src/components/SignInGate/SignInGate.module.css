@@ -10,8 +10,12 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+/* Half the screen; it only grows past that when the text needs more (short phones, large text).
+   The library sets an inline `height: auto`, hence !important. */
 .sheet {
   right: 0;
+  height: 50% !important;
+  min-height: min-content;
   max-width: var(--column);
   margin-inline: auto;
   overflow: hidden;
@@ -19,23 +23,37 @@
   background: var(--surface);
 }
 
+/* Desktop: half the app frame, sitting on the frame's bottom edge with its rounded corners. */
+@media (min-width: 768px) {
+  .sheet {
+    bottom: calc(100dvh - 32px - var(--app-height)) !important;
+    height: calc(var(--app-height) / 2) !important;
+    border-radius: 28px 28px 32px 32px;
+  }
+}
+
+/* The text keeps its natural height; the artwork above takes the rest. */
+.content {
+  flex: 0 0 auto !important;
+}
+
 .hero {
   position: relative;
   display: flex;
-  align-items: center;
   justify-content: center;
-  height: 210px;
+  flex: 1 1 0;
+  min-height: 120px;
   overflow: hidden;
   background: var(--green);
 }
 
-/* A soft lighter disc behind the hat. */
+/* A soft lighter disc behind the hat; both scale with the space the text leaves. */
 .hero::before {
   content: "";
   position: absolute;
   top: 18px;
-  width: 172px;
-  height: 172px;
+  height: min(172px, calc(100% - 38px));
+  aspect-ratio: 1;
   border-radius: 50%;
   background: #3c8164;
 }
@@ -79,9 +97,15 @@
 }
 
 .hat {
-  position: relative;
+  position: absolute;
+  top: 24px;
+  height: min(138px, calc(100% - 72px));
   display: flex;
-  margin-block-end: var(--space-5);
+}
+
+.hat svg {
+  width: auto;
+  height: 100%;
 }
 
 .body {
