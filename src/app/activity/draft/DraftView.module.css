@@ -26,13 +26,75 @@
   box-shadow: none;
 }
 
-.claiming {
+/* Saving after sign-in: the generating screen's full-screen sage, with no top bar, tabs or ad bar. */
+.saving {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: var(--space-3);
-  min-height: calc(var(--app-height) - var(--topbar-h) - var(--tabbar-h) - var(--adbar-h));
-  font-size: var(--fs-h2);
-  font-weight: 700;
+  gap: 20px;
+  min-height: calc(var(--app-height) - env(safe-area-inset-bottom));
+  padding: var(--space-5) 40px;
+  text-align: center;
+}
+
+:global(.app):has(.saving) {
+  background: var(--green-light);
+}
+
+@media (max-width: 767px) {
+  :global(html):has(.saving),
+  :global(body):has(.saving) {
+    background: var(--green-light);
+  }
+}
+
+/* The extra `html` outranks the AdBar's own `body:has([data-ad-bar])` height. */
+:global(html) :global(body):has(.saving) {
+  --tabbar-h: 0px;
+  --adbar-h: 0px;
+}
+
+:global(body):has(.saving) :global([data-bottom-nav]),
+:global(body):has(.saving) :global([data-ad-bar]) {
+  display: none;
+}
+
+.animation {
+  width: 240px;
+  height: auto;
+}
+
+.bar {
+  width: 160px;
+  height: 6px;
+  overflow: hidden;
+  border-radius: var(--radius-pill);
+  background: #cbdac2;
+}
+
+/* Saving is quick: fills to ~90% over 4s, then waits. */
+.fill {
+  width: 90%;
+  height: 100%;
+  border-radius: var(--radius-pill);
+  background: var(--green);
+  transform-origin: right;
+  animation: fill 4s cubic-bezier(0.2, 0.7, 0.3, 1) forwards;
+}
+
+.savingText {
+  margin: 6px 0 0;
+  color: #4a5a50;
+  font-size: var(--fs-body);
+  font-weight: 500;
+}
+
+@keyframes fill {
+  from {
+    transform: scaleX(0.05);
+  }
+  to {
+    transform: scaleX(1);
+  }
 }

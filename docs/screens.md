@@ -111,6 +111,7 @@ Used by `/activity/draft`, `/activity/[id]` and `/library/[cat]/[act]`:
 - If there's no draft in localStorage, redirect to `/`.
 - Shows a yellow banner: «רוצה לשמור את הפעולה? התחברו עם Google» with a sign-in button. The sign-in callback URL is `/activity/draft?claim=1`.
 - With `?claim=1` and a signed-in session, the page calls `claimDraft(draft)`, removes the draft from localStorage and replaces the URL with `/activity/[newId]` (R13).
+  - While it saves, the page shows the generating screen's full-screen sage view (2026-10-22): the generating animation, the thin progress bar (about 90% over 4 seconds) and «שומרים את הפעולה…», with no top bar, tabs or ad bar.
 
 ### `/activity/[id]`
 - Server-checks that the viewer is the owner. If not, or if the activity doesn't exist, redirect to `/my`.
