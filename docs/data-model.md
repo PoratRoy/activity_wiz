@@ -62,7 +62,7 @@ Deletes are hard deletes.
 | `body_md` | text, not null | |
 | `type`, `subject`, `place`, `duration` | text, not null | Same values as `activity` |
 | `equipment`, `teams`, `shabbat`, `notes` | text, nullable | Same values as `activity` |
-| `age` | text, not null, default `לא משנה` | Which ages it fits: `כיתות א - ה`, `כיתות ו - ט`, `כיתות י - יב` or `לא משנה` |
+| `age` | text, not null, default `לא משנה` | Which ages it fits: `לא משנה`, `שכבה צעירה` or `שכבה בוגרת` |
 | `created_at` | integer, not null | Sort descending |
 
 `public_activity` has the same content columns as `activity`. A library copy copies every one of them. `age` is library-only: it is not a content column and is not copied.

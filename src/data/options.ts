@@ -22,7 +22,7 @@ export const GROUP_SIZE_MAX: Record<string, number> = { "1-5": 5, "5-10": 10, "1
 
 export const EQUIPMENT = ["לא משנה", "ללא ציוד"];
 /** Which ages a library activity fits. Public activities only: saving a copy doesn't carry it. */
-export const AGES = ["כיתות א - ה", "כיתות ו - ט", "כיתות י - יב", "לא משנה"];
+export const AGES = ["לא משנה", "שכבה צעירה", "שכבה בוגרת"];
 export const ANY_AGE = "לא משנה";
 export const TEAMS = ["לא משנה", "עם חלוקה לקבוצות", "ללא חלוקה לקבוצות"];
 export const SHABBAT = ["לא משנה", "מותאם לשומרי שבת"];
