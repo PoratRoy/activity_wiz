@@ -4,7 +4,6 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Button, ButtonLink } from "@/components/Button/Button";
-import { Oops } from "@/components/illustrations/Oops";
 import { SignInGate } from "@/components/SignInGate/SignInGate";
 import { TopBar } from "@/components/TopBar/TopBar";
 import { LIST_FULL_MESSAGE, type GenerateResult } from "@/lib/draft";
@@ -80,7 +79,7 @@ export function Generating() {
 
   if (view.kind === "loading") {
     return (
-      <main className={styles.loading} aria-busy="true">
+      <main className={`${styles.screen} ${styles.loading}`} aria-busy="true">
         <Image className={styles.animation} src="/animations/generating.webp" width={500} height={320} alt="" unoptimized priority />
         <div className={styles.bar} role="progressbar" aria-label="יוצרים את הפעולה">
           <div className={styles.fill} />
@@ -109,28 +108,25 @@ export function Generating() {
   }[view.kind];
 
   return (
-    <>
-      <TopBar title="יוצרים פעולה" fallback="/create/activity" />
-      <main className={styles.main}>
-        <Oops />
-        <h2 className={styles.title}>{message}</h2>
-        <div className={styles.actions}>
-          {view.kind === "refused" ? (
-            <ButtonLink href="/create/activity">נושא אחר</ButtonLink>
-          ) : view.kind === "list_full" ? (
-            <ButtonLink href="/my">לפעולות שלי</ButtonLink>
-          ) : (
-            <Button onClick={retry} disabled={view.kind === "rate_limited" && secondsLeft > 0}>
-              נסו שוב
-            </Button>
-          )}
-          {view.kind !== "refused" && (
-            <ButtonLink href="/create/activity" variant="secondary">
-              חזרה
-            </ButtonLink>
-          )}
-        </div>
-      </main>
-    </>
+    <main className={`${styles.screen} ${styles.error}`}>
+      <Image className={styles.compass} src="/illustrations/group-compass.webp" width={300} height={200} alt="" unoptimized />
+      <h2 className={styles.title}>{message}</h2>
+      <div className={styles.actions}>
+        {view.kind === "refused" ? (
+          <ButtonLink href="/create/activity">נושא אחר</ButtonLink>
+        ) : view.kind === "list_full" ? (
+          <ButtonLink href="/my">לפעולות שלי</ButtonLink>
+        ) : (
+          <Button onClick={retry} disabled={view.kind === "rate_limited" && secondsLeft > 0}>
+            נסו שוב
+          </Button>
+        )}
+        {view.kind !== "refused" && (
+          <ButtonLink href="/create/activity" variant="secondary">
+            חזרה
+          </ButtonLink>
+        )}
+      </div>
+    </main>
   );
 }

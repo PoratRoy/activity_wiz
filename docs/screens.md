@@ -73,7 +73,7 @@ All screens share the app shell from [Design](design.md): a top bar (back arrow 
   - the generating animation (`public/animations/generating.webp`, 240px wide)
   - a thin 160 × 6px progress bar (`#CBDAC2` track, forest-green fill) that fills over about 15 seconds and then waits at about 90%
   - the AI notice line (R27) below it, 14px muted text
-- The result views (refused, rate limited, errors) show the light top bar; the bottom tabs and ad bar stay hidden on this route.
+- The result views (refused, rate limited, list full, busy, errors) use the same full-screen sage layout with no top bar, tabs or ad bar (canvas option "Error A", 2026-10-22): the compass illustration, the message in forest green (24px) and full-width action buttons below it. Their buttons are the way out.
 - Results:
   - **Success, registered:** clear the request, then `router.replace('/activity/[id]')`.
   - **Success, guest:** save the draft to localStorage, then `router.replace('/activity/draft')`.

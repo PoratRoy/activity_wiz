@@ -1,25 +1,29 @@
-/* Loading: a full-screen sage moment with only the animation, a thin bar and the AI notice. */
-.loading {
+/* Both views are a full-screen sage moment with no top bar, tabs or ad bar. */
+.screen {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 20px;
   min-height: calc(var(--app-height) - env(safe-area-inset-bottom));
-  padding: var(--space-5) 40px;
   text-align: center;
 }
 
 /* The sage fills the frame, the safe area and, on phones, any pull past the edges. */
-:global(.app):has(.loading) {
+:global(.app):has(.screen) {
   background: var(--green-light);
 }
 
 @media (max-width: 767px) {
-  :global(html):has(.loading),
-  :global(body):has(.loading) {
+  :global(html):has(.screen),
+  :global(body):has(.screen) {
     background: var(--green-light);
   }
+}
+
+/* Loading: only the animation, a thin bar and the AI notice. */
+.loading {
+  gap: 20px;
+  padding: var(--space-5) 40px;
 }
 
 .animation {
@@ -27,19 +31,21 @@
   height: auto;
 }
 
-.main {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-4);
-  min-height: calc(var(--app-height) - var(--topbar-h) - var(--tabbar-h) - var(--adbar-h));
-  padding: var(--space-5) var(--space-4);
-  text-align: center;
+/* Result: the compass, the message and full-width actions, laid out like the loading view. */
+.error {
+  gap: 20px;
+  padding: var(--space-5) var(--space-6);
+}
+
+.compass {
+  width: 176px;
+  height: auto;
+  transform: rotate(-9deg);
 }
 
 .title {
-  font-size: var(--fs-h2);
+  color: var(--green-dark);
+  font-size: var(--fs-h1);
 }
 
 .bar {
@@ -74,6 +80,10 @@
   gap: var(--space-3);
   width: 100%;
   margin-top: var(--space-3);
+}
+
+.actions > * {
+  width: 100%;
 }
 
 @keyframes fill {
