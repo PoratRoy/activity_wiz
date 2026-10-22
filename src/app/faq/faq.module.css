@@ -30,7 +30,12 @@
   pointer-events: none;
 }
 
-.masthead > header { z-index: 33; }
+/* Above the illustration (z-index 32), so the avatar menu opens over the artwork. Transparent (the
+   masthead is already green) so the bar itself doesn't hide the top of the illustration. */
+.masthead > header {
+  z-index: 33;
+  background: transparent;
+}
 
 .illustration {
   position: absolute;
