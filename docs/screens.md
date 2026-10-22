@@ -35,6 +35,7 @@ All screens share the app shell from [Design](design.md): a top bar (back arrow 
 
 - The mascot, the name **ActivityWiz**, the headline «פחות לתכנן. יותר להדריך.» and the pitch «פעולה מוכנה בדקה, מותאמת לגיל ולקבוצה שלכם.» (the pitch avoids «שבט», which only fits some movements).
 - One button for everyone: **יצירת פעולה עם AI** (owner decision, 2026-10-22). Guests keep their free trial, so it leads straight to `/create/group`; sign-in stays in the avatar menu and in the trial-ended and «הפעולות שלי» popups.
+- Guests also see a quiet underlined **התחברות** link beside the avatar in the landing header (2026-10-22); it starts Google sign-in and returns to `/`. Signed-in visitors don't see it.
 - No "how it works" list (owner decision, 2026-10-21: the app is simple enough without it). No library strip (owner decision, 2026-10-19); the library is reached from the bottom tabs.
 - Has its own metadata for SEO.
 

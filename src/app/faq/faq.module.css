@@ -44,6 +44,10 @@
 }
 
 .main { padding: 44px 24px 32px; }
+/* "What is ActivityWiz?", always open: plain text on the page, outside the accordion boxes. */
+.about { margin-bottom: 24px; }
+.about h2 { font-size: 18px; color: var(--green-dark); }
+.about p { margin: 6px 0 0; line-height: 1.7; color: var(--text); }
 .faq { display: flex; flex-direction: column; gap: 12px; }
 
 .item {
