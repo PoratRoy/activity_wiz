@@ -7,6 +7,8 @@ export type Viewer = {
   name?: string | null;
   image?: string | null;
   isAdmin?: boolean;
+  /** Just signed in: look for an unseen broadcast message. */
+  checkMessage?: boolean;
 };
 
 const ViewerContext = createContext<Viewer>({ signedIn: false });

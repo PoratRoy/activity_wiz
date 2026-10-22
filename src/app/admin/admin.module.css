@@ -235,3 +235,9 @@
   font-family: ui-monospace, monospace;
   font-size: 14px;
 }
+
+.note {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: var(--fs-small);
+}

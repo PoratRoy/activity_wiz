@@ -1,7 +1,7 @@
 import "server-only";
 import { and, asc, count, desc, eq, max, ne, sql } from "drizzle-orm";
 import { getDb, newId } from "./client";
-import { activity, publicActivity, publicCategory, users } from "./schema";
+import { activity, broadcastMessage, publicActivity, publicCategory, users } from "./schema";
 
 export type Group = {
   movement: string;
@@ -57,6 +57,44 @@ export async function getUser(id: string) {
 
 export async function updateGroup(userId: string, group: Group) {
   await getDb().update(users).set(group).where(eq(users.id, userId));
+}
+
+// ---------- broadcast message ----------
+
+export async function getBroadcastMessage() {
+  return (await getDb().select().from(broadcastMessage).get()) ?? null;
+}
+
+/** Replaces the message with a new ID, so every signed-in user sees it once (even those who saw the last one). */
+export async function sendBroadcastMessage(m: { title: string; body: string; withForm: boolean }): Promise<string> {
+  const db = getDb();
+  const id = newId();
+  await db.batch([db.delete(broadcastMessage), db.insert(broadcastMessage).values({ id, ...m, sentAt: Date.now() })]);
+  return id;
+}
+
+/** The current message if this user hasn't dismissed it yet, else null. */
+export async function getUnseenBroadcastMessage(userId: string) {
+  const row = await getDb()
+    .select({ message: broadcastMessage })
+    .from(broadcastMessage)
+    .innerJoin(users, eq(users.id, userId))
+    .where(sql`${users.lastSeenMessageId} is not ${broadcastMessage.id}`)
+    .get();
+  return row?.message ?? null;
+}
+
+export async function markBroadcastMessageSeen(userId: string, messageId: string) {
+  await getDb().update(users).set({ lastSeenMessageId: messageId }).where(eq(users.id, userId));
+}
+
+/** How many users have dismissed the given message, out of all users. */
+export async function broadcastMessageStats(messageId: string): Promise<{ seen: number; total: number }> {
+  const row = await getDb()
+    .select({ total: count(), seen: sql<number>`count(case when ${users.lastSeenMessageId} = ${messageId} then 1 end)` })
+    .from(users)
+    .get();
+  return { seen: row?.seen ?? 0, total: row?.total ?? 0 };
 }
 
 // ---------- personal activities ----------

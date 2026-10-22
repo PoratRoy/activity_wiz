@@ -18,7 +18,7 @@ export async function getUserId(): Promise<string | null> {
 export async function getViewer(): Promise<Viewer> {
   const user = await getSessionUser();
   if (!user) return { signedIn: false };
-  return { signedIn: true, name: user.name, image: user.image, isAdmin: isAdmin(user) };
+  return { signedIn: true, name: user.name, image: user.image, isAdmin: isAdmin(user), checkMessage: user.checkMessage };
 }
 
 /** The signed-in user's saved group, or null (guest or not filled yet). */

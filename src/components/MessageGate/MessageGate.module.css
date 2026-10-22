@@ -1,0 +1,20 @@
+.body {
+  max-height: min(45vh, calc(var(--app-height, 100dvh) * 0.45));
+  margin: 0 0 var(--space-5);
+  overflow-y: auto;
+  white-space: pre-line;
+  line-height: 1.7;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  text-align: start;
+}
+
+.error {
+  margin: 0;
+  color: var(--danger-dark);
+  font-size: var(--fs-small);
+}

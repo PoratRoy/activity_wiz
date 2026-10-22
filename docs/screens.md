@@ -19,6 +19,7 @@ All screens share the app shell from [Design](design.md): a top bar (back arrow 
 | `/admin` | Admin: categories | Admin | No |
 | `/admin/category/[id]` | Admin: category activities | Admin | No |
 | `/admin/activity/new` | Admin: new public activity | Admin | No |
+| `/admin/message` | Admin: message to all users | Admin | No |
 
 `[cat]` and `[act]` are `{hebrew-slug}-{id}`, for example `משחקי-פתיחה-k3x9q2`. The page looks up the record by the ID after the last `-`. If the slug part doesn't match the current title, the page redirects to the correct URL.
 
@@ -29,6 +30,7 @@ All screens share the app shell from [Design](design.md): a top bar (back arrow 
   - Signed in: their Google photo in a circle. Tapping it opens a menu with **התנתקות** (sign out) and, for admins only, **ניהול** (admin).
   - Guest: a generic person icon. Tapping it opens a menu with **התחברות עם Google** (sign in with Google).
 - **Bottom tabs:** בית `/`, יצירה `/create/group`, מאגר `/library`, הפעולות שלי `/my`. The active tab shows a green pill. Guests see הפעולות שלי with a lock icon; tapping it opens the sign-in popup instead of navigating.
+- **Broadcast message:** checked once per Google sign-in. The sign-in sets `checkMessage` in the session token; on the first page load after it (and after the terms popup is accepted), `MessageGate` asks the server for the current message, if the user hasn't dismissed it. The popup shows the title and body with **אישור**, or, when the message has a form, a feedback field with **שליחה** and **סגירה**. Any dismissal (a button, tapping outside, Escape or sending feedback) saves the message ID on the user and clears `checkMessage`, so it never shows again. Feedback is emailed like the contact form, with the subject «ActivityWiz – משוב על: <title>», and the popup shows «תודה!» before closing. Guests never see it. Users who stay signed in see a new message only at their next sign-in.
 - **Trial gate:** on any `/create/*` route, an expired guest sees the blocking sign-in popup (R3). The Create tab and the landing page button lead there too.
 
 ## Landing `/`
@@ -142,6 +144,13 @@ Used by `/activity/draft`, `/activity/[id]` and `/library/[cat]/[act]`:
 - **שינוי סדר** (shown with 2+ categories) switches the list to reorder mode: each row gets up/down arrows and every move is saved immediately; **סיום** returns to the normal list. The library uses the same order.
 - Each category row has a trash icon. Tapping it shows the confirmation «למחוק את הקטגוריה וכל X הפעולות שבה? פעולות שמורות של משתמשים לא יימחקו.»
 - Tapping a row opens `/admin/category/[id]`.
+
+## Admin message `/admin/message`
+
+- Linked from `/admin` with the **הודעה למשתמשים** button.
+- Shows when the current message was sent and how many users have seen it out of all users («ראו אותה X מתוך Y משתמשים»), or «עדיין לא נשלחה הודעה».
+- Fields, prefilled with the current message: **כותרת** (title), **תוכן ההודעה** (body) and an **עם טופס משוב** (with feedback form) switch.
+- **שליחה לכל המשתמשים** asks for confirmation, then replaces the message with a new ID: every signed-in user sees it once at their next sign-in, even if they saw the previous one.
 
 ## Admin category `/admin/category/[id]`
 

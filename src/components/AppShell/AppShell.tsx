@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { AdBar } from "@/components/AdSlot/AdBar";
 import { BottomNav } from "@/components/BottomNav/BottomNav";
+import { MessageGate } from "@/components/MessageGate/MessageGate";
 import { TermsGate } from "@/components/TermsGate/TermsGate";
 import { ToastHost } from "@/components/Toast/Toast";
 import { NavigationTracker } from "./history";
@@ -17,6 +18,7 @@ export function AppShell({ viewer, children }: { viewer: Viewer; children: React
         <AdBar />
         <BottomNav />
         <TermsGate />
+        <MessageGate />
       </ToastHost>
     </ViewerProvider>
   );

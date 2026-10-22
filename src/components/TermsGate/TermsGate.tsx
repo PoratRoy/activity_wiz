@@ -9,6 +9,17 @@ import { TermsText } from "./TermsText";
 import styles from "./TermsGate.module.css";
 
 const KEY = "aw.termsAccepted";
+/** Fired on window when the terms are accepted, so popups waiting behind them (MessageGate) can open. */
+export const TERMS_ACCEPTED_EVENT = "aw:terms-accepted";
+
+/** Whether this browser accepted the terms. Blocked storage counts as accepted, like the gate itself. */
+export function termsAccepted(): boolean {
+  try {
+    return !!localStorage.getItem(KEY);
+  } catch {
+    return true;
+  }
+}
 
 /**
  * First-visit terms popup (from the old site's TSCs). Shown until accepted; acceptance is kept in
@@ -19,11 +30,8 @@ export function TermsGate() {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    try {
-      if (!localStorage.getItem(KEY)) setOpen(true);
-    } catch {
-      // Storage blocked: don't nag on every page.
-    }
+    // Storage blocked counts as accepted: don't nag on every page.
+    if (!termsAccepted()) setOpen(true);
   }, []);
 
   if (!open || pathname === "/terms") return null;
@@ -33,6 +41,7 @@ export function TermsGate() {
       localStorage.setItem(KEY, new Date().toISOString());
     } catch {}
     setOpen(false);
+    window.dispatchEvent(new Event(TERMS_ACCEPTED_EVENT));
   };
 
   return (

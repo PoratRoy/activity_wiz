@@ -10,11 +10,13 @@ import {
   getCategory,
   insertCategory,
   insertPublicActivity,
+  sendBroadcastMessage,
   categoryKeyTaken,
   setCategoryOrder,
   updateCategoryKey,
 } from "@/lib/db/queries";
 import { BODY_MAX, TITLE_MAX } from "@/lib/draft";
+import { MESSAGE_LIMITS } from "@/lib/message/limits";
 
 // Every action re-checks the admin allowlist on the server (R22); non-admins are redirected to "/".
 
@@ -140,4 +142,15 @@ export async function removePublicActivity(id: string): Promise<boolean> {
   await requireAdmin();
   await deletePublicActivity(str(id));
   return true;
+}
+
+/** Replaces the broadcast message; every signed-in user sees it once, at their next sign-in (docs/screens.md). */
+export async function sendMessageToUsers(input: { title: string; body: string; withForm: boolean }): Promise<{ ok: true } | { error: string }> {
+  await requireAdmin();
+  const title = str(input?.title).slice(0, MESSAGE_LIMITS.title);
+  const body = str(input?.body).replace(/\r\n?/g, "\n").slice(0, MESSAGE_LIMITS.body);
+  if (!title) return { error: "צריך כותרת" };
+  if (!body) return { error: "צריך תוכן להודעה" };
+  await sendBroadcastMessage({ title, body, withForm: input?.withForm === true });
+  return { ok: true };
 }

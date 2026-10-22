@@ -1,6 +1,6 @@
 import { index, integer, sqliteTable, text, uniqueIndex } from "drizzle-orm/sqlite-core";
 
-// The 4 tables of docs/data-model.md. Timestamps are Unix milliseconds.
+// The 5 tables of docs/data-model.md. Timestamps are Unix milliseconds.
 
 export const users = sqliteTable("users", {
   id: text("id").primaryKey(),
@@ -12,6 +12,8 @@ export const users = sqliteTable("users", {
   grade: text("grade"),
   groupSize: text("group_size"),
   gender: text("gender"),
+  /** ID of the last broadcast message this user dismissed; a different current ID means it's unseen. */
+  lastSeenMessageId: text("last_seen_message_id"),
   createdAt: integer("created_at").notNull(),
 });
 
@@ -81,7 +83,18 @@ export const publicActivity = sqliteTable(
   (t) => [index("public_activity_category_created_idx").on(t.categoryId, t.createdAt)],
 );
 
+/** The admin's message to signed-in users. At most one row: every send replaces it with a new ID. */
+export const broadcastMessage = sqliteTable("broadcast_message", {
+  id: text("id").primaryKey(),
+  title: text("title").notNull(),
+  body: text("body").notNull(),
+  /** Show a free-text feedback field that is emailed to the contact address. */
+  withForm: integer("with_form", { mode: "boolean" }).notNull().default(false),
+  sentAt: integer("sent_at").notNull(),
+});
+
 export type User = typeof users.$inferSelect;
 export type Activity = typeof activity.$inferSelect;
 export type PublicCategory = typeof publicCategory.$inferSelect;
 export type PublicActivity = typeof publicActivity.$inferSelect;
+export type BroadcastMessage = typeof broadcastMessage.$inferSelect;
