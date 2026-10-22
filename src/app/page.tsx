@@ -6,6 +6,7 @@ import { preload } from "react-dom";
 import { ButtonLink } from "@/components/Button/Button";
 import { AvatarMenu } from "@/components/AvatarMenu/AvatarMenu";
 import { getSiteUrl } from "@/lib/site";
+import { HeaderSignIn } from "./HeaderSignIn";
 import styles from "./page.module.css";
 
 export const metadata: Metadata = {
@@ -43,7 +44,10 @@ export default function HomePage() {
           <Image src="/brand/activity-wiz-fresh-green.svg" width={28} height={28} alt="" />
           <span dir="ltr">ActivityWiz</span>
         </Link>
-        <AvatarMenu />
+        <div className={styles.account}>
+          <HeaderSignIn />
+          <AvatarMenu />
+        </div>
       </header>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
       <main className={styles.main}>

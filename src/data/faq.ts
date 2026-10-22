@@ -1,11 +1,13 @@
 // FAQ from the old site (Training-content-AI, he/translation.json "faq.questions"), adapted to this app:
 // Hebrew only, no "energy level" filter, and the contact answer points to the contact page.
 
+// The "about" answer is always visible above the accordion (it carries the site's SEO description).
+export const ABOUT = {
+  q: "מה זה ActivityWiz?",
+  a: "ActivityWiz היא פלטפורמה חכמה ליצירת פעולות מותאמות אישית למדריכים ואנשי חינוך. ניתן להשתמש בה גם בפעולות מוכנות מהמאגר וגם ביצירה אוטומטית באמצעות בינה מלאכותית.",
+};
+
 export const FAQ: { q: string; a: string }[] = [
-  {
-    q: "מה זה ActivityWiz?",
-    a: "ActivityWiz היא פלטפורמה חכמה ליצירת פעולות מותאמות אישית למדריכים ואנשי חינוך. ניתן להשתמש בה גם בפעולות מוכנות מהמאגר וגם ביצירה אוטומטית באמצעות בינה מלאכותית.",
-  },
   { q: "האם השימוש באתר עולה כסף?", a: "לא, השימוש באתר הוא בחינם ופתוח לכולם." },
   {
     q: "למי מתאים האתר?",

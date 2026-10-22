@@ -39,6 +39,23 @@
   letter-spacing: -0.4px;
 }
 .brand img { flex-shrink: 0; border-radius: 7px; }
+.account { display: flex; align-items: center; gap: 4px; }
+.signIn {
+  min-height: 44px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--green-dark);
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.signIn:disabled { cursor: wait; opacity: 0.7; }
+@media (hover: hover) {
+  .signIn:hover:not(:disabled) { background: var(--green-light); }
+}
 /* Title on the ivory page; the scene fills whatever height is left below it. */
 .intro {
   position: relative;
