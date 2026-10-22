@@ -24,7 +24,7 @@ export function BottomNav() {
 
   return (
     <>
-    <nav className={styles.nav} aria-label="ניווט ראשי">
+    <nav className={`${styles.nav} ${pathname === "/" ? styles.landing : ""}`} aria-label="ניווט ראשי">
       {tabs.map(({ href, label, Icon, match }) => {
         const active = match(pathname);
         const locked = href === "/my" && !signedIn;
