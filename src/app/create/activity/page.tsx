@@ -5,14 +5,14 @@ import { getAccountGroup } from "@/lib/auth/session";
 import { ActivityForm } from "./ActivityForm";
 import styles from "./activity.module.css";
 
-export const metadata: Metadata = { title: "הפעולה", robots: { index: false } };
+export const metadata: Metadata = { title: "תכנון הפעולה", robots: { index: false } };
 
 export default async function ActivityPage() {
   const accountGroup = await getAccountGroup();
   return (
     <div className={styles.page}>
       <div className={styles.masthead}>
-        <TopBar title="הפעולה" fallback="/create/group" tone="forest" />
+        <TopBar title="תכנון הפעולה" fallback="/create/group" tone="forest" />
         <Image className={styles.illustration} src="/illustrations/activity-book.webp" width={300} height={200} alt="" unoptimized />
       </div>
       <ActivityForm accountGroup={accountGroup} />

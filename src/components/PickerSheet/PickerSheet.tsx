@@ -12,10 +12,11 @@ type Props = {
   options: TileOption[];
   value: string | null;
   onChange: (value: string) => void;
+  closeDelayMs?: number;
 };
 
 /** A field button that opens a bottom sheet with a scrollable list. For long option lists. Drag down, tap outside or Escape to close. */
-export function PickerSheet({ label, placeholder, options, value, onChange }: Props) {
+export function PickerSheet({ label, placeholder, options, value, onChange, closeDelayMs = 15 }: Props) {
   const [open, setOpen] = useState(false);
   const current = options.find((o) => o.value === value);
   const closeTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
@@ -59,7 +60,7 @@ export function PickerSheet({ label, placeholder, options, value, onChange }: Pr
                     onClick={() => {
                       onChange(o.value);
                       clearTimeout(closeTimer.current);
-                      closeTimer.current = setTimeout(close, 15);
+                      closeTimer.current = setTimeout(close, closeDelayMs);
                     }}
                   >
                     <span>{o.label}</span>
