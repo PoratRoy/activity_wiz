@@ -9,21 +9,17 @@
   width: 36px;
   height: 36px;
   padding: 0;
-  overflow: hidden;
-  border: 2px solid var(--green);
-  border-radius: 50%;
+  border: 0;
   background: transparent;
   color: var(--green);
 }
 
-/* The default user glyph is drawn solid inside the transparent ring. */
-.avatar > svg {
-  fill: currentColor;
-}
-
+/* Only a Google photo gets the round frame; signed out (or no photo) is a bare user icon. */
 .avatar img {
   width: 100%;
   height: 100%;
+  border: 2px solid var(--green);
+  border-radius: 50%;
   object-fit: cover;
 }
 

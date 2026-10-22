@@ -36,7 +36,7 @@ export function AvatarMenu() {
           // eslint-disable-next-line @next/next/no-img-element
           <img src={viewer.image} alt="" width={36} height={36} referrerPolicy="no-referrer" />
         ) : (
-          <UserRound size={22} aria-hidden />
+          <UserRound size={28} strokeWidth={2.25} aria-hidden />
         )}
       </button>
 
