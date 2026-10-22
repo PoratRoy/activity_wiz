@@ -91,7 +91,7 @@ export function Generating() {
   }
 
   if (view.kind === "trial_expired") {
-    return <SignInGate open blocking text={"הניסיון הסתיים 🙂\nהתחברו כדי להמשיך ליצור פעולות"} redirectTo="/create/activity" />;
+    return <SignInGate open reason="trial" redirectTo="/create/activity" />;
   }
 
   const secondsLeft = view.kind === "rate_limited" ? Math.max(0, Math.ceil((view.until - now) / 1000)) : 0;
