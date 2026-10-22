@@ -19,7 +19,6 @@ import { BODY_MAX, TITLE_MAX } from "@/lib/draft";
 // Every action re-checks the admin allowlist on the server (R22); non-admins are redirected to "/".
 
 const str = (v: unknown) => (typeof v === "string" ? v.trim() : "");
-const ADMIN_SUBJECT_MAX = 60;
 
 /** Error message for an invalid or duplicate English key, or null when it can be used. */
 async function keyError(key: string, exceptId?: string): Promise<string | null> {
@@ -72,7 +71,6 @@ export type PublicActivityInput = {
   title: string;
   bodyMd: string;
   type: string;
-  subject: string;
   place: string;
   duration: string;
   equipment: string;
@@ -92,8 +90,6 @@ function validate(a: PublicActivityInput): FieldErrors {
   if (!a.bodyMd) e.bodyMd = "שדה חובה";
   else if (a.bodyMd.length > BODY_MAX) e.bodyMd = `עד ${BODY_MAX} תווים`;
   if (!(a.type in GENERIC_TYPE_LABELS)) e.type = "יש לבחור סוג";
-  if (!a.subject) e.subject = "שדה חובה";
-  else if (a.subject.length > ADMIN_SUBJECT_MAX) e.subject = `עד ${ADMIN_SUBJECT_MAX} תווים`;
   if (!PLACES.includes(a.place)) e.place = "יש לבחור מקום";
   if (!DURATIONS.includes(a.duration)) e.duration = "יש לבחור משך";
   if (a.equipment && !EQUIPMENT.includes(a.equipment)) e.equipment = "יש לבחור אפשרות";
@@ -112,7 +108,6 @@ export async function createPublicActivity(input: PublicActivityInput): Promise<
     title: str(input?.title),
     bodyMd: typeof input?.bodyMd === "string" ? input.bodyMd.replace(/\r\n/g, "\n").trim() : "",
     type: str(input?.type),
-    subject: str(input?.subject),
     place: str(input?.place),
     duration: str(input?.duration),
     equipment: str(input?.equipment),
@@ -128,7 +123,8 @@ export async function createPublicActivity(input: PublicActivityInput): Promise<
     title: a.title,
     bodyMd: a.bodyMd,
     type: a.type,
-    subject: a.subject,
+    // Public activities have no separate subject field; the title stands in for it.
+    subject: a.title,
     place: a.place,
     duration: a.duration,
     equipment: a.equipment || null,

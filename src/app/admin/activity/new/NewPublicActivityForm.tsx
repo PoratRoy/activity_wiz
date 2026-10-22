@@ -25,7 +25,6 @@ export function NewPublicActivityForm({ categories, initialCategory }: { categor
     title: "",
     bodyMd: "",
     type: "content",
-    subject: "",
     place: "",
     duration: "",
     equipment: "",
@@ -70,8 +69,6 @@ export function NewPublicActivityForm({ categories, initialCategory }: { categor
       {err("title")}
       <TileGroup name="type" label="סוג" options={TYPE_OPTIONS} value={form.type} onChange={set("type")} />
       {err("type")}
-      <TextField id="subject" label="נושא" value={form.subject} maxLength={60} onChange={(e) => set("subject")(e.target.value)} />
-      {err("subject")}
       <TileGroup name="place" label="מקום" columns={3} options={asOptions(PLACES)} value={form.place} onChange={set("place")} />
       {err("place")}
       <TileGroup name="duration" label="משך" columns={3} options={asOptions(DURATIONS)} value={form.duration} onChange={set("duration")} />
