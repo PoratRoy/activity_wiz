@@ -83,6 +83,11 @@ All screens share the app shell from [Design](design.md): a top bar (back arrow 
   - **High demand (R28):** «יש עומס כרגע, נסו שוב בעוד רגע», with **נסו שוב**.
   - **Error/timeout (R12):** «משהו השתבש», with **נסו שוב** (calls the action again, subject to the rate limit) and **חזרה** (back to the activity page).
 
+## Not found (404)
+
+- `src/app/not-found.tsx` renders for any unknown URL and wherever a page calls `notFound()` (a missing library category or activity).
+- Same full-screen sage layout as the generating error views (canvas option "404 A", 2026-10-22), with no top bar, tabs or ad bar: the compass illustration, «הדף הזה לא נמצא», «אולי הקישור ישן, או שהפעולה כבר לא קיימת.», then **למסך הבית** (`/`) and **לפעולות מוכנות** (`/library`). Not indexed.
+
 ## Activity view: shared layout
 
 Used by `/activity/draft`, `/activity/[id]` and `/library/[cat]/[act]`:

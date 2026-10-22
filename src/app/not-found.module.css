@@ -1,0 +1,64 @@
+.screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  min-height: calc(var(--app-height) - env(safe-area-inset-bottom));
+  padding: var(--space-5) var(--space-6);
+  text-align: center;
+}
+
+/* The sage fills the frame, the safe area and, on phones, any pull past the edges. */
+:global(.app):has(.screen) {
+  background: var(--green-light);
+}
+
+@media (max-width: 767px) {
+  :global(html):has(.screen),
+  :global(body):has(.screen) {
+    background: var(--green-light);
+  }
+}
+
+/* Any URL can 404, so the tabs and ad bar are hidden here rather than by pathname. The extra
+   `html` outranks the AdBar's own `body:has([data-ad-bar])` height. */
+:global(html) :global(body):has(.screen) {
+  --tabbar-h: 0px;
+  --adbar-h: 0px;
+}
+
+:global(body):has(.screen) :global([data-bottom-nav]),
+:global(body):has(.screen) :global([data-ad-bar]) {
+  display: none;
+}
+
+.compass {
+  width: 176px;
+  height: auto;
+  transform: rotate(-9deg);
+}
+
+.title {
+  color: var(--green-dark);
+  font-size: var(--fs-h1);
+}
+
+.text {
+  max-width: 280px;
+  margin: -8px 0 0;
+  color: #4a5a50;
+  font-size: 15px;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  width: 100%;
+  margin-top: var(--space-3);
+}
+
+.actions > * {
+  width: 100%;
+}
