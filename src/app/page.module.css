@@ -39,24 +39,12 @@
   letter-spacing: -0.4px;
 }
 .brand img { flex-shrink: 0; border-radius: 7px; }
-.hero {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  /* Reserve the illustration below its sun (the top 11% is empty sky), so the
-     intro centers between the header and the scene at any screen height. */
-  padding-bottom: calc(66.667% * 0.89 - 20px);
-  text-align: center;
-}
+/* Title on the ivory page; the scene fills whatever height is left below it. */
 .intro {
   position: relative;
   z-index: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  flex: 1;
-  padding: 24px;
+  padding: 24px 24px 0;
+  text-align: center;
 }
 .intro h1 {
   font-size: clamp(36px, 10.6vw, 46px);
@@ -93,88 +81,84 @@
   transform: rotate(-0.6deg) skewX(-10deg);
 }
 .pitch {
-  margin: 16px auto 0;
+  margin: 14px auto 0;
   color: var(--text-muted);
   font-size: 17px;
   line-height: 1.5;
 }
-.actions { display: grid; gap: 17px; width: 81%; margin: 26px auto 0; }
-.actions > button { justify-self: center; }
-.actions > a {
-  min-height: 52px;
-  padding: 12px 16px;
-  border-width: 1px;
-  border-radius: 16px;
-  font-weight: 500;
-  font-size: 17px;
-  line-height: 1.5;
-  transition: background 120ms ease, transform 100ms ease, box-shadow 100ms ease;
-}
-.actions > a svg { flex-shrink: 0; color: var(--yellow); }
-.actions > a:active { transform: translateY(2px); box-shadow: none; }
 
-@media (hover: hover) {
-  .actions > a:hover { background: var(--green-dark); }
-}
-
-/* "אודות": an underlined text link; the text opens below it as an overlay, so the hero doesn't move. */
-.about {
+/* The tall trail scene. It always shows its sky and hills; short screens crop the path from
+   the bottom instead of scrolling. It runs 24px under the tab bar so its rounded corners sit
+   on the illustration rather than on the page. */
+.scene {
   position: relative;
-  align-self: center;
-  margin-top: 14px;
+  flex: 1 1 0;
+  min-height: 300px;
+  margin-top: 4px;
+  margin-bottom: -24px;
+  overflow: hidden;
 }
-.about summary {
-  list-style: none;
-  cursor: pointer;
-  color: var(--green-dark);
-  font-size: 15px;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-.about summary::-webkit-details-marker { display: none; }
-.about p {
-  position: absolute;
-  top: calc(100% + 8px);
-  left: 50%;
-  z-index: 2;
-  width: min(300px, 80vw);
-  margin: 0;
-  padding: 12px 16px;
-  border: 2px solid #ced7c9;
-  border-radius: 16px;
-  background: var(--surface);
-  box-shadow: 0 3px 0 #ced7c9;
-  color: var(--text);
-  font-size: 15px;
-  line-height: 1.5;
-  transform: translateX(-50%);
-  animation: about-open 160ms ease-out;
-}
-@keyframes about-open {
-  from { opacity: 0; transform: translate(-50%, -6px); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .about p { animation: none; }
-}
-
 .landscape {
   position: absolute;
-  z-index: 0;
-  /* Sits 20px lower; the overhang tucks behind the fixed bottom navigation. */
-  bottom: -20px;
-  left: 0;
+  inset: 0;
   display: block;
   width: 100%;
-  /* Always the whole scene, at its natural 3:2 ratio. */
-  height: auto;
-  /* Blend the ivory sky into the page, stopping above the treetops. */
-  mask-image: linear-gradient(to bottom, transparent, black 4%);
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  /* Blend the ivory sky into the page. */
+  mask-image: linear-gradient(to bottom, transparent, black 8%);
+}
+/* Forest shade that lifts the button off the busy foreground. */
+.scene::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: min(250px, 60%);
+  background: linear-gradient(
+    to bottom,
+    rgb(20 52 40 / 0) 0%,
+    rgb(20 52 40 / 0.35) 30%,
+    rgb(20 52 40 / 0.78) 62%,
+    rgb(16 43 33 / 0.94) 100%
+  );
+  pointer-events: none;
 }
 
+/* The button floats 32px above the tab bar (24px of the scene sits under the bar). */
+.action {
+  position: absolute;
+  z-index: 1;
+  inset-inline: 0;
+  bottom: 56px;
+  display: flex;
+  justify-content: center;
+}
+.action > a {
+  width: 81%;
+  min-height: 52px;
+  padding: 12px 16px;
+  border-radius: 16px;
+  color: var(--green-dark);
+  font-size: 17px;
+  line-height: 1.5;
+  box-shadow: 0 3px 0 var(--yellow-dark), 0 10px 28px rgb(0 0 0 / 0.3);
+  transition: background 120ms ease, transform 100ms ease, box-shadow 100ms ease;
+}
+.action > a svg { flex-shrink: 0; color: var(--green-dark); }
+.action > a:active { transform: translateY(3px); box-shadow: 0 0 0 var(--yellow-dark), 0 6px 18px rgb(0 0 0 / 0.3); }
+:global(body):has(.home) .action > a:focus-visible { outline-color: var(--yellow); }
+
+@media (hover: hover) {
+  .action > a:hover { background: #f7df8e; }
+}
 
 @media (max-width: 359px) {
   .header, .intro { padding-inline: 16px; }
+  .action > a { width: calc(100% - 32px); }
 }
-@media (max-height: 550px) {
-  .intro { padding-block: 16px; }
+@media (max-height: 600px) {
+  .intro { padding-top: 12px; }
+  .scene { min-height: 260px; }
 }

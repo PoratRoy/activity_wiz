@@ -2,11 +2,10 @@ import type { Metadata } from "next";
 import { Sparkles } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { preload } from "react-dom";
 import { ButtonLink } from "@/components/Button/Button";
 import { AvatarMenu } from "@/components/AvatarMenu/AvatarMenu";
-import { getViewer } from "@/lib/auth/session";
 import { getSiteUrl } from "@/lib/site";
-import { GoogleSignInButton } from "./GoogleSignInButton";
 import styles from "./page.module.css";
 
 export const metadata: Metadata = {
@@ -16,8 +15,15 @@ export const metadata: Metadata = {
   alternates: { canonical: "/" },
 };
 
-export default async function HomePage() {
-  const { signedIn } = await getViewer();
+// The scene is pre-exported at three widths (Cloudflare has no image optimizer); the browser
+// picks one for the app column, which is never wider than 480px.
+const SCENE = "/illustrations/home-trail-tall";
+const SCENE_SRCSET = `${SCENE}-480.webp 480w, ${SCENE}-720.webp 720w, ${SCENE}-941.webp 941w`;
+const SCENE_SIZES = "(max-width: 480px) 100vw, 480px";
+
+export default function HomePage() {
+  // The scene is the largest element on screen, so fetch it alongside the HTML.
+  preload(`${SCENE}-720.webp`, { as: "image", imageSrcSet: SCENE_SRCSET, imageSizes: SCENE_SIZES, fetchPriority: "high" });
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
@@ -41,39 +47,32 @@ export default async function HomePage() {
       </header>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
       <main className={styles.main}>
-        <section className={styles.hero} aria-labelledby="home-title">
-          <div className={styles.intro}>
-            <h1 id="home-title">פחות לתכנן.<br /><span className={styles.marker}>יותר להדריך.</span></h1>
-            <p className={styles.pitch}>
-              פעולה מוכנה בדקה,<br />מותאמת לגיל ולקבוצה שלכם.
-            </p>
-            <div className={styles.actions}>
-              <ButtonLink href="/create/group" icon={<Sparkles size={22} aria-hidden />}>
-                יצירת פעולה עם AI
-              </ButtonLink>
-              {!signedIn && <GoogleSignInButton />}
-            </div>
-            {/* <details> keeps the text in the server HTML for search engines while it stays folded. */}
-            <details className={styles.about}>
-              <summary>אודות</summary>
-              <p>
-                יצירת פעולות מותאמות אישית לתנועות הנוער בעזרת בינה מלאכותית. מתאים למדריכים שרוצים להעשיר את הפעילות החינוכית
-                והחברתית.
-              </p>
-            </details>
-          </div>
-          <Image
-            src="/illustrations/home-trail.webp"
-            width={1200}
-            height={800}
-            sizes="(max-width: 480px) 100vw, 480px"
-            unoptimized
-            preload
+        <div className={styles.intro}>
+          <h1>פחות לתכנן.<br /><span className={styles.marker}>יותר להדריך.</span></h1>
+          <p className={styles.pitch}>
+            פעולה מוכנה בדקה,<br />מותאמת לגיל ולקבוצה שלכם.
+          </p>
+        </div>
+        <div className={styles.scene}>
+          {/* A plain <img>: next/image can't build a srcset for pre-sized static files without a client-side loader. */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={`${SCENE}-720.webp`}
+            srcSet={SCENE_SRCSET}
+            sizes={SCENE_SIZES}
+            width={941}
+            height={1672}
             alt=""
+            fetchPriority="high"
+            decoding="async"
             className={styles.landscape}
           />
-        </section>
-
+          <div className={styles.action}>
+            <ButtonLink href="/create/group" variant="accent" icon={<Sparkles size={22} aria-hidden />}>
+              יצירת פעולה עם AI
+            </ButtonLink>
+          </div>
+        </div>
       </main>
     </div>
   );
