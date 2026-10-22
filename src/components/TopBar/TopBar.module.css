@@ -84,6 +84,14 @@
   :global(body):has(.forest) { background: var(--green-dark); }
 }
 
+/* Pulling past the bottom of the list shows ivory, continuing the sheet (AppViewport sets the flag). */
+:global(html[data-scroll-end="bottom"]):has(.forest),
+:global(html[data-scroll-end="bottom"]) :global(.app):has(.forest) { background: var(--cream); }
+
+@media (max-width: 480px) {
+  :global(html[data-scroll-end="bottom"]) :global(body):has(.forest) { background: var(--cream); }
+}
+
 @media (max-width: 359px) {
   .forest { padding-inline: 8px; }
   .forest .title { font-size: 22px; }
