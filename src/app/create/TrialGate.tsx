@@ -7,7 +7,7 @@ export function TrialGate() {
   return (
     <>
       <TopBar title="יצירת פעולה" />
-      <SignInGate open blocking text={"הניסיון הסתיים 🙂\nהתחברו כדי להמשיך ליצור פעולות"} />
+      <SignInGate open reason="trial" />
     </>
   );
 }

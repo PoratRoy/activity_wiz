@@ -54,7 +54,7 @@ export function BottomNav() {
       open={prompt}
       onClose={() => setPrompt(false)}
       redirectTo="/my"
-      text="התחברו כדי לשמור את הפעולות שלכם"
+      reason="save"
     />
     </>
   );

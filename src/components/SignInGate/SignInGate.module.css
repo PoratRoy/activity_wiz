@@ -1,24 +1,132 @@
+/* react-modal-sheet renders into <body> unstyled; it owns positioning, these are the looks. */
+.root {
+  --green-hill: #2b6a51;
+  z-index: 60;
+}
+
+.backdrop {
+  background: rgb(0 0 0 / 0.45);
+  border: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.sheet {
+  right: 0;
+  max-width: var(--column);
+  margin-inline: auto;
+  overflow: hidden;
+  border-radius: 28px 28px 0 0;
+  background: var(--surface);
+}
+
+.hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 210px;
+  overflow: hidden;
+  background: var(--green);
+}
+
+/* A soft lighter disc behind the hat. */
+.hero::before {
+  content: "";
+  position: absolute;
+  top: 18px;
+  width: 172px;
+  height: 172px;
+  border-radius: 50%;
+  background: #3c8164;
+}
+
+.draggable {
+  cursor: grab;
+  touch-action: none;
+}
+
+.handle {
+  position: absolute;
+  top: var(--space-2);
+  width: 40px;
+  height: 5px;
+  border-radius: var(--radius-pill);
+  background: rgb(255 255 255 / 0.45);
+}
+
+.close {
+  position: absolute;
+  z-index: 1;
+  top: var(--space-4);
+  inset-inline-end: var(--space-4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  background: rgb(255 255 255 / 0.14);
+  color: #fff;
+}
+
+.hills {
+  position: absolute;
+  inset-inline: 0;
+  bottom: -1px;
+  width: 100%;
+  height: 80px;
+}
+
+.hat {
+  position: relative;
+  display: flex;
+  margin-block-end: var(--space-5);
+}
+
 .body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--space-4);
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-5) calc(var(--space-5) + env(safe-area-inset-bottom));
+  text-align: center;
+}
+
+.badge {
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-pill);
+  background: var(--yellow-light);
+  color: #7a5d17;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.title {
+  margin: var(--space-1) 0 0;
+  font-size: var(--fs-h1);
+  font-weight: 800;
+  line-height: 1.25;
 }
 
 .text {
   margin: 0;
-  font-size: var(--fs-h2);
-  font-weight: 700;
-  line-height: 1.4;
-  white-space: pre-line;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.google {
+  min-height: 56px;
+  margin-block-start: var(--space-4);
+  font-size: 17px;
 }
 
 .back {
   min-height: 44px;
+  margin-block-start: var(--space-1);
   padding: 0 var(--space-4);
   border: 0;
   background: none;
   color: var(--text-muted);
-  font-weight: 500;
-  text-decoration: underline;
+  font-size: 15px;
 }
