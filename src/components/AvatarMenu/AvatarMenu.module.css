@@ -12,8 +12,13 @@
   overflow: hidden;
   border: 2px solid var(--green);
   border-radius: 50%;
-  background: var(--green);
-  color: #fff;
+  background: transparent;
+  color: var(--green);
+}
+
+/* The default user glyph is drawn solid inside the transparent ring. */
+.avatar > svg {
+  fill: currentColor;
 }
 
 .avatar img {
@@ -33,12 +38,6 @@
   border-radius: var(--radius);
   background: var(--surface);
   box-shadow: 0 8px 24px rgb(0 0 0 / 0.08);
-}
-
-.name {
-  padding: var(--space-2) var(--space-3);
-  color: var(--text-muted);
-  font-size: var(--fs-small);
 }
 
 .item {

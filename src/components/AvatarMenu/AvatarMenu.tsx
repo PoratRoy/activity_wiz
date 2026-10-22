@@ -42,7 +42,6 @@ export function AvatarMenu() {
 
       {open && (
         <div className={styles.menu} role="menu">
-          {viewer.signedIn && viewer.name && <div className={styles.name}>{viewer.name}</div>}
           <button
             type="button"
             role="menuitem"

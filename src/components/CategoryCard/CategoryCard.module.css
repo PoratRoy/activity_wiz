@@ -35,10 +35,10 @@
 }
 
 /* The whole artwork, fitted to the row's height below a 6px gap (so tall art like antlers never meets the border) and anchored to its lower left corner; a row that grows
-   for a wrapped name grows the art only up to 62% of its width. */
+   for a wrapped name grows the art only up to 62% of its width. Shifted 1px down (clipped by the card) so no sliver shows above the bottom border. */
 .thumb {
   position: absolute;
-  inset-block: 6px 0;
+  inset-block: 7px -1px;
   inset-inline-end: 0;
   width: auto;
   height: calc(100% - 6px);

@@ -52,9 +52,9 @@ export function GroupForm({ accountGroup }: { accountGroup: GroupInput | null })
 
   return (
     <form className={styles.form} onSubmit={(e) => (e.preventDefault(), onContinue())}>
-      <PickerSheet label="תנועה" placeholder="בחרו תנועה" options={movementOptions} value={group.movement} onChange={set("movement")} closeDelayMs={30} />
-      <PickerSheet label="כיתה" placeholder="בחרו כיתה" options={asOptions(GRADES)} value={group.grade} onChange={set("grade")} closeDelayMs={30} />
-      <PickerSheet label="מספר חניכים" placeholder="בחרו מספר חניכים" options={asOptions(GROUP_SIZES)} value={group.groupSize} onChange={set("groupSize")} closeDelayMs={30} />
+      <PickerSheet label="תנועה" placeholder="בחרו תנועה" options={movementOptions} value={group.movement} onChange={set("movement")} closeDelayMs={45} />
+      <PickerSheet label="כיתה" placeholder="בחרו כיתה" options={asOptions(GRADES)} value={group.grade} onChange={set("grade")} closeDelayMs={45} />
+      <PickerSheet label="מספר חניכים" placeholder="בחרו מספר חניכים" options={asOptions(GROUP_SIZES)} value={group.groupSize} onChange={set("groupSize")} closeDelayMs={45} />
       <TileGroup name="gender" label="הרכב" columns={3} options={asOptions(GENDERS)} value={group.gender} onChange={set("gender")} />
       <div className={styles.footer}>
         <Button type="submit" disabled={!complete || pending} icon={<ArrowLeft size={20} aria-hidden />}>

@@ -10,7 +10,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth(() => {
   return {
     secret: env.AUTH_SECRET,
     trustHost: true,
-    session: { strategy: "jwt" },
+    // Stay signed in as long as browsers allow: Chrome caps cookie lifetime at 400 days (default here is 30).
+    session: { strategy: "jwt", maxAge: 400 * 24 * 60 * 60 },
     providers: [Google({ clientId: env.AUTH_GOOGLE_ID, clientSecret: env.AUTH_GOOGLE_SECRET })],
     callbacks: {
       async jwt({ token, account, profile }) {
