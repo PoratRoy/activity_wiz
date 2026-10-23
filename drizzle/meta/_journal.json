@@ -78,6 +78,13 @@
       "when": 1792683800489,
       "tag": "0010_public_activity_position",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "6",
+      "when": 1792739399067,
+      "tag": "0011_public_activity_views",
+      "breakpoints": true
     }
   ]
 }

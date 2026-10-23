@@ -1,9 +1,10 @@
 "use server";
 
 import { getUserId } from "@/lib/auth/session";
-import { getPublicActivity, insertActivity } from "@/lib/db/queries";
+import { countPublicActivityView, getPublicActivity, insertActivity } from "@/lib/db/queries";
 import type { AddResult } from "@/lib/draft";
 import { addBlocked } from "@/lib/personal-limits";
+import { parseId } from "@/lib/slug";
 
 /** "Save to my activities" (R20): a new, independent personal copy with all activity fields. */
 export async function copyPublicActivity(publicId: string): Promise<AddResult> {
@@ -26,4 +27,10 @@ export async function copyPublicActivity(publicId: string): Promise<AddResult> {
     notes: src.notes,
   });
   return { id };
+}
+
+/** One view of a public activity page; the browser sends it at most once a day per activity. */
+export async function countView(publicId: string): Promise<void> {
+  const id = parseId(String(publicId));
+  if (id) await countPublicActivityView(id);
 }

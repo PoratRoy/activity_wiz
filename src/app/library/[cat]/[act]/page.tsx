@@ -8,6 +8,7 @@ import { excerpt } from "@/lib/markdown/excerpt";
 import { getSiteUrl } from "@/lib/site";
 import { categoryPath, parseId, publicActivityPath, sameSegment } from "@/lib/slug";
 import { PublicActions } from "./PublicActions";
+import { ViewCounter } from "./ViewCounter";
 
 export const dynamic = "force-dynamic";
 
@@ -64,6 +65,7 @@ export default async function PublicActivityPage({ params }: Props) {
         // JSON.stringify output with "<" escaped cannot break out of the script tag.
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
       />
+      <ViewCounter publicId={activity.id} />
       <PublicActions publicId={activity.id} title={activity.title} bodyMd={activity.bodyMd} />
       <ActivityView
         title={activity.title}

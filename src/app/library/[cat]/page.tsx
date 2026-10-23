@@ -1,16 +1,15 @@
 import type { Metadata } from "next";
 import { notFound, permanentRedirect } from "next/navigation";
-import { Clock, MapPin } from "lucide-react";
-import { Fragment, type ReactNode } from "react";
-import { ActivityCard, type CardTag } from "@/components/ActivityCard/ActivityCard";
+import { Fragment } from "react";
+import { ActivityCard } from "@/components/ActivityCard/ActivityCard";
 import { AdSlot } from "@/components/AdSlot/AdSlot";
 import { EmptyState } from "@/components/EmptyState/EmptyState";
 import { ForestPage } from "@/components/ForestPage/ForestPage";
-import { shown } from "@/data/options";
 import { getCategory, listPublicActivities } from "@/lib/db/queries";
 import { excerpt } from "@/lib/markdown/excerpt";
 import { categoryPath, parseId, publicActivityPath, sameSegment } from "@/lib/slug";
 import styles from "../library.module.css";
+import { tagsFor } from "../tags";
 
 export const dynamic = "force-dynamic";
 
@@ -30,19 +29,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     alternates: { canonical: categoryPath(category) },
     openGraph: { title: category.title, url: categoryPath(category) },
   };
-}
-
-/** Age (no icon), then place and time with the activity page's icons; "לא משנה" values are left out. */
-function tagsFor(a: { place: string; duration: string; age: string }): CardTag[] {
-  const tag = (icon: ReactNode, value: string) => {
-    const label = shown(value);
-    return label ? [{ icon, label }] : [];
-  };
-  return [
-    ...tag(null, a.age),
-    ...tag(<MapPin size={13} aria-hidden />, a.place),
-    ...tag(<Clock size={13} aria-hidden />, a.duration),
-  ];
 }
 
 export default async function CategoryPage({ params }: Props) {

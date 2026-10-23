@@ -80,9 +80,14 @@ export const publicActivity = sqliteTable(
     age: text("age").notNull().default("לא משנה"),
     /** Display order within the category set by the admin, ascending; new activities go first. */
     position: integer("position").notNull().default(0),
+    /** Page opens, counted from the browser at most once a day per browser; ranks the «הכי פופולרי» row. */
+    viewCount: integer("view_count").notNull().default(0),
     createdAt: integer("created_at").notNull(),
   },
-  (t) => [index("public_activity_category_created_idx").on(t.categoryId, t.createdAt)],
+  (t) => [
+    index("public_activity_category_created_idx").on(t.categoryId, t.createdAt),
+    index("public_activity_views_idx").on(t.viewCount, t.createdAt),
+  ],
 );
 
 /** The admin's message to signed-in users. At most one row: every send replaces it with a new ID. */

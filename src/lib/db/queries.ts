@@ -1,5 +1,5 @@
 import "server-only";
-import { and, asc, count, desc, eq, max, min, ne, sql } from "drizzle-orm";
+import { and, asc, count, desc, eq, gt, max, min, ne, sql } from "drizzle-orm";
 import { getDb, newId } from "./client";
 import { activity, broadcastMessage, publicActivity, publicCategory, users } from "./schema";
 
@@ -264,6 +264,33 @@ export async function listPublicActivities(categoryId: string) {
     .from(publicActivity)
     .where(eq(publicActivity.categoryId, categoryId))
     .orderBy(...publicActivityOrder);
+}
+
+/** The most-viewed public activities (at least one view), most views first, ties newest first. */
+export async function listTopPublicActivities(limit: number) {
+  return getDb()
+    .select({
+      id: publicActivity.id,
+      title: publicActivity.title,
+      bodyMd: publicActivity.bodyMd,
+      place: publicActivity.place,
+      duration: publicActivity.duration,
+      age: publicActivity.age,
+      category: { id: publicCategory.id, title: publicCategory.title },
+    })
+    .from(publicActivity)
+    .innerJoin(publicCategory, eq(publicCategory.id, publicActivity.categoryId))
+    .where(gt(publicActivity.viewCount, 0))
+    .orderBy(desc(publicActivity.viewCount), desc(publicActivity.createdAt))
+    .limit(limit);
+}
+
+/** One more view; a missing ID changes nothing. */
+export async function countPublicActivityView(id: string) {
+  await getDb()
+    .update(publicActivity)
+    .set({ viewCount: sql`${publicActivity.viewCount} + 1` })
+    .where(eq(publicActivity.id, id));
 }
 
 export async function listAllPublicActivityRefs() {
