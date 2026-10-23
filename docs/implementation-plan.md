@@ -111,3 +111,8 @@ Each step ends with `npm run typecheck && npm run build`, then a commit and push
 ## ☑ 17. Reorder public activities
 - Migration `0010`: `public_activity.position`, backfilled newest first per category. New and moved activities go first.
 - `/admin/category/[id]` gets the same **שינוי סדר** mode as `/admin`, through the shared `Reorderable` component; the library follows the order.
+
+## ☑ 18. Most popular row
+- Migration `0011`: `public_activity.view_count` with an index on (`view_count`, `created_at`).
+- `ViewCounter` on the public activity page counts a view after it opens, once a day per browser per activity (no IP check; low stakes).
+- A fixed **הכי פופולרי** row first in `/library` (artwork `TopTen.webp`), opening `/library/top` with the top 10; also in the sitemap.

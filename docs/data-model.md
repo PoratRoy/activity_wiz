@@ -65,6 +65,7 @@ Deletes are hard deletes.
 | `equipment`, `teams`, `shabbat`, `notes` | text, nullable | Same values as `activity` |
 | `age` | text, not null, default `לא משנה` | Which ages it fits: `לא משנה`, `שכבה צעירה` or `שכבה בוגרת` |
 | `position` | integer, not null, default 0 | Admin-set order within the category; sort ascending. A new activity, or one moved to another category, gets min − 1 so it shows first. Migration `0010` backfilled existing rows newest first |
+| `view_count` | integer, not null, default 0 | Page views, counted from the browser after the activity page opens (direct links too), at most once a day per browser per activity. Ranks the «הכי פופולרי» row; index on (`view_count`, `created_at`). Added in migration `0011` |
 | `created_at` | integer, not null | Tie-breaker after `position`, descending |
 
 `public_activity` has the same content columns as `activity`. A library copy copies every one of them. `age` is library-only: it is not a content column and is not copied.
@@ -91,6 +92,7 @@ The admin's message to signed-in users (`/admin/message`). At most one row: ever
 | Guest identity + trial | Signed HttpOnly cookie `aw_guest` (HMAC with `GUEST_COOKIE_SECRET`) | `{ id, trialStart? }`. `trialStart` is set at the first generation. Max-age 1 year. |
 | Group (cache) | `localStorage['aw.group']` | `{ movement, grade, groupSize, gender }` |
 | Guest draft activity | `localStorage['aw.draft']` | `{ title, bodyMd, type, subject, place, duration, equipment?, teams?, shabbat?, notes?, createdAt }` |
+| Counted views | `localStorage['aw.viewed']` | `{ [publicActivityId]: countedAt }`; entries older than a day are dropped |
 | In-progress activity form | `sessionStorage['aw.activityForm']` | The activity page's field values |
 | Pending generation request | `sessionStorage['aw.request']` | `{ group, activity }` |
 
@@ -103,6 +105,6 @@ The admin's message to signed-in users (`/admin/message`). At most one row: ever
 - `insertActivity(userId, data)`, `updateActivity(id, userId, { title, bodyMd })` (sets `updated_at`), `deleteActivity(id, userId)`
 - `getBroadcastMessage()`, `sendBroadcastMessage({ title, body, withForm })` (replaces the row with a new ID), `getUnseenBroadcastMessage(userId)`, `markBroadcastMessageSeen(userId, messageId)`, `broadcastMessageStats(messageId)` → `{ seen, total }`
 - `listCategories()`, `getCategory(id)`, `insertCategory(title)`, `deleteCategory(id)`
-- `listPublicActivities(categoryId)` (by `position`), `setPublicActivityOrder(categoryId, ids)`, `getPublicActivity(id)`, `insertPublicActivity(...)`, `deletePublicActivity(id)`, `countPublicActivities(categoryId)`
+- `listPublicActivities(categoryId)` (by `position`), `setPublicActivityOrder(categoryId, ids)`, `getPublicActivity(id)`, `listTopPublicActivities(limit)` (views ≥ 1, most first, ties newest first), `countPublicActivityView(id)`, `insertPublicActivity(...)`, `deletePublicActivity(id)`, `countPublicActivities(categoryId)`
 
 Every write that touches a personal activity includes `user_id = ?` in its `WHERE` clause.

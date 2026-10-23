@@ -14,6 +14,7 @@ All screens share the app shell from [Design](design.md): a top bar (back arrow 
 | `/activity/[id]` | Personal activity | Owner | No |
 | `/my` | My activities | Registered | No |
 | `/library` | Library: categories | Everyone | Yes |
+| `/library/top` | «הכי פופולרי»: the most-viewed activities | Everyone | Yes |
 | `/library/[cat]` | Category: activity list | Everyone | Yes |
 | `/library/[cat]/[act]` | Public activity | Everyone | Yes |
 | `/admin` | Admin: categories | Admin | No |
@@ -128,6 +129,7 @@ Used by `/activity/draft`, `/activity/[id]` and `/library/[cat]/[act]`:
 - Title: «מאגר פעולות»
 - Back arrow (previous in-app page, or home) and one visible title in the pinned forest masthead.
 - A single column of full-width category rows (name, the category's illustration thumbnail; no activity counts). In the admin-set order (R19). No in-list ad slot. See [Design](design.md) → Library.
+- Above the categories, always first: a fixed **הכי פופולרי** row (same look, artwork `public/library/TopTen.webp`, default image until it's added) that opens `/library/top`. It is not a category and not in the admin.
 - Empty state: «המאגר מתמלא בקרוב».
 
 ## Category `/library/[cat]`
@@ -136,9 +138,16 @@ Used by `/activity/draft`, `/activity/[id]` and `/library/[cat]/[act]`:
 - A list of activity cards (title plus a 2-line excerpt), in the admin's order (new ones first). `<AdSlot>` after the 3rd card.
 - Empty state: «אין עדיין פעולות בקטגוריה».
 
+## Most popular `/library/top`
+
+- Title: «הכי פופולרי».
+- Up to 10 activities from every category with at least one view, most views first (ties: newest first). Each card shows its category as the first tag and links to the activity's own page. `<AdSlot>` after the 3rd card. View counts aren't shown.
+- Empty state: «עדיין אין פעולות פופולריות».
+
 ## Public activity `/library/[cat]/[act]`
 
 - The shared activity view, read-only.
+- After the page opens, `ViewCounter` adds one view (`countView`), unless this browser counted the activity in the last day (`localStorage['aw.viewed']`).
 - Signed-in users see **שמירה לפעולות שלי**. Tapping it runs `copyPublicActivity`, opens `/activity/[newId]` and shows the toast «נשמר לפעולות שלי». Guests don't see the button.
 
 ## Admin `/admin`
