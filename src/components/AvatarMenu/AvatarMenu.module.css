@@ -11,14 +11,15 @@
   padding: 0;
   border: 0;
   background: transparent;
-  color: var(--green);
+  /* Dark bars (the forest masthead) override this, so the icon stays visible on green. */
+  color: var(--avatar-color, var(--green));
 }
 
 /* Only a Google photo gets the round frame; signed out (or no photo) is a bare user icon. */
 .avatar img {
   width: 100%;
   height: 100%;
-  border: 2px solid var(--green);
+  border: 2px solid currentColor;
   border-radius: 50%;
   object-fit: cover;
 }

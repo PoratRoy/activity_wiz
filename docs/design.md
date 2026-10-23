@@ -78,7 +78,9 @@ Restyled to follow the approved group page; see [page](../src/app/create/activit
 - Inside it, equipment, teams and Shabbat are switch rows ([Switch](../src/components/Switch/Switch.tsx)): label at the start, a 52 × 32px pill switch at the end, thin dividers between rows. The track is `#CED7C9` off and forest green on; the white knob has a small lower edge and slides toward the inline end. Tapping the label also toggles it; motion is off under reduced motion.
 - **יצירת הפעולה** keeps the group button styling with a yellow sparkles icon and stays sticky above the bottom navigation on a soft ivory fade.
 
-## Activity pages: personal `/activity/[id]` and library `/library/[cat]/[act]` (2026-10-20, deployed for user feedback)
+## Activity pages: personal `/activity/[id]`, guest draft `/activity/draft` and library `/library/[cat]/[act]` (2026-10-20, deployed for user feedback)
+
+The guest draft joined this layout on 2026-10-22: the personal and draft pages are the same [EditableActivityPage](../src/components/EditableActivity/EditableActivityPage.tsx), and the draft's save banner sits on the forest masthead above the title.
 
 Restyled in the group-page language with the content first. Both pages share [ActivityPage](../src/components/ActivityPage/ActivityPage.tsx) and its [stylesheet](../src/components/ActivityPage/ActivityPage.module.css), which restyle the shared ActionBar/ActivityView/editor through `data-*` hooks (`data-activity`, `data-activity-head`, `data-reading`, `data-actionbar`, `data-kind`, `data-section`). No illustrations or background shapes: every accent helps scan the text while guiding. Actions, Markdown, editing and autosave are unchanged. The guest draft view `/activity/draft` is not reskinned.
 
@@ -168,7 +170,7 @@ The visual reference is the original proposal's woodland landscape and small com
 - **My activities `/my`** (2026-10-20, approved): the library's pinned forest masthead and ivory sheet with the single title «הפעולות שלי» (with the shared back arrow) and no count line. Rows follow the library's raised rows without artwork: white surface, 2px `#CED7C9` border, 16px radius, `0 2px 0` lower edge, all the same 72px height, 12px gaps; title 17px/700 on one line (ellipsis when longer) leads, with the `dd.mm.yy` date below it in quieter 13px muted gray (no icon). The whole row opens the activity and presses down 2px. Delete is a quiet 32px trash button (16px muted gray icon, 44px tap area) at the row's inline end that tints pale red only on hover/press, then confirms as before. See [list](../src/app/my/MyList.tsx) and [stylesheet](../src/app/my/MyList.module.css).
 - **Library category `/library/[cat]`** (2026-10-21): the same pinned forest masthead and ivory sheet as `/my`, titled with the category name (back falls back to `/library`), with no separate page heading. Activity rows are the `/my` raised rows without the trash button: all the same height: title 17px/700 on one line, then one line of the activity's opening text in quieter 13px muted gray, then a line of small sage tags (12px/500, forest-green text, 22px pills) in the order age, place, time; place and time carry the activity page's pin and clock icons, age has no icon, and a «לא משנה» value is left out. Title and text are cut with an ellipsis when longer. The activity page shows the age as a fourth chip with the graduation-cap icon. See [page](../src/app/library/[cat]/page.tsx) and [ActivityCard](../src/components/ActivityCard/ActivityCard.module.css).
 - **Empty/error states:** use a small backpack, folded map, campfire or other relevant scene with the existing message and action.
-- **Loading:** use a small illustrated companion or camp scene with restrained progress feedback. Match the same palette; retain existing tips, AI notice and outcome behavior.
+- **Loading `/create/generating`** (approved 2026-10-22, canvas option "D"): deliberately minimal. A full-screen sage page with no top bar, tabs or ad bar, showing only the generating animation, a thin progress bar and the AI notice (see [Screens](screens.md)). Richer options (step checklists, tips, scenes) were reviewed and rejected as too noisy for a few-second wait. Its result/error views follow the same sage layout with a lantern-and-wrench illustration in place of the animation (option "Error A"); the 404 page uses the same layout with a signpost-and-map illustration.
 - **Activity reading/editing:** keep the body quiet and unobstructed. Any decorative detail is confined to the heading; no artwork behind reading text or editor controls.
 - **Admin:** use the same surfaces, type and controls. Keep illustration minimal around dense management content.
 
@@ -197,7 +199,7 @@ Use one consistent rounded lucide icon family for functional actions, with text 
 
 ## Ad bar (2026-10-19)
 
-Owner requirement, superseding the earlier "ads paused" rule: every page except landing (`/`), terms (`/terms`), FAQ (`/faq`) and admin (`/admin/*`) shows one ad placeholder fixed directly above the bottom tabs ([AdBar](../src/components/AdSlot/AdBar.tsx)).
+Owner requirement, superseding the earlier "ads paused" rule: every page except landing (`/`), terms (`/terms`), FAQ (`/faq`), admin (`/admin/*`) and the generating screen (`/create/generating`, which also hides the bottom tabs; 2026-10-22) shows one ad placeholder fixed directly above the bottom tabs ([AdBar](../src/components/AdSlot/AdBar.tsx)).
 
 - A gray (`#E8EAE4`) strip with a 1px `#D9DCD5` top border and a small muted "פרסומת" label, aligned with the app column on phones and inside the desktop frame. It is decorative for now (`aria-hidden`) and ignores taps.
 - Its height is the minimum for a real ad: 50px, the smallest standard mobile banner (320 × 50), sitting directly on the tabs.

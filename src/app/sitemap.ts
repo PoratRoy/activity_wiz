@@ -1,11 +1,12 @@
 import type { MetadataRoute } from "next";
+import { TOP_ROW } from "@/data/topActivities";
 import { listAllPublicActivityRefs, listCategories } from "@/lib/db/queries";
 import { getSiteUrl } from "@/lib/site";
 import { categoryPath, publicActivityPath } from "@/lib/slug";
 
 export const dynamic = "force-dynamic";
 
-/** Home, library, every category and every public activity, read from D1 on each request. */
+/** Home, library, the «הכי פופולרי» page, every category and every public activity, read from D1 on each request. */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = getSiteUrl();
   const [categories, activities] = await Promise.all([listCategories(), listAllPublicActivityRefs()]);
@@ -13,6 +14,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   return [
     { url: `${base}/`, changeFrequency: "weekly", priority: 1 },
     { url: `${base}/library`, changeFrequency: "daily", priority: 0.9 },
+    { url: `${base}${TOP_ROW.href}`, changeFrequency: "daily", priority: 0.8 },
     { url: `${base}/faq`, changeFrequency: "monthly", priority: 0.6 },
     { url: `${base}/contact`, changeFrequency: "yearly", priority: 0.3 },
     { url: `${base}/terms`, changeFrequency: "yearly", priority: 0.2 },

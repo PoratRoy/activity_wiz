@@ -3,8 +3,8 @@
 import { usePathname } from "next/navigation";
 import styles from "./AdBar.module.css";
 
-/** Pages that never show the ad bar: landing, terms, FAQ and admin. */
-const EXCLUDED = ["/terms", "/faq", "/admin"];
+/** Pages that never show the ad bar: landing, terms, FAQ, admin and the generating screen. */
+const EXCLUDED = ["/terms", "/faq", "/admin", "/create/generating"];
 
 function showsAdBar(pathname: string) {
   return pathname !== "/" && !EXCLUDED.some((p) => pathname === p || pathname.startsWith(`${p}/`));

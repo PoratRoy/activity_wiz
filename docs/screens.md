@@ -69,11 +69,11 @@ All screens share the app shell from [Design](design.md): a top bar (back arrow 
 ## Loading `/create/generating`
 
 - If there's no request in sessionStorage, redirect to `/`.
-- Calls the `generateActivity` server action once when the page mounts. While it runs, the page shows:
-  - a bouncing mascot
-  - a progress bar that fills over about 15 seconds and then waits at about 90%
-  - rotating Hebrew tips, every 3 seconds
-  - the AI notice line (R27) at the bottom, in small muted text
+- Calls the `generateActivity` server action once when the page mounts. While it runs, the page is a full-screen sage (`#E7EFDF`) view with no top bar, bottom tabs or ad bar (owner decision, 2026-10-22: the wait is only a few seconds). Centered, it shows only:
+  - the generating animation (`public/animations/generating.webp`, 240px wide)
+  - a thin 160 × 6px progress bar (`#CBDAC2` track, forest-green fill) that fills over about 15 seconds and then waits at about 90%
+  - the AI notice line (R27) below it, 14px muted text
+- The result views (refused, rate limited, list full, busy, errors) use the same full-screen sage layout with no top bar, tabs or ad bar (canvas option "Error A", 2026-10-22): the lantern-and-wrench illustration (`public/illustrations/error-lantern.webp`), the message in forest green (24px) and full-width action buttons below it. Their buttons are the way out.
 - Results:
   - **Success, registered:** clear the request, then `router.replace('/activity/[id]')`.
   - **Success, guest:** save the draft to localStorage, then `router.replace('/activity/draft')`.
@@ -82,6 +82,11 @@ All screens share the app shell from [Design](design.md): a top bar (back arrow 
   - **List full (R8b):** «הגעתם ל-200 פעולות שמורות. מחקו פעולות ישנות כדי לשמור חדשות», with **לפעולות שלי** and **חזרה**.
   - **High demand (R28):** «יש עומס כרגע, נסו שוב בעוד רגע», with **נסו שוב**.
   - **Error/timeout (R12):** «משהו השתבש», with **נסו שוב** (calls the action again, subject to the rate limit) and **חזרה** (back to the activity page).
+
+## Not found (404)
+
+- `src/app/not-found.tsx` renders for any unknown URL and wherever a page calls `notFound()` (a missing library category or activity).
+- Same full-screen sage layout as the generating error views (canvas option "404 A", 2026-10-22), with no top bar, tabs or ad bar: the signpost-and-map illustration (`public/illustrations/not-found-signpost.webp`), «הדף הזה לא נמצא», «אולי הקישור ישן, או שהפעולה כבר לא קיימת.», then **למסך הבית** (`/`) and **לפעולות מוכנות** (`/library`). Not indexed.
 
 ## Activity view: shared layout
 
@@ -106,6 +111,7 @@ Used by `/activity/draft`, `/activity/[id]` and `/library/[cat]/[act]`:
 - If there's no draft in localStorage, redirect to `/`.
 - Shows a yellow banner: «רוצה לשמור את הפעולה? התחברו עם Google» with a sign-in button. The sign-in callback URL is `/activity/draft?claim=1`.
 - With `?claim=1` and a signed-in session, the page calls `claimDraft(draft)`, removes the draft from localStorage and replaces the URL with `/activity/[newId]` (R13).
+  - While it saves, the page shows the generating screen's full-screen sage view (2026-10-22): the generating animation, the thin progress bar (about 90% over 4 seconds) and «שומרים את הפעולה…», with no top bar, tabs or ad bar.
 
 ### `/activity/[id]`
 - Server-checks that the viewer is the owner. If not, or if the activity doesn't exist, redirect to `/my`.

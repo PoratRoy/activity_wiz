@@ -1,3 +1,8 @@
+/* Without the tabs (the generating screen), nothing reserves their height. */
+:global(body):not(:has([data-bottom-nav])) {
+  --tabbar-h: 0px;
+}
+
 .nav {
   position: fixed;
   bottom: 0;

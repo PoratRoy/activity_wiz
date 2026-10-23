@@ -22,9 +22,12 @@ export function BottomNav() {
   const { signedIn } = useViewer();
   const [prompt, setPrompt] = useState(false);
 
+  // The generating screen is a short full-screen wait; leaving it mid-request would lose the result.
+  if (pathname === "/create/generating") return null;
+
   return (
     <>
-    <nav className={`${styles.nav} ${pathname === "/" ? styles.landing : ""}`} aria-label="ניווט ראשי">
+    <nav data-bottom-nav className={`${styles.nav} ${pathname === "/" ? styles.landing : ""}`} aria-label="ניווט ראשי">
       {tabs.map(({ href, label, Icon, match }) => {
         const active = match(pathname);
         const locked = href === "/my" && !signedIn;

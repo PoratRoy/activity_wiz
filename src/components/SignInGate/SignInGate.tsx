@@ -83,7 +83,7 @@ export function SignInGate({ open, reason, onClose, redirectTo }: Props) {
             <WizardHat width={156} />
           </span>
         </Sheet.Header>
-        <Sheet.Content scrollClassName={styles.body}>
+        <Sheet.Content className={styles.content} scrollClassName={styles.body}>
           {copy.badge && <span className={styles.badge}>{copy.badge}</span>}
           <h2 id={titleId} className={styles.title}>
             {copy.title}

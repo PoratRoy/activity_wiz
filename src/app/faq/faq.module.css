@@ -1,12 +1,18 @@
 .page {
   min-height: calc(var(--app-height) - var(--tabbar-h) - var(--adbar-h) - env(safe-area-inset-bottom));
+  /* Room for the fixed masthead: the 64px bar and its 40px seam band. */
+  padding-top: 104px;
   background: var(--cream);
 }
 
 .masthead {
-  position: sticky;
+  position: fixed;
   top: 0;
+  inset-inline: 0;
   z-index: 30;
+  width: 100%;
+  max-width: var(--column);
+  margin-inline: auto;
   padding-bottom: 40px;
   background: var(--green-dark);
 }

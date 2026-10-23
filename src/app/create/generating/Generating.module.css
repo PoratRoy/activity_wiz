@@ -1,32 +1,58 @@
-.main {
+/* Both views are a full-screen sage moment with no top bar, tabs or ad bar. */
+.screen {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: var(--space-4);
-  min-height: calc(var(--app-height) - var(--topbar-h) - var(--tabbar-h) - var(--adbar-h));
-  padding: var(--space-5) var(--space-4);
+  min-height: calc(var(--app-height) - env(safe-area-inset-bottom));
   text-align: center;
 }
 
-/* The animation has a white background; multiply blends it into the page color. */
+/* The sage fills the frame, the safe area and, on phones, any pull past the edges. */
+:global(.app):has(.screen) {
+  background: var(--green-light);
+}
+
+@media (max-width: 767px) {
+  :global(html):has(.screen),
+  :global(body):has(.screen) {
+    background: var(--green-light);
+  }
+}
+
+/* Loading: only the animation, a thin bar and the AI notice. */
+.loading {
+  gap: 20px;
+  padding: var(--space-5) 40px;
+}
+
 .animation {
-  width: 220px;
+  width: 240px;
   height: auto;
-  mix-blend-mode: multiply;
+}
+
+/* Result: the lantern, the message and full-width actions, laid out like the loading view. */
+.error {
+  gap: 20px;
+  padding: var(--space-5) var(--space-6);
+}
+
+.illustration {
+  width: 210px;
+  height: auto;
 }
 
 .title {
-  font-size: var(--fs-h2);
+  color: var(--green-dark);
+  font-size: var(--fs-h1);
 }
 
 .bar {
-  width: 100%;
-  max-width: 300px;
-  height: 14px;
+  width: 160px;
+  height: 6px;
   overflow: hidden;
   border-radius: var(--radius-pill);
-  background: var(--border);
+  background: #cbdac2;
 }
 
 /* Fills to ~90% over 15s, then waits for the result. */
@@ -40,9 +66,11 @@
 }
 
 .notice {
-  margin: var(--space-4) 0 0;
-  color: var(--text-muted);
+  max-width: 280px;
+  margin: 6px 0 0;
+  color: #4a5a50;
   font-size: var(--fs-small);
+  line-height: 1.55;
 }
 
 .actions {
@@ -51,6 +79,10 @@
   gap: var(--space-3);
   width: 100%;
   margin-top: var(--space-3);
+}
+
+.actions > * {
+  width: 100%;
 }
 
 @keyframes fill {

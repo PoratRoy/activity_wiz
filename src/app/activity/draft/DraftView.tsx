@@ -1,12 +1,12 @@
 "use client";
 
+import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState, useTransition } from "react";
-import { EditableActivity } from "@/components/EditableActivity/EditableActivity";
+import { EditableActivityPage } from "@/components/EditableActivity/EditableActivityPage";
 import { useViewer } from "@/components/AppShell/viewer";
-import { Mascot } from "@/components/illustrations/Mascot";
 import { useToast } from "@/components/Toast/Toast";
-import { activityChips, typeLabel } from "@/data/options";
+import { activityDetailChips, typeLabel } from "@/data/options";
 import { signInWithGoogle } from "@/lib/auth/actions";
 import { LIST_FULL_MESSAGE, type Draft } from "@/lib/draft";
 import { draftStore, groupStore } from "@/lib/guest/storage";
@@ -59,15 +59,20 @@ export function DraftView() {
       });
   }, [draft, signedIn, params, router, toast]);
 
-  if (!draft) return null;
-  if (claiming) {
+  // Back from sign-in to save: show the saving screen from the first render, so the top bar never flashes.
+  if (claiming || (signedIn && params.get("claim") === "1")) {
     return (
-      <div className={styles.claiming}>
-        <Mascot size={100} variant="bounce" />
-        <p>שומרים את הפעולה…</p>
-      </div>
+      <main className={styles.saving} aria-busy="true">
+        <Image className={styles.animation} src="/animations/generating.webp" width={500} height={320} alt="" unoptimized priority />
+        <div className={styles.bar} role="progressbar" aria-label="שומרים את הפעולה">
+          <div className={styles.fill} />
+        </div>
+        <p className={styles.savingText}>שומרים את הפעולה…</p>
+      </main>
     );
   }
+
+  if (!draft) return null;
 
   const banner = signedIn ? (
     // Signed in without ?claim (e.g. came back later): offer an explicit save.
@@ -92,19 +97,18 @@ export function DraftView() {
   );
 
   return (
-    <>
-      <EditableActivity
-        initial={{ title: draft.title, bodyMd: draft.bodyMd }}
-        chips={activityChips(typeLabel(movement, draft.type), draft.place, draft.duration)}
-        before={banner}
-        onSave={async (c) => {
-          // Guest edits stay in this browser until sign-in (R15).
-          const latest = { ...(draftStore.load() ?? draft), ...c };
-          draftStore.save(latest);
-          setDraft(latest);
-          return true;
-        }}
-      />
-    </>
+    <EditableActivityPage
+      fallback="/create/activity"
+      initial={{ title: draft.title, bodyMd: draft.bodyMd }}
+      chips={activityDetailChips(typeLabel(movement, draft.type), draft.place, draft.duration)}
+      before={banner}
+      onSave={async (c) => {
+        // Guest edits stay in this browser until sign-in (R15).
+        const latest = { ...(draftStore.load() ?? draft), ...c };
+        draftStore.save(latest);
+        setDraft(latest);
+        return true;
+      }}
+    />
   );
 }
