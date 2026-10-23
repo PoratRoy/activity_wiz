@@ -9,6 +9,8 @@
   display: flex;
   flex-direction: column;
   min-height: calc(var(--app-height) - var(--tabbar-h) - var(--adbar-h) - env(safe-area-inset-bottom));
+  /* Room for the fixed top bar and action bar. */
+  padding-top: calc(var(--topbar-h) + var(--actionbar-h));
   /* Green behind the action bar's rounded corners while the title block sits under it. */
   background: var(--green-dark);
   color: var(--text);
@@ -23,6 +25,17 @@
 }
 
 /* ---- Masthead: top bar and actions on forest green ---- */
+
+/* Both bars are fixed: nothing on these pages needs them to move, so pulling past the top shows the page under
+   them rather than a gap above them. */
+.page > header,
+.page [data-actionbar] {
+  position: fixed;
+  inset-inline: 0;
+  width: 100%;
+  max-width: var(--column);
+  margin-inline: auto;
+}
 
 /* The bar's label ("הפעולה", or the library category) gives way to the activity's name once the big title scrolls under the bar. */
 .barTitle {
@@ -61,8 +74,7 @@
 
 /* The rounded lower edge blends into the title block at the top and frames the text once it scrolls under. */
 .page [data-actionbar] {
-  height: auto;
-  min-height: var(--actionbar-h);
+  height: var(--actionbar-h);
   gap: 8px;
   padding: 2px 16px 14px;
   border-bottom: 0;

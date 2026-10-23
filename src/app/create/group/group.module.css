@@ -2,16 +2,22 @@
   display: flex;
   flex-direction: column;
   min-height: calc(var(--app-height) - var(--tabbar-h) - var(--adbar-h) - env(safe-area-inset-bottom));
+  /* Room for the fixed masthead: the 64px bar and its 40px seam band. */
+  padding-top: 104px;
   background: var(--cream);
   color: var(--text);
 }
 
-/* On short screens the form scrolls, so the rounded ivory seam belongs to the sticky masthead
+/* On short screens the form scrolls, so the rounded ivory seam belongs to the fixed masthead
    (as on /create/activity) and fields slide under it instead of showing behind the compass. */
 .masthead {
-  position: sticky;
+  position: fixed;
   top: 0;
+  inset-inline: 0;
   z-index: 30;
+  width: 100%;
+  max-width: var(--column);
+  margin-inline: auto;
   flex-shrink: 0;
   padding-bottom: 40px;
   background: var(--green-dark);

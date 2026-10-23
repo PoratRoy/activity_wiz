@@ -1,6 +1,8 @@
 /* Forest masthead over an ivory sheet ("Raised rows", docs/design.md → Library). */
 .page {
   min-height: calc(var(--app-height) - var(--tabbar-h) - var(--adbar-h) - env(safe-area-inset-bottom));
+  /* Room for the fixed masthead: the 64px bar and its 16px seam. */
+  padding-top: 80px;
   background: var(--cream);
   color: var(--text);
 }
@@ -10,11 +12,16 @@
   outline-offset: 3px;
 }
 
-/* Sticky green band; its ivory seam overlaps the lowest 16px and stays attached while rows scroll under it. */
+/* Fixed green band (it never moves, so pulling past the top shows ivory under it, not above it); its ivory
+   seam overlaps the lowest 16px and stays attached while rows scroll under it. */
 .masthead {
-  position: sticky;
+  position: fixed;
   top: 0;
+  inset-inline: 0;
   z-index: 30;
+  width: 100%;
+  max-width: var(--column);
+  margin-inline: auto;
   padding-bottom: 16px;
   background: var(--green-dark);
 }
