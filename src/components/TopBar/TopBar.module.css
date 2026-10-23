@@ -47,9 +47,9 @@
 
 /* ---- Forest tone: the dark masthead of the redesigned pages ---- */
 
+/* A fixed height, so the fixed mastheads around it can reserve their space. */
 .forest {
-  min-height: 64px;
-  height: auto;
+  height: 64px;
   padding: 8px 16px;
   border-bottom: 0;
   background: var(--green-dark);
@@ -73,16 +73,6 @@
 .forest :focus-visible {
   outline: 3px solid var(--yellow);
   outline-offset: 3px;
-}
-
-/* Pulling past the top (phone bounce, or the desktop frame's scroll bounce) shows green,
-   continuing the masthead instead of revealing the light backdrop. */
-:global(html):has(.forest),
-:global(.app):has(.forest) { background: var(--green-dark); }
-
-/* On phones the app column fills the width, so the body only shows when pulled past the top. */
-@media (max-width: 480px) {
-  :global(body):has(.forest) { background: var(--green-dark); }
 }
 
 @media (max-width: 359px) {
