@@ -31,16 +31,15 @@
   height: auto;
 }
 
-/* Result: the compass, the message and full-width actions, laid out like the loading view. */
+/* Result: the lantern, the message and full-width actions, laid out like the loading view. */
 .error {
   gap: 20px;
   padding: var(--space-5) var(--space-6);
 }
 
-.compass {
-  width: 176px;
+.illustration {
+  width: 210px;
   height: auto;
-  transform: rotate(-9deg);
 }
 
 .title {

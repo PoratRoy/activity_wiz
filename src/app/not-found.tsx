@@ -9,7 +9,7 @@ export const metadata: Metadata = { title: "הדף לא נמצא", robots: { ind
 export default function NotFound() {
   return (
     <main className={styles.screen}>
-      <Image className={styles.compass} src="/illustrations/group-compass.webp" width={300} height={200} alt="" unoptimized />
+      <Image className={styles.illustration} src="/illustrations/not-found-signpost.webp" width={600} height={398} alt="" unoptimized />
       <h1 className={styles.title}>הדף הזה לא נמצא</h1>
       <p className={styles.text}>אולי הקישור ישן, או שהפעולה כבר לא קיימת.</p>
       <div className={styles.actions}>

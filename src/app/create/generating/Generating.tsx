@@ -109,7 +109,7 @@ export function Generating() {
 
   return (
     <main className={`${styles.screen} ${styles.error}`}>
-      <Image className={styles.compass} src="/illustrations/group-compass.webp" width={300} height={200} alt="" unoptimized />
+      <Image className={styles.illustration} src="/illustrations/error-lantern.webp" width={600} height={393} alt="" unoptimized />
       <h2 className={styles.title}>{message}</h2>
       <div className={styles.actions}>
         {view.kind === "refused" ? (
