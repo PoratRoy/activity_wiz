@@ -53,6 +53,7 @@
   padding: 8px 16px;
   border-bottom: 0;
   background: var(--green-dark);
+  --avatar-color: var(--cream);
 }
 
 .forest .title {
