@@ -10,7 +10,8 @@ import styles from "./ActivityPage.module.css";
  * Reading page of a personal or library activity: forest masthead (top bar, then the title block with the
  * page's ActionBar under the title) and the ivory reading sheet; children render the ActivityView.
  * Once the actions under the title scroll under the top bar, the bar swaps `label` for a compact copy of them
- * (`data-collapsed`, animated in CSS), so share and copy stay one tap away while reading.
+ * (`data-collapsed`, animated in CSS), so share and copy stay one tap away while reading. The masthead's trail fades
+ * out on the way there, so the compact bar is plain green.
  */
 export function ActivityPage({ label, fallback, children }: { label: string; fallback: string; children: ReactNode }) {
   const page = useRef<HTMLDivElement>(null);
@@ -36,11 +37,29 @@ export function ActivityPage({ label, fallback, children }: { label: string; fal
       else setCollapsed(false);
     };
     watch();
-    const mo = new MutationObserver(watch);
+    const mo = new MutationObserver(() => {
+      watch();
+      fade();
+    });
     mo.observe(root, { childList: true, subtree: true });
+    // 1 at the top, 0 once the actions reach the bar's lower edge (where the bar collapses). The row's distance from the
+    // page's top doesn't change with scrolling, so it gives the fade's full length wherever the page scrolls.
+    const fade = () => {
+      let opacity = 1;
+      if (watched) {
+        const bottom = watched.getBoundingClientRect().bottom;
+        const span = bottom - root.getBoundingClientRect().top - 64;
+        if (span > 0) opacity = Math.min(1, Math.max(0, (bottom - 64) / span));
+      }
+      root.style.setProperty("--masthead-trail-opacity", String(opacity));
+    };
+    fade();
+    // Capture: the page scrolls inside the app shell on wide screens and the window on phones.
+    document.addEventListener("scroll", fade, { capture: true, passive: true });
     return () => {
       io.disconnect();
       mo.disconnect();
+      document.removeEventListener("scroll", fade, { capture: true });
     };
   }, []);
 
