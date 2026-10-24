@@ -20,8 +20,8 @@ export function PublicActions({ publicId, title, bodyMd }: { publicId: string; t
     <ActionBar title={title} bodyMd={bodyMd}>
       {signedIn && (
         <ActionButton
-          icon={<Bookmark size={20} aria-hidden />}
-          // Short so the three actions fit one row; the full name stays for screen readers and the toast.
+          icon={<Bookmark size={19} aria-hidden />}
+          // Icon-only next to share and copy; the full name stays for screen readers and the toast.
           label={saving ? "שומרים…" : "שמירה"}
           ariaLabel="שמירה לפעולות שלי"
           disabled={saving}

@@ -1,13 +1,20 @@
 "use client";
 
 import { Copy, Share2 } from "lucide-react";
-import type { ReactNode } from "react";
+import { createContext, useContext, type ReactNode } from "react";
+import { createPortal } from "react-dom";
 import { useToast } from "@/components/Toast/Toast";
 import { toPlainText } from "@/lib/markdown/toPlain";
 import { toWhatsApp } from "@/lib/markdown/toWhatsApp";
 import styles from "./ActionBar.module.css";
 
 const CREDIT = "נוצר בעזרת:\nhttps://activitywiz.com";
+
+/**
+ * Where a page's top bar shows the compact copy of the actions once the title block scrolls under it
+ * (provided by `ActivityPage`). Without it the actions only show in the title block.
+ */
+export const ActionSlotContext = createContext<HTMLElement | null>(null);
 
 async function copyText(text: string): Promise<boolean> {
   try {
@@ -60,9 +67,14 @@ export function ActionButton({
   );
 }
 
-/** Bar pinned under the top bar: page-specific actions (`children`) first, then share and copy. */
+/**
+ * The activity's actions under its title: share (labeled, butter yellow), copy, then the page-specific
+ * actions (`children`) as round icon buttons. The same actions are also rendered compact into the top bar's
+ * `ActionSlotContext` slot, which the page reveals once this row scrolls under the bar.
+ */
 export function ActionBar({ title, bodyMd, children }: { title: string; bodyMd: string; children?: ReactNode }) {
   const toast = useToast();
+  const slot = useContext(ActionSlotContext);
 
   const onCopy = async () => {
     toast((await copyText(`${toPlainText(title, bodyMd)}\n\n${CREDIT}`)) ? "הועתק!" : "לא הצלחנו להעתיק");
@@ -81,11 +93,20 @@ export function ActionBar({ title, bodyMd, children }: { title: string; bodyMd: 
     window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank", "noopener");
   };
 
-  return (
-    <div className={styles.bar} data-actionbar>
+  const actions = (
+    <>
+      <ActionButton icon={<Share2 size={19} aria-hidden />} label="שיתוף" onClick={onShare} accent />
+      <ActionButton icon={<Copy size={19} aria-hidden />} label="העתקה" onClick={onCopy} />
       {children}
-      <ActionButton icon={<Share2 size={20} aria-hidden />} label="שיתוף" onClick={onShare} accent />
-      <ActionButton icon={<Copy size={20} aria-hidden />} label="העתקה" onClick={onCopy} />
-    </div>
+    </>
+  );
+
+  return (
+    <>
+      <div className={styles.row} data-actions>
+        {actions}
+      </div>
+      {slot && createPortal(<div className={`${styles.row} ${styles.compact}`}>{actions}</div>, slot)}
+    </>
   );
 }

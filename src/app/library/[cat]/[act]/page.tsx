@@ -59,18 +59,18 @@ export default async function PublicActivityPage({ params }: Props) {
   };
 
   return (
-    <ActivityPage label={category.title} fallback={categoryPath(category)} name={activity.title}>
+    <ActivityPage label={category.title} fallback={categoryPath(category)}>
       <script
         type="application/ld+json"
         // JSON.stringify output with "<" escaped cannot break out of the script tag.
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
       />
       <ViewCounter publicId={activity.id} />
-      <PublicActions publicId={activity.id} title={activity.title} bodyMd={activity.bodyMd} />
       <ActivityView
         title={activity.title}
         bodyMd={activity.bodyMd}
         chips={activityDetailChips(typeLabel(null, activity.type), activity.place, activity.duration, activity.age)}
+        actions={<PublicActions publicId={activity.id} title={activity.title} bodyMd={activity.bodyMd} />}
       />
     </ActivityPage>
   );

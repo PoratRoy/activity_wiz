@@ -38,6 +38,7 @@
 }
 
 .title {
+  grid-area: 1 / 2;
   overflow: hidden;
   font-size: 18px;
   text-align: center;

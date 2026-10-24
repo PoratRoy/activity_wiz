@@ -1,4 +1,4 @@
-/* Pinned directly under the sticky top bar while the activity scrolls beneath it. */
+/* Edit mode's bar ("סיום עריכה" + save status), pinned under the top bar. */
 .bar {
   position: sticky;
   top: var(--topbar-h);
@@ -50,4 +50,88 @@
 
 .danger {
   color: var(--danger-dark);
+}
+
+/* ---- Actions on forest green: under the title, and compact in the top bar ---- */
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Round, icon-only ivory outlines; the label stays for screen readers. */
+.row .action {
+  position: relative;
+  flex: none;
+  flex-direction: row;
+  gap: 8px;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1.5px solid rgb(250 248 241 / 0.28);
+  border-radius: 50%;
+  background: rgb(250 248 241 / 0.08);
+  box-shadow: none;
+  color: var(--cream);
+  transition: background 120ms ease, transform 100ms ease, box-shadow 100ms ease;
+}
+
+.row .action:not(.accent) > span {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Share: the one labeled action, butter yellow and as wide as the row allows. */
+.row .accent {
+  flex: 1;
+  width: auto;
+  border: 0;
+  border-radius: 14px;
+  background: var(--yellow);
+  box-shadow: 0 2px 0 var(--yellow-dark);
+  color: var(--green-dark);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.row .action:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow: none;
+}
+
+.row .action:focus-visible {
+  outline: 3px solid var(--yellow);
+  outline-offset: 3px;
+}
+
+/* In the top bar: smaller, centered, share as a pill. */
+.compact {
+  justify-content: center;
+}
+
+.compact .action {
+  width: 40px;
+  height: 40px;
+}
+
+.compact .accent {
+  flex: none;
+  width: auto;
+  padding: 0 16px;
+  border-radius: 999px;
+}
+
+@media (hover: hover) {
+  .row .action:hover:not(:disabled) { background: rgb(250 248 241 / 0.16); }
+  .row .accent:hover:not(:disabled) { background: #f7df8e; }
+}
+
+@media (max-width: 359px) {
+  .compact { gap: 6px; }
+  .compact .accent { padding-inline: 12px; }
 }

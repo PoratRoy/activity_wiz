@@ -121,11 +121,16 @@ export function EditableActivity({
   }
 
   return (
-    <>
-      <ActionBar title={content.title} bodyMd={content.bodyMd}>
-        <ActionButton icon={<Pencil size={20} aria-hidden />} label="עריכה" onClick={() => setEditing(true)} />
-      </ActionBar>
-      <ActivityView title={content.title} bodyMd={content.bodyMd} chips={chips} before={before} />
-    </>
+    <ActivityView
+      title={content.title}
+      bodyMd={content.bodyMd}
+      chips={chips}
+      before={before}
+      actions={
+        <ActionBar title={content.title} bodyMd={content.bodyMd}>
+          <ActionButton icon={<Pencil size={19} aria-hidden />} label="עריכה" onClick={() => setEditing(true)} />
+        </ActionBar>
+      }
+    />
   );
 }

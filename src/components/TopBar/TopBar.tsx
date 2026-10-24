@@ -8,15 +8,27 @@ export type TopBarTone = "light" | "forest";
 /**
  * The one top bar every page except home uses: back arrow on the right (RTL start), title in the center, avatar
  * on the left. Back returns to the previous in-app page; `fallback` is where it goes when the page was opened
- * directly (default home). `tone="forest"` is the dark masthead of the redesigned pages.
+ * directly (default home). `tone="forest"` is the dark masthead of the redesigned pages. `overlay` shares the
+ * title's cell (outside the heading), for a page that swaps the title for something else.
  */
-export function TopBar({ title, fallback, tone = "light" }: { title?: ReactNode; fallback?: string; tone?: TopBarTone }) {
+export function TopBar({
+  title,
+  fallback,
+  tone = "light",
+  overlay,
+}: {
+  title?: ReactNode;
+  fallback?: string;
+  tone?: TopBarTone;
+  overlay?: ReactNode;
+}) {
   return (
     <header className={`${styles.bar} ${tone === "forest" ? styles.forest : ""}`}>
       <div className={styles.side}>
         <BackButton fallback={fallback} />
       </div>
       <h1 className={styles.title}>{title}</h1>
+      {overlay}
       <div className={`${styles.side} ${styles.end}`}>
         <AvatarMenu />
       </div>
