@@ -5,9 +5,8 @@ import { useEffect, useState, useTransition } from "react";
 import { useViewer } from "@/components/AppShell/viewer";
 import { Button } from "@/components/Button/Button";
 import { ArrowLeft } from "lucide-react";
-import styles from "./group.module.css";
+import styles from "../create.module.css";
 import { PickerSheet } from "@/components/PickerSheet/PickerSheet";
-import { TileGroup } from "@/components/Tile/Tile";
 import { useToast } from "@/components/Toast/Toast";
 import { asOptions, GENDERS, GRADES, GROUP_SIZES, MOVEMENTS } from "@/data/options";
 import { groupStore } from "@/lib/guest/storage";
@@ -52,10 +51,12 @@ export function GroupForm({ accountGroup }: { accountGroup: GroupInput | null })
 
   return (
     <form className={styles.form} onSubmit={(e) => (e.preventDefault(), onContinue())}>
-      <PickerSheet label="תנועה" placeholder="בחרו תנועה" options={movementOptions} value={group.movement} onChange={set("movement")} closeDelayMs={45} />
-      <PickerSheet label="כיתה" placeholder="בחרו כיתה" options={asOptions(GRADES)} value={group.grade} onChange={set("grade")} closeDelayMs={45} />
-      <PickerSheet label="מספר חניכים" placeholder="בחרו מספר חניכים" options={asOptions(GROUP_SIZES)} value={group.groupSize} onChange={set("groupSize")} closeDelayMs={45} />
-      <TileGroup name="gender" label="הרכב" columns={3} options={asOptions(GENDERS)} value={group.gender} onChange={set("gender")} />
+      <div className={styles.card}>
+        <PickerSheet variant="row" label="תנועה" placeholder="בחרו תנועה" options={movementOptions} value={group.movement} onChange={set("movement")} closeDelayMs={45} />
+        <PickerSheet variant="row" label="כיתה" placeholder="בחרו כיתה" options={asOptions(GRADES)} value={group.grade} onChange={set("grade")} closeDelayMs={45} />
+        <PickerSheet variant="row" label="מספר חניכים" placeholder="בחרו טווח" options={asOptions(GROUP_SIZES)} value={group.groupSize} onChange={set("groupSize")} closeDelayMs={45} />
+        <PickerSheet variant="row" label="הרכב" placeholder="בחרו הרכב" options={asOptions(GENDERS)} value={group.gender} onChange={set("gender")} closeDelayMs={45} />
+      </div>
       <div className={styles.footer}>
         <Button type="submit" disabled={!complete || pending} icon={<ArrowLeft size={20} aria-hidden />}>
           {pending ? "שומרים…" : "המשך"}

@@ -1,0 +1,329 @@
+/* The create-flow forms (/create/group, /create/activity), in the reading pages' forest/ivory look: a forest bar, then
+   one ivory sheet with a rounded top holding a single card of answers. Every question is one row of the card. */
+
+.page {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(var(--app-height) - var(--tabbar-h) - var(--adbar-h) - env(safe-area-inset-bottom));
+  /* Room for the fixed bar; the green behind the sheet's rounded corners shows when pulling past the top. */
+  padding-top: 64px;
+  background: var(--green-dark);
+  color: var(--text);
+}
+
+/* Fixed, so the form scrolls under it. */
+.masthead {
+  position: fixed;
+  top: 0;
+  inset-inline: 0;
+  z-index: 30;
+  width: 100%;
+  max-width: var(--column);
+  height: 64px;
+  margin-inline: auto;
+  overflow: hidden;
+  background: var(--green-dark);
+}
+
+/* Transparent (the masthead is already green) so the trail shows behind the title. */
+.masthead > header {
+  position: relative;
+  z-index: 1;
+  background: transparent;
+}
+
+.trail {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.sheet {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  margin-top: 12px;
+  padding: 20px 16px 0;
+  border-radius: 28px 28px 0 0;
+  background: var(--cream);
+}
+
+.form {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.form :focus-visible {
+  outline: 3px solid var(--green-dark);
+  outline-offset: 2px;
+}
+
+/* ---- The card ---- */
+
+.card {
+  border: 2px solid #ced7c9;
+  border-radius: 22px;
+  background: var(--surface);
+  box-shadow: 0 4px 0 #ced7c9;
+  overflow: clip;
+}
+
+.card > * + * {
+  border-top: 1.5px solid var(--border);
+}
+
+/* The select rows reset their own border; the separator must still win. */
+.card > button + button,
+.card > div + button,
+.card > button + div {
+  border-top: 1.5px solid var(--border);
+}
+
+/* A row that holds a control instead of opening a sheet (type, subject). */
+.block {
+  padding: 14px 18px 16px;
+}
+
+/* ---- Type: one segmented row ---- */
+
+.segment {
+  display: grid;
+  grid-auto-columns: minmax(0, 1fr);
+  grid-auto-flow: column;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 13px;
+  background: #eff2ea;
+}
+
+.segment[data-more] {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+}
+
+.segment button {
+  min-height: 44px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: 10px;
+  background: none;
+  color: var(--text-muted);
+  font-size: 15px;
+  font-weight: 500;
+  transition: background 120ms ease, color 120ms ease;
+}
+
+.segment button[aria-checked="true"],
+.segment button[data-on] {
+  background: var(--surface);
+  box-shadow: 0 2px 0 #ced7c9, 0 1px 4px rgb(0 0 0 / 0.06);
+  color: var(--green-dark);
+  font-weight: 700;
+}
+
+.segmentMore {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding-inline: 12px !important;
+}
+
+/* A long type name picked from "עוד" ("ניווט וידיעת הארץ") is cut short rather than squeezing the other two. */
+.segmentMore span {
+  max-width: 8.5em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.segmentMore svg { flex-shrink: 0; }
+
+/* ---- Subject: the field and its random-idea button ---- */
+
+.block input {
+  min-height: 54px;
+  padding-inline-start: 14px;
+  border: 2px solid #ced7c9;
+  border-radius: 14px;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 17px;
+  font-weight: 500;
+}
+
+.block input:not(:placeholder-shown) {
+  border-color: #9eb79b;
+  background: #f1f6ec;
+  color: var(--green-dark);
+  font-weight: 700;
+}
+
+.block input:focus {
+  border-color: var(--green);
+  background: var(--surface);
+  color: var(--text);
+}
+
+.block input::placeholder {
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.block label button {
+  width: 36px;
+  height: 36px;
+  border-radius: 11px;
+  background: var(--yellow-light);
+  box-shadow: 0 2px 0 var(--yellow);
+  transition: transform 100ms ease, box-shadow 100ms ease;
+}
+
+.block label button:active {
+  transform: translateY(2px);
+  box-shadow: none;
+}
+
+/* ---- "עוד אפשרויות": the card's last row, opening in place ---- */
+
+.more > div {
+  border: 0;
+  border-radius: 0;
+  background: none;
+  /* Opening it scrolls the section into view clear of the fixed bar and the pinned button. */
+  scroll-margin-top: 80px;
+  scroll-margin-bottom: calc(98px + var(--tabbar-h) + var(--adbar-h) + env(safe-area-inset-bottom));
+}
+
+.more > div > button {
+  min-height: 62px;
+  padding-inline: 18px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+/* Points left like the other rows while closed, down once open. */
+.more > div > button svg {
+  flex-shrink: 0;
+  color: var(--green);
+  transform: rotate(90deg);
+}
+
+.more > div > button[aria-expanded="true"] {
+  border-bottom: 2px dashed var(--border);
+  color: var(--green-dark);
+}
+
+.more > div > button[aria-expanded="true"] svg { transform: none; }
+
+.more > div > div {
+  gap: 0;
+  padding: 0;
+  background: #fbfcf8;
+}
+
+.more > div > div > div {
+  min-height: 60px;
+  padding-inline: 18px;
+}
+
+.more > div > div > div + div,
+.more > div > div > label {
+  border-top: 1.5px solid #e6e9e1;
+}
+
+.more > div > div > label {
+  padding: 14px 18px 18px;
+}
+
+.more > div > div > label > span:first-child {
+  font-weight: 500;
+}
+
+.more textarea {
+  min-height: 84px;
+  padding: 12px 14px;
+  border: 2px solid #ced7c9;
+  border-radius: 14px;
+  font-size: 15px;
+  line-height: 1.45;
+  resize: none;
+}
+
+.more textarea:focus { border-color: var(--green); }
+
+/* ---- The button: follows the card when it fits, otherwise pins above the bottom navigation ---- */
+
+.footer {
+  position: sticky;
+  bottom: calc(var(--tabbar-h) + var(--adbar-h) + env(safe-area-inset-bottom));
+  z-index: 5;
+  margin: auto -16px 0;
+  padding: 16px 20px;
+  background: var(--cream);
+}
+
+/* In the desktop frame the scroller is the shell's content panel, whose bottom padding already clears the tabs and
+   ad bar, and sticky offsets are measured inside that padding. */
+@media (min-width: 768px) {
+  .footer { bottom: 0; }
+}
+
+/* Fields scrolling under the pinned button fade out instead of being cut off. */
+.footer::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  bottom: 100%;
+  height: 16px;
+  background: linear-gradient(to top, var(--cream), rgb(250 248 241 / 0));
+  pointer-events: none;
+}
+
+.footer button {
+  min-height: 54px;
+  padding-block: 10px;
+  border-radius: 16px;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.footer button svg { order: 1; flex-shrink: 0; color: var(--yellow); }
+.footer button:disabled svg { color: currentColor; }
+.footer button:active:not(:disabled) { transform: translateY(2px); }
+
+/* Disabled until every required answer is in: a quiet, flat placeholder that doesn't compete with the form. */
+.footer button:disabled {
+  --btn-bg: #eef0ea;
+  --btn-fg: #87918a;
+  --btn-border: #e2e6dd;
+  box-shadow: none;
+}
+
+.error {
+  margin: 8px 0 0;
+  color: var(--danger-dark);
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+}
+
+@media (hover: hover) {
+  .card button[aria-haspopup="listbox"]:not(.segmentMore):hover,
+  .more > div > button:hover { background: var(--green-light); }
+  .segment button:not([aria-checked="true"]):not([data-on]):hover { color: var(--green-dark); }
+  .block label button:hover { background: #f8e9ab; }
+  .footer button:hover:not(:disabled) { background: var(--green-dark); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .block label button:active,
+  .footer button:active:not(:disabled) { transform: none; }
+}
+
+@media (max-width: 359px) {
+  .sheet { padding-inline: 12px; }
+  .footer { margin-inline: -12px; padding-inline: 16px; }
+}

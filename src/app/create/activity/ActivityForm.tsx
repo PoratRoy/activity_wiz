@@ -5,9 +5,9 @@ import { useEffect, useState } from "react";
 import { Sparkles } from "lucide-react";
 import { Button } from "@/components/Button/Button";
 import { Collapsible } from "@/components/Collapsible/Collapsible";
+import { PickerSheet } from "@/components/PickerSheet/PickerSheet";
 import { SubjectField } from "@/components/SubjectField/SubjectField";
 import { TextArea } from "@/components/TextField/TextField";
-import { TileGroup } from "@/components/Tile/Tile";
 import { Switch } from "@/components/Switch/Switch";
 import {
   asOptions,
@@ -23,7 +23,8 @@ import {
 } from "@/data/options";
 import { activityFormStore, groupStore, requestStore } from "@/lib/guest/storage";
 import { hasErrors, validateActivity, validateGroup, type ActivityInput, type GroupInput } from "@/lib/validate";
-import styles from "./activity.module.css";
+import styles from "../create.module.css";
+import { TypeSelect } from "./TypeSelect";
 
 const EMPTY: ActivityInput = {
   type: "",
@@ -92,40 +93,36 @@ export function ActivityForm({ accountGroup }: { accountGroup: GroupInput | null
 
   return (
     <form className={styles.form} onSubmit={(e) => (e.preventDefault(), onSubmit())}>
-      <TileGroup
-        name="type"
-        label="סוג"
-        hideLabel
-        columns={movement.types.length === 3 ? 3 : 2}
-        options={movement.types.map((t) => ({ value: t.key, label: t.label }))}
-        value={form.type}
-        onChange={set("type")}
-      />
+      <div className={styles.card}>
+        <div className={styles.block}>
+          <TypeSelect types={movement.types} value={form.type} onChange={set("type")} />
+        </div>
 
-      <SubjectField value={form.subject} onChange={set("subject")} type={(form.type || null) as TypeKey | null} />
+        <div className={styles.block}>
+          <SubjectField value={form.subject} onChange={set("subject")} type={(form.type || null) as TypeKey | null} />
+        </div>
 
-      <TileGroup name="place" label="מקום" columns={3} options={asOptions(PLACES)} value={form.place} onChange={set("place")} />
+        <PickerSheet variant="row" label="מקום" placeholder="בחרו מקום" options={asOptions(PLACES)} value={form.place} onChange={set("place")} closeDelayMs={45} />
 
-      {!isGame && (
-        <TileGroup name="duration" label="משך" columns={3} options={asOptions(DURATIONS)} value={form.duration} onChange={set("duration")} />
-      )}
+        {!isGame && (
+          <PickerSheet variant="row" label="משך" placeholder="בחרו משך" options={asOptions(DURATIONS)} value={form.duration} onChange={set("duration")} closeDelayMs={45} />
+        )}
 
-      <div className={styles.more}>
-        <Collapsible title="עוד אפשרויות">
-          <div className={styles.switches}>
+        <div className={styles.more}>
+          <Collapsible title="עוד אפשרויות">
             <Switch id="equipment" label="ללא ציוד" {...toggle("equipment", NO_EQUIPMENT)} />
             <Switch id="teams" label="ללא קבוצות" {...toggle("teams", NO_TEAMS)} />
             <Switch id="shabbat" label="מותאם לשמירת שבת" {...toggle("shabbat", SHABBAT_OBSERVANT)} />
-          </div>
-          <TextArea
-            id="notes"
-            label="הערות"
-            placeholder="משהו שחשוב שנדע?"
-            maxLength={NOTES_MAX}
-            value={form.notes}
-            onChange={(e) => set("notes")(e.target.value)}
-          />
-        </Collapsible>
+            <TextArea
+              id="notes"
+              label="הערות"
+              placeholder="משהו שחשוב שנדע? למשל: יש בקבוצה חניך חדש"
+              maxLength={NOTES_MAX}
+              value={form.notes}
+              onChange={(e) => set("notes")(e.target.value)}
+            />
+          </Collapsible>
+        </div>
       </div>
 
       <div className={styles.footer}>

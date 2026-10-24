@@ -39,8 +39,8 @@ export function SubjectField({
   return (
     <TextField
       id="subject"
-      label="נושא"
-      placeholder="על מה הפעולה?"
+      aria-label="נושא הפעולה"
+      placeholder="נושא הפעולה"
       value={value}
       autoComplete="off"
       onChange={(e) => {
