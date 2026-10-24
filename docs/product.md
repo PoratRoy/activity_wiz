@@ -51,7 +51,7 @@ Google is the only sign-in method.
 - **R14.** Every activity page (draft, personal, public) shows the activity as formatted Markdown, with **copy** (plain text) and **share**. Share opens the phone's share sheet (`navigator.share`) with the activity in WhatsApp-style formatting plus a link to the site. Where the share sheet isn't available (most desktops), it opens `wa.me` with the same text.
 - **R15.** Personal and draft activities can be **edited**: title and body, using bold, underline and lists only. Personal activities autosave 2 seconds after typing stops. The draft saves to localStorage.
 - **R16.** Public activities are read-only.
-- **R29.** The activity body is limited to **3000 characters** in the editor. Typing stops at the limit and a short warning shows. Deleting text always works.
+- **R29.** The activity body is limited to **6000 characters** (raised from 3000 so activities imported from the old app, up to ~5300, fit) in the editor. Typing stops at the limit and a short warning shows. Deleting text always works.
 
 ### Old-site features carried over
 - **R26. Topic suggestions.** A ✨ button inside the subject field fills in a random topic from `src/data/topic-suggestions.json` for the selected type: lists for `content`, `survival` and `playTime`, with `pointOfView` using the `content` list. Every tap gives a new topic, and the guide can still edit it.

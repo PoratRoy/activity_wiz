@@ -10,7 +10,7 @@ import viewStyles from "@/components/ActivityView/ActivityView.module.css";
 import { TITLE_MAX } from "@/lib/draft";
 import styles from "./ActivityEditor.module.css";
 
-export const BODY_TEXT_LIMIT = 3000;
+export const BODY_TEXT_LIMIT = 6000;
 
 /** Edit mode: title input + Tiptap body (bold, underline, lists), reading and writing Markdown. */
 export default function ActivityEditor({
