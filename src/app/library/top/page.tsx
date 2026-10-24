@@ -24,7 +24,7 @@ export const metadata: Metadata = {
 export default async function TopActivitiesPage() {
   const activities = await listTopPublicActivities(TOP_ROW.size);
   return (
-    <ForestPage title={TOP_ROW.title} fallback="/library">
+    <ForestPage title={TOP_ROW.title} fallback="/library" trail>
       {activities.length === 0 ? (
         <EmptyState text="עדיין אין פעולות פופולריות" />
       ) : (

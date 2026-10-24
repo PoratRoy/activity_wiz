@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { ActionSlotContext } from "@/components/ActionBar/ActionBar";
+import { MastheadTrail } from "@/components/MastheadTrail/MastheadTrail";
 import { TopBar } from "@/components/TopBar/TopBar";
 import styles from "./ActivityPage.module.css";
 
@@ -48,6 +49,7 @@ export function ActivityPage({ label, fallback, children }: { label: string; fal
       <TopBar
         fallback={fallback}
         tone="forest"
+        backdrop={<MastheadTrail />}
         title={<span className={styles.barLabel}>{label}</span>}
         overlay={<div ref={setSlot} className={styles.barActions} inert={!collapsed} />}
       />

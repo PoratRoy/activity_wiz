@@ -41,7 +41,7 @@ export default async function CategoryPage({ params }: Props) {
   const activities = await listPublicActivities(category.id);
 
   return (
-    <ForestPage title={category.title} fallback="/library">
+    <ForestPage title={category.title} fallback="/library" trail>
       {activities.length === 0 ? (
         <EmptyState text="אין עדיין פעולות בקטגוריה" />
       ) : (

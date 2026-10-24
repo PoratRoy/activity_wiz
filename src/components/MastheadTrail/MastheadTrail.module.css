@@ -1,0 +1,17 @@
+/* Behind the bar's content (the bar is its own stacking context), clipped to the bar's rounded corners when it has them. */
+.trail {
+  position: absolute;
+  top: 0;
+  inset-inline: 0;
+  z-index: -1;
+  height: 64px;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.trail svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
