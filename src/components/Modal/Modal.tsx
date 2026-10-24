@@ -52,7 +52,7 @@ export function ConfirmModal({
 }: {
   open: boolean;
   title: string;
-  message?: string;
+  message?: ReactNode;
   confirmLabel?: string;
   cancelLabel?: string;
   pending?: boolean;

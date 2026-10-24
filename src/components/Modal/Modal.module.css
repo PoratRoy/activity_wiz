@@ -36,8 +36,8 @@
   height: 56px;
   margin-block-end: var(--space-3);
   border-radius: var(--radius-pill);
-  background: color-mix(in srgb, var(--danger) 12%, var(--surface));
-  color: var(--danger);
+  background: var(--yellow-light);
+  color: var(--yellow-dark);
 }
 
 .title {

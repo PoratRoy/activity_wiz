@@ -54,7 +54,13 @@ export function MyList({ items: all }: { items: Item[] }) {
       <ConfirmModal
         open={!!confirm}
         title="למחוק את הפעולה?"
-        message={confirm ? `«${confirm.title}» תימחק ואי אפשר לבטל את זה.` : undefined}
+        message={
+          confirm ? (
+            <>
+              <strong className={styles.confirmTitle}>{confirm.title}</strong> תימחק ואי אפשר לבטל את זה.
+            </>
+          ) : undefined
+        }
         pending={deleting}
         onCancel={() => setConfirm(null)}
         onConfirm={async () => {
