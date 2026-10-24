@@ -6,7 +6,7 @@
     "types": [
       {
         "key": "content",
-        "label": "פעולה"
+        "label": "פעולת תוכן"
       },
       {
         "key": "pointOfView",
@@ -29,7 +29,7 @@
     "types": [
       {
         "key": "content",
-        "label": "פעולה"
+        "label": "מתודה מרכזית"
       },
       {
         "key": "pointOfView",
@@ -48,7 +48,7 @@
     "types": [
       {
         "key": "content",
-        "label": "פעולה"
+        "label": "פעולה ערכית"
       },
       {
         "key": "pointOfView",
@@ -67,7 +67,7 @@
     "types": [
       {
         "key": "content",
-        "label": "פעולה"
+        "label": "פעולה ערכית"
       },
       {
         "key": "pointOfView",
@@ -86,7 +86,7 @@
     "types": [
       {
         "key": "content",
-        "label": "פעולה"
+        "label": "פעולה ערכית"
       },
       {
         "key": "pointOfView",
@@ -105,7 +105,7 @@
     "types": [
       {
         "key": "content",
-        "label": "פעולה"
+        "label": "פעולה ערכית"
       },
       {
         "key": "pointOfView",
@@ -124,7 +124,7 @@
     "types": [
       {
         "key": "content",
-        "label": "פעולה"
+        "label": "פעולה ערכית"
       },
       {
         "key": "pointOfView",
@@ -143,7 +143,7 @@
     "types": [
       {
         "key": "content",
-        "label": "פעולה"
+        "label": "פעולה ערכית"
       },
       {
         "key": "pointOfView",
@@ -162,7 +162,7 @@
     "types": [
       {
         "key": "content",
-        "label": "פעולה"
+        "label": "פעולה ערכית"
       },
       {
         "key": "pointOfView",
@@ -181,7 +181,7 @@
     "types": [
       {
         "key": "content",
-        "label": "פעילות"
+        "label": "פעילות תוכן"
       },
       {
         "key": "pointOfView",
@@ -204,7 +204,7 @@
     "types": [
       {
         "key": "content",
-        "label": "פעילות"
+        "label": "פעילות שטח"
       },
       {
         "key": "pointOfView",
@@ -227,7 +227,7 @@
     "types": [
       {
         "key": "content",
-        "label": "פעולה"
+        "label": "פעולה ערכית"
       },
       {
         "key": "pointOfView",
@@ -246,7 +246,7 @@
     "types": [
       {
         "key": "content",
-        "label": "פעולה"
+        "label": "פעולה ערכית"
       },
       {
         "key": "pointOfView",
@@ -265,7 +265,7 @@
     "types": [
       {
         "key": "content",
-        "label": "פעילות"
+        "label": "פעילות תוכן"
       },
       {
         "key": "pointOfView",

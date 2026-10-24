@@ -109,7 +109,7 @@ export function ActivityForm({ accountGroup }: { accountGroup: GroupInput | null
         )}
 
         <div className={styles.more}>
-          <Collapsible title="עוד אפשרויות">
+          <Collapsible title={<>עוד אפשרויות <span className={styles.optional}>(לא חובה)</span></>}>
             <Switch id="equipment" label="ללא ציוד" {...toggle("equipment", NO_EQUIPMENT)} />
             <Switch id="teams" label="ללא קבוצות" {...toggle("teams", NO_TEAMS)} />
             <Switch id="shabbat" label="מותאם לשמירת שבת" {...toggle("shabbat", SHABBAT_OBSERVANT)} />

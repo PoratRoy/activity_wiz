@@ -54,7 +54,7 @@ Google is the only sign-in method.
 - **R29.** The activity body is limited to **6000 characters** (raised from 3000 so activities imported from the old app, up to ~5300, fit) in the editor. Typing stops at the limit and a short warning shows. Deleting text always works.
 
 ### Old-site features carried over
-- **R26. Topic suggestions.** A ✨ button inside the subject field fills in a random topic from `src/data/topic-suggestions.json` for the selected type: lists for `content`, `survival` and `playTime`, with `pointOfView` using the `content` list. Every tap gives a new topic, and the guide can still edit it.
+- **R26. Topic suggestions.** A dice button inside the subject field fills in a random topic from `src/data/topic-suggestions.json` for the selected type: lists for `content`, `survival` and `playTime`, with `pointOfView` using the `content` list. Every tap gives a new topic, and the guide can still edit it.
 - **R27. AI notice.** The loading screen always shows: «שימו לב! התוכן מופק בעזרת בינה מלאכותית ויתכנו טעויות.»
 - **R28. High-demand error.** When Gemini is overloaded (HTTP 503/429 or "overloaded"/"high demand"), show a separate message, «יש עומס כרגע, נסו שוב בעוד רגע», instead of the general error. The 30-second limit still applies.
 
@@ -90,14 +90,14 @@ Google is the only sign-in method.
 | Movement (תנועה) | 16 movements from `src/data/movements.json` (below) |
 | Grade (כיתה) | כיתה א׳, כיתה ב׳, כיתה ג׳, כיתה ד׳, כיתה ה׳, כיתה ו׳, כיתה ז׳, כיתה ח׳, כיתה ט׳, כיתה י׳, כיתה י״א, כיתה י״ב |
 | Group size (מספר חניכים) | 1-5, 5-10, 10-20, 20-30, 30+ |
-| Gender (הרכב) | מעורב, בנים, בנות |
+| Gender (הרכב) | בנים, בנות, מעורב |
 
 ### Activity page
 
 | Field | Required | Choices |
 | --- | --- | --- |
 | Type (סוג) | Yes | Depends on the movement (below). Defaults to the movement's first type. |
-| Subject (נושא) | Yes | Free text, up to **21 characters**, with a ✨ suggestion button (R26) |
+| Subject (נושא) | Yes | Free text, up to **21 characters**, with a dice suggestion button (R26) |
 | Place (מקום) | Yes | במקום סגור, במקום פתוח, לא משנה |
 | Duration (משך) | Yes | חצי שעה, שעה, שעה וחצי |
 | *Collapsed "more options" section:* | | |
@@ -123,52 +123,63 @@ The type key picks the prompt template. The label is what the guide sees.
     { "key": "playTime", "label": "זמן משחק" } ] },
   { "key": "oved", "label": "הנוער העובד והלומד", "types": [
     { "key": "content", "label": "מתודה מרכזית" },
-    { "key": "playTime", "label": "משחק פתיחה" },
-    { "key": "pointOfView", "label": "מתודת הצפה" } ] },
+    { "key": "pointOfView", "label": "מתודת הצפה" },
+    { "key": "playTime", "label": "משחק" } ] },
   { "key": "akiva", "label": "בני עקיבא", "types": [
     { "key": "content", "label": "פעולה ערכית" },
-    { "key": "playTime", "label": "משחקי גיבוש" } ] },
+    { "key": "pointOfView", "label": "פעולת דיון" },
+    { "key": "playTime", "label": "משחק" } ] },
   { "key": "maccabi", "label": "מכבי צעיר", "types": [
     { "key": "content", "label": "פעולה ערכית" },
-    { "key": "playTime", "label": "משחקי גיבוש" } ] },
+    { "key": "pointOfView", "label": "פעולת דיון" },
+    { "key": "playTime", "label": "משחק" } ] },
   { "key": "camps", "label": "המחנות העולים", "types": [
     { "key": "content", "label": "פעולה ערכית" },
-    { "key": "playTime", "label": "משחקי קבוצה" } ] },
+    { "key": "pointOfView", "label": "פעולת דיון" },
+    { "key": "playTime", "label": "משחק" } ] },
   { "key": "shomer", "label": "השומר הצעיר", "types": [
     { "key": "content", "label": "פעולה ערכית" },
-    { "key": "playTime", "label": "משחק קבוצתי" } ] },
+    { "key": "pointOfView", "label": "פעולת דיון" },
+    { "key": "playTime", "label": "משחק" } ] },
   { "key": "bitar", "label": "נוער לאומי ביתר", "types": [
     { "key": "content", "label": "פעולה ערכית" },
-    { "key": "playTime", "label": "משחקי גיבוש" } ] },
+    { "key": "pointOfView", "label": "פעולת דיון" },
+    { "key": "playTime", "label": "משחק" } ] },
   { "key": "hadasha", "label": "הנוער השומר", "types": [
     { "key": "content", "label": "פעולה ערכית" },
-    { "key": "playTime", "label": "משחקי גיבוש" } ] },
-  { "key": "netzach", "label": "נצח ישראל", "types": [
-    { "key": "content", "label": "פעולה ערכית" },
-    { "key": "playTime", "label": "משחקי גיבוש" } ] },
+    { "key": "pointOfView", "label": "פעולת דיון" },
+    { "key": "playTime", "label": "משחק" } ] },
   { "key": "medtchim", "label": "ארגון המד״צים", "types": [
     { "key": "content", "label": "פעולה ערכית" },
-    { "key": "playTime", "label": "משחקי קבוצה" } ] },
+    { "key": "pointOfView", "label": "פעולת דיון" },
+    { "key": "playTime", "label": "משחק" } ] },
   { "key": "meshachim", "label": "מדריכי של״ח צעירים", "types": [
     { "key": "content", "label": "פעילות תוכן" },
-    { "key": "playTime", "label": "משחק שטח" } ] },
+    { "key": "pointOfView", "label": "פעילות דיון" },
+    { "key": "survival", "label": "ניווט וידיעת הארץ" },
+    { "key": "playTime", "label": "משחק" } ] },
   { "key": "sayarut", "label": "חוגי סיירות", "types": [
     { "key": "content", "label": "פעילות שטח" },
+    { "key": "pointOfView", "label": "פעילות דיון" },
     { "key": "survival", "label": "הישרדות" },
     { "key": "playTime", "label": "משחק" } ] },
   { "key": "noam", "label": "נוע״ם", "types": [
     { "key": "content", "label": "פעולה ערכית" },
-    { "key": "playTime", "label": "משחק קבוצתי" } ] },
+    { "key": "pointOfView", "label": "פעולת דיון" },
+    { "key": "playTime", "label": "משחק" } ] },
   { "key": "agricultural", "label": "האיחוד החקלאי", "types": [
     { "key": "content", "label": "פעולה ערכית" },
-    { "key": "playTime", "label": "משחק קבוצתי" } ] },
+    { "key": "pointOfView", "label": "פעולת דיון" },
+    { "key": "playTime", "label": "משחק" } ] },
   { "key": "shinshin", "label": "שינשינים", "types": [
     { "key": "content", "label": "פעילות תוכן" },
-    { "key": "playTime", "label": "משחק גיבוש" } ] },
+    { "key": "pointOfView", "label": "פעילות דיון" },
+    { "key": "playTime", "label": "משחק" } ] },
   { "key": "other", "label": "אחר", "types": [
     { "key": "content", "label": "פעילות" },
-    { "key": "playTime", "label": "משחק" },
-    { "key": "survival", "label": "הישרדות" } ] }
+    { "key": "pointOfView", "label": "פעילות דיון" },
+    { "key": "survival", "label": "מיומנות שטח" },
+    { "key": "playTime", "label": "משחק" } ] }
 ]
 ```
 

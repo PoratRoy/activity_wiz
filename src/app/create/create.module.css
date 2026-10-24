@@ -21,7 +21,6 @@
   max-width: var(--column);
   height: 64px;
   margin-inline: auto;
-  overflow: hidden;
   background: var(--green-dark);
 }
 
@@ -190,6 +189,12 @@
 }
 
 /* Points left like the other rows while closed, down once open. */
+.optional {
+  color: var(--text-muted);
+  font-size: 14px;
+  font-weight: 400;
+}
+
 .more > div > button svg {
   flex-shrink: 0;
   color: var(--green);

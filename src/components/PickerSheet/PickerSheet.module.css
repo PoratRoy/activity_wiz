@@ -102,8 +102,9 @@
   touch-action: none;
 }
 
+/* The library sets this scroller's bottom padding inline (keyboard inset), so the list carries the bottom room. */
 .scroll {
-  padding: 4px 18px calc(24px + env(safe-area-inset-bottom));
+  padding: 4px 18px 0;
 }
 
 .handle {
@@ -143,7 +144,8 @@
   flex-direction: column;
   gap: 10px;
   margin: 0;
-  padding: 0;
+  /* At least a fifth of the sheet (50dvh) stays empty under the last option, so the list never ends at the edge. */
+  padding: 0 0 max(10dvh, calc(24px + env(safe-area-inset-bottom)));
   list-style: none;
 }
 
