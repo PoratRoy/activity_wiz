@@ -99,3 +99,7 @@
   .trash { transition: none; }
   .row:has(.link:active) { transform: none; }
 }
+
+.confirmTitle {
+  color: var(--text);
+}
