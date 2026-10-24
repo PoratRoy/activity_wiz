@@ -18,6 +18,26 @@
   border-radius: var(--radius-lg);
   background: var(--surface);
   text-align: center;
+  animation: pop 160ms ease-out;
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+}
+
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  margin-block-end: var(--space-3);
+  border-radius: var(--radius-pill);
+  background: color-mix(in srgb, var(--danger) 12%, var(--surface));
+  color: var(--danger);
 }
 
 .title {
@@ -40,6 +60,19 @@
   min-height: 48px;
   border-radius: var(--radius);
   font-weight: 700;
+  transition: transform 80ms ease, box-shadow 80ms ease;
+}
+
+.danger:active:not(:disabled),
+.cancel:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow: none;
+}
+
+.danger:disabled,
+.cancel:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .danger {
@@ -52,4 +85,12 @@
 .cancel {
   border: 2px solid var(--border);
   background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--lip) var(--border);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    animation: none;
+  }
 }
