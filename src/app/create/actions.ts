@@ -3,7 +3,7 @@
 import { generateWithGemini } from "@/lib/ai/gemini";
 import { getAccountGroup, getUserId } from "@/lib/auth/session";
 import { countActivities, insertActivity, updateGroup } from "@/lib/db/queries";
-import { BODY_MAX, MAX_PERSONAL_ACTIVITIES, TITLE_MAX, type GenerateResult } from "@/lib/draft";
+import { AI_DISCLAIMER, BODY_MAX, MAX_PERSONAL_ACTIVITIES, TITLE_MAX, type GenerateResult } from "@/lib/draft";
 import { ensureGuest, isTrialExpired, writeGuest, type Guest } from "@/lib/guest/cookie";
 import { clientIp, hitBurstLimit, hitRateLimit } from "@/lib/rate-limit";
 import { hasErrors, removeLinks, validateActivity, validateGroup, type ActivityInput, type GroupInput } from "@/lib/validate";
@@ -85,11 +85,13 @@ export async function generateActivity(input: { group: GroupInput; activity: Act
 
   // 8. Never trust the model's output: no links, one-line title, both within the stored limits.
   const title = removeLinks(result.title).replace(/\s+/g, " ").trim().slice(0, TITLE_MAX);
-  const bodyMd = removeLinks(result.bodyMd).slice(0, BODY_MAX).trim();
-  if (!title || !bodyMd) {
+  // Room is kept for the AI disclaimer, which ends every generated body.
+  const generated = removeLinks(result.bodyMd).slice(0, BODY_MAX - AI_DISCLAIMER.length - 2).trim();
+  if (!title || !generated) {
     console.error("generateActivity failed: empty after cleaning");
     return { status: "error" };
   }
+  const bodyMd = `${generated}\n\n${AI_DISCLAIMER}`;
 
   // 9. Persist.
   const content = {

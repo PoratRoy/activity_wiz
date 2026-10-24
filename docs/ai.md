@@ -72,6 +72,8 @@ The code decides the timing (`planTiming`) and then overwrites the step names an
 
 playTime (`gameToMarkdown`) and survival (`survivalToMarkdown`) build their own Markdown. survival's is: בטיחות, ציוד (followed by the fixed line **לפני הפעולה ודאו שיש לכם את כל הציוד ובכמויות הנכונות.**; both omitted when there is no equipment), חלק מעשי, שאלות.
 
+Every type's body then ends with the AI disclaimer paragraph (`AI_DISCLAIMER` in `src/lib/draft.ts`, the same text the generating screen shows), added by `generateActivity` after the links are removed. It is saved with the activity, so it also goes out in copy and WhatsApp shares, and the guide can delete it in the editor.
+
 ## Prompts (`src/prompts/`)
 
 **Current state.** `build.ts` `buildGeneration(group, activity)` picks the prompt by type:

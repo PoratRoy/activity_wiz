@@ -6,13 +6,10 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Button, ButtonLink } from "@/components/Button/Button";
 import { SignInGate } from "@/components/SignInGate/SignInGate";
 import { TopBar } from "@/components/TopBar/TopBar";
-import { LIST_FULL_MESSAGE, type GenerateResult } from "@/lib/draft";
+import { AI_DISCLAIMER, LIST_FULL_MESSAGE, type GenerateResult } from "@/lib/draft";
 import { draftStore, requestStore, type GenerationRequest } from "@/lib/guest/storage";
 import { generateActivity } from "../actions";
 import styles from "./Generating.module.css";
-
-const AI_DISCLAIMER =
-  "שימו לב: התוכן מבוסס בינה מלאכותית והוא בגדר הצעה בלבד – עברו על הפעולה, התאימו אותה לצרכים שלכם והבטיחו שהיא בטוחה ומתאימה לשטח.";
 
 type View =
   | { kind: "loading" }
