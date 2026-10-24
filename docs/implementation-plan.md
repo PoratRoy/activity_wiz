@@ -34,7 +34,7 @@ Each step ends with `npm run typecheck && npm run build`, then a commit and push
 - `src/data/movements.json` and `options.ts`.
 - `/create/group`: prefill, `saveGroup` action (registered) and localStorage (both).
 - `/create/activity`: type tiles depend on the movement; the optional section; sessionStorage persistence; client validation; navigation to `/create/generating`.
-- `SubjectField` with ✨ suggestions from `src/data/topic-suggestions.json` (already in the repo) and the 21-character limit.
+- `SubjectField` with dice suggestions from `src/data/topic-suggestions.json` (already in the repo) and the 21-character limit.
 - `lib/validate.ts`, shared by the client and server.
 - `/create/generating` is a temporary page that shows the stored request until step 8.
 

@@ -5,7 +5,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import styles from "./Collapsible.module.css";
 
 /** Collapsed by default. Children stay mounted when closed so entered values are kept. */
-export function Collapsible({ title, children }: { title: string; children: ReactNode }) {
+export function Collapsible({ title, children }: { title: ReactNode; children: ReactNode }) {
   const [open, setOpen] = useState(false);
   const wrap = useRef<HTMLDivElement>(null);
 

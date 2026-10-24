@@ -42,7 +42,7 @@ Keep this order and these control types:
 | תנועה | Bottom-sheet picker; placeholder בחרו תנועה |
 | כיתה | Bottom-sheet picker; placeholder בחרו כיתה |
 | מספר חניכים | Bottom-sheet picker; placeholder בחרו מספר חניכים; preserve all five existing size ranges |
-| הרכב | Three single-selection tiles: מעורב, בנים, בנות (מעורב first, owner decision 2026-10-19) |
+| הרכב | A picker with בנים, בנות, מעורב (בנים first, owner decision 2026-10-24; replaces מעורב first from 2026-10-19) |
 
 All three pickers share the same styling and state rules. A populated size picker is not a distinct variant.
 
@@ -74,7 +74,7 @@ Restyled to follow the approved group page; see [page](../src/app/create/activit
 - Type tiles fill one row when the movement has up to 3 types and use a 2 × 2 grid for 4, so no tile sits alone on a second row.
 - Tiles, labels, borders and press feedback match the group composition tiles; tile inline padding is 8px so three-column labels fit on one line where possible.
 - Subject and notes fields use the picker look: white, 2px `#CED7C9` border, 3px lower edge, 18px corners; sage once filled and white with a green edge while focused. The suggestion button is a pale-butter rounded square with a small yellow lower edge.
-- **עוד אפשרויות** sits 28px below the duration tiles (16px gap plus 12px), separating optional settings from required fields. It is a raised white card whose header matches a picker (chevron on pale butter, sage when open) with a dashed divider above its contents.
+- **עוד אפשרויות (לא חובה)** (the hint in muted regular weight) sits 28px below the duration tiles (16px gap plus 12px), separating optional settings from required fields. It is a raised white card whose header matches a picker (chevron on pale butter, sage when open) with a dashed divider above its contents.
 - Inside it, equipment, teams and Shabbat are switch rows ([Switch](../src/components/Switch/Switch.tsx)): label at the start, a 52 × 32px pill switch at the end, thin dividers between rows. The track is `#CED7C9` off and forest green on; the white knob has a small lower edge and slides toward the inline end. Tapping the label also toggles it; motion is off under reduced motion.
 - **יצירת הפעולה** keeps the group button styling with a yellow sparkles icon and stays sticky above the bottom navigation on a soft ivory fade.
 

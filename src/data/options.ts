@@ -12,7 +12,7 @@ export const MOVEMENTS = movementsJson as Movement[];
 
 export const GRADES = ["א׳", "ב׳", "ג׳", "ד׳", "ה׳", "ו׳", "ז׳", "ח׳", "ט׳", "י׳", "י״א", "י״ב"].map((g) => `כיתה ${g}`);
 export const GROUP_SIZES = ["1-5", "5-10", "10-20", "20-30", "30+"];
-export const GENDERS = ["מעורב", "בנים", "בנות"];
+export const GENDERS = ["בנים", "בנות", "מעורב"];
 
 export const PLACES = ["במקום סגור", "במקום פתוח", "לא משנה"];
 export const DURATIONS = ["חצי שעה", "שעה", "שעה וחצי"];
