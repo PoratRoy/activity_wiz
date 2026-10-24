@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { FaqAccordion } from "./FaqAccordion";
+import { MastheadTrail } from "@/components/MastheadTrail/MastheadTrail";
 import { TopBar } from "@/components/TopBar/TopBar";
 import { ABOUT, FAQ } from "@/data/faq";
 import styles from "./faq.module.css";
@@ -22,7 +23,7 @@ export default function FaqPage() {
   return (
     <div className={styles.page}>
       <div className={styles.masthead}>
-        <TopBar title="שאלות נפוצות" tone="forest" />
+        <TopBar title="שאלות נפוצות" tone="forest" backdrop={<MastheadTrail />} />
         <Image className={styles.illustration} src="/illustrations/faq-conversation.webp" width={300} height={200} alt="" unoptimized />
       </div>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />

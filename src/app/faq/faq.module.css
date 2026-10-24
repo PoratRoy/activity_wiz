@@ -1,7 +1,7 @@
 .page {
   min-height: calc(var(--app-height) - var(--tabbar-h) - var(--adbar-h) - env(safe-area-inset-bottom));
-  /* Room for the fixed masthead: the 64px bar and its 40px seam band. */
-  padding-top: 104px;
+  /* Room for the fixed masthead: the 64px bar and its 36px seam band. */
+  padding-top: 100px;
   background: var(--cream);
 }
 
@@ -13,16 +13,17 @@
   width: 100%;
   max-width: var(--column);
   margin-inline: auto;
-  padding-bottom: 40px;
+  padding-bottom: 36px;
   background: var(--green-dark);
 }
 
 .masthead::after {
   content: "";
   position: absolute;
-  inset: auto 0 0;
-  height: 24px;
-  border-radius: 32px 32px 0 0;
+  /* Starts 12px under the bar with the create pages' 28px corners, so every forest masthead ends at the same line. */
+  inset: auto 0 -4px;
+  height: 28px;
+  border-radius: 28px 28px 0 0;
   background: var(--cream);
 }
 
@@ -30,7 +31,7 @@
   content: "";
   position: absolute;
   inset-inline: 0;
-  top: 100%;
+  top: calc(100% + 4px);
   height: 16px;
   background: linear-gradient(to bottom, var(--cream), transparent);
   pointer-events: none;

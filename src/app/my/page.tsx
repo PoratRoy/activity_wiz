@@ -12,7 +12,7 @@ export default async function MyActivitiesPage() {
   if (!userId) redirect("/");
   const items = await listActivities(userId);
   return (
-    <ForestPage title="הפעולות שלי">
+    <ForestPage title="הפעולות שלי" trail>
       <MyList items={items} />
     </ForestPage>
   );

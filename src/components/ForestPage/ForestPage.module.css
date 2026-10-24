@@ -1,8 +1,8 @@
 /* Forest masthead over an ivory sheet ("Raised rows", docs/design.md → Library). */
 .page {
   min-height: calc(var(--app-height) - var(--tabbar-h) - var(--adbar-h) - env(safe-area-inset-bottom));
-  /* Room for the fixed masthead: the 64px bar and its 16px seam. */
-  padding-top: 80px;
+  /* Room for the fixed masthead: the 64px bar and its 28px seam. */
+  padding-top: 92px;
   background: var(--cream);
   color: var(--text);
 }
@@ -13,7 +13,7 @@
 }
 
 /* Fixed green band (it never moves, so pulling past the top shows ivory under it, not above it); its ivory
-   seam overlaps the lowest 16px and stays attached while rows scroll under it. */
+   seam starts 12px under the bar, like the create pages' sheet, and stays attached while rows scroll under it. */
 .masthead {
   position: fixed;
   top: 0;
@@ -22,7 +22,7 @@
   width: 100%;
   max-width: var(--column);
   margin-inline: auto;
-  padding-bottom: 16px;
+  padding-bottom: 28px;
   background: var(--green-dark);
 }
 
@@ -31,7 +31,7 @@
   content: "";
   position: absolute;
   inset-inline: 0;
-  bottom: -20px;
+  bottom: -28px;
   height: 12px;
   background: linear-gradient(var(--cream), transparent);
   pointer-events: none;
@@ -41,9 +41,9 @@
   content: "";
   position: absolute;
   inset-inline: 0;
-  bottom: -8px;
-  height: 24px;
-  border-radius: 24px 24px 0 0;
+  bottom: -16px;
+  height: 32px;
+  border-radius: 28px 28px 0 0;
   background: var(--cream);
 }
 
@@ -54,7 +54,7 @@
 
 .sheet {
   /* Clears the seam and its fade. */
-  padding: 20px 20px 24px;
+  padding: 28px 20px 24px;
 }
 
 @media (max-width: 359px) {
