@@ -105,7 +105,7 @@ Used by `/activity/draft`, `/activity/[id]` and `/library/[cat]/[act]`:
    - **שמירה לפעולות שלי** (save to my activities): public only, signed in only.
 
 ### Edit mode (draft and personal)
-- **עריכה** turns the title into an input and the body into a Tiptap editor, with a toolbar for bold, underline, bulleted list and numbered list. The body is limited to 3000 characters (R29), with the warning «הגעתם למגבלת 3000 התווים».
+- **עריכה** turns the title into an input and the body into a Tiptap editor, with a toolbar for bold, underline, bulleted list and numbered list. The body is limited to 6000 characters (R29), with the warning «הגעתם למגבלת 6000 התווים».
 - The action bar becomes **סיום עריכה** (finish editing) plus a status: «שומר…» (saving) / «נשמר» with a check (saved; a small spinner shows while saving, in the same spot) / «שגיאה בשמירה» (save error). Personal activities autosave 2 seconds after typing stops. Drafts save to localStorage.
 
 ### `/activity/draft`
