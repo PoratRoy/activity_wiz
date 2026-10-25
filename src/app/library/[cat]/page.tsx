@@ -6,6 +6,7 @@ import { AdSlot } from "@/components/AdSlot/AdSlot";
 import { EmptyState } from "@/components/EmptyState/EmptyState";
 import { ForestPage } from "@/components/ForestPage/ForestPage";
 import { Reveal } from "@/components/Transitions/Transitions";
+import { OPEN_GRAPH, categorySeo } from "@/data/seo";
 import { getCategory, listPublicActivities } from "@/lib/db/queries";
 import { excerpt } from "@/lib/markdown/excerpt";
 import { categoryPath, parseId, publicActivityPath, sameSegment } from "@/lib/slug";
@@ -24,11 +25,12 @@ async function load(segment: string) {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const category = await load((await params).cat);
   if (!category) return {};
+  const { title, description } = categorySeo(category);
   return {
-    title: `${category.title} – פעולות לתנועות נוער`,
-    description: `פעולות ומשחקים מוכנים בנושא ${category.title} למדריכים בתנועות הנוער.`,
+    title,
+    description,
     alternates: { canonical: categoryPath(category) },
-    openGraph: { title: category.title, url: categoryPath(category) },
+    openGraph: { ...OPEN_GRAPH, title, description, url: categoryPath(category) },
   };
 }
 

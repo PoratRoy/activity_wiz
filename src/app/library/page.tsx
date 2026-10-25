@@ -3,6 +3,7 @@ import { CategoryCard } from "@/components/CategoryCard/CategoryCard";
 import { EmptyState } from "@/components/EmptyState/EmptyState";
 import { ForestPage } from "@/components/ForestPage/ForestPage";
 import { Reveal } from "@/components/Transitions/Transitions";
+import { LIBRARY_DESCRIPTION, OPEN_GRAPH } from "@/data/seo";
 import { TOP_ROW } from "@/data/topActivities";
 import { listCategories } from "@/lib/db/queries";
 import { categoryPath } from "@/lib/slug";
@@ -11,9 +12,10 @@ import styles from "./library.module.css";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "מאגר פעולות לתנועות נוער",
-  description: "מאגר פעולות ומשחקים מוכנים למדריכים בתנועות הנוער, מחולק לפי נושאים. קוראים, מעתיקים ושומרים לפעולות שלכם.",
+  title: "פעולות מוכנות לתנועות נוער – מאגר פעולות למדריכים",
+  description: LIBRARY_DESCRIPTION,
   alternates: { canonical: "/library" },
+  openGraph: { ...OPEN_GRAPH, url: "/library" },
 };
 
 export default async function LibraryPage() {

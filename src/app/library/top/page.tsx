@@ -6,6 +6,7 @@ import { AdSlot } from "@/components/AdSlot/AdSlot";
 import { EmptyState } from "@/components/EmptyState/EmptyState";
 import { ForestPage } from "@/components/ForestPage/ForestPage";
 import { Reveal } from "@/components/Transitions/Transitions";
+import { MOVEMENTS, OPEN_GRAPH } from "@/data/seo";
 import { TOP_ROW } from "@/data/topActivities";
 import { listTopPublicActivities } from "@/lib/db/queries";
 import { excerpt } from "@/lib/markdown/excerpt";
@@ -16,9 +17,10 @@ import { tagsFor } from "../tags";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: `${TOP_ROW.title} – פעולות לתנועות נוער`,
-  description: "הפעולות הנצפות ביותר במאגר הפעולות למדריכים בתנועות הנוער.",
+  title: "פעולות פופולריות לתנועות נוער",
+  description: `הפעולות והמשחקים הנצפים ביותר במאגר הפעולות המוכנות למדריכי תנועות הנוער – ${MOVEMENTS}.`,
   alternates: { canonical: TOP_ROW.href },
+  openGraph: { ...OPEN_GRAPH, url: TOP_ROW.href },
 };
 
 /** The most-viewed public activities from every category; each links to its page in its own category. */
