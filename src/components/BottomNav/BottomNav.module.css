@@ -66,3 +66,14 @@
 .active .label {
   font-weight: 700;
 }
+
+/* Tapped, its page still loading (not prefetched yet): the pill lights up at once and breathes until it arrives. */
+.pill[data-pending] {
+  background: var(--green-light);
+  color: var(--green-dark);
+  animation: breathe 1s ease-in-out 150ms infinite;
+}
+
+@keyframes breathe {
+  50% { background: rgb(231 239 223 / 0.45); }
+}

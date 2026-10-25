@@ -1,0 +1,121 @@
+/* Route loading placeholders (each route's loading.tsx). They mirror the real page's layout so the content lands in
+   place, and fade in only after a short delay, so a fast navigation never flashes them. */
+
+.fade {
+  animation: appear 220ms ease 140ms both;
+}
+
+@keyframes appear {
+  from { opacity: 0; }
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* One shimmering placeholder shape. The sweep runs right to left, the way Hebrew reads. */
+.bone {
+  display: block;
+  max-width: 100%;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #eceee6 30%, #f7f8f3 50%, #eceee6 70%);
+  background-size: 300% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+/* On the forest masthead (an activity's title block). */
+.forest {
+  background: linear-gradient(90deg, rgb(255 255 255 / 0.1) 30%, rgb(255 255 255 / 0.2) 50%, rgb(255 255 255 / 0.1) 70%);
+  background-size: 300% 100%;
+}
+
+@keyframes shimmer {
+  from { background-position: 0% 0; }
+  to { background-position: 100% 0; }
+}
+
+/* ---- Rows: the raised white rows of the library and "my activities" ---- */
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.row {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  border: 2px solid #ced7c9;
+  border-radius: 16px;
+  background: var(--surface);
+  box-shadow: 0 2px 0 #ced7c9;
+}
+
+/* CategoryCard's height. */
+.category {
+  min-height: max(68px, calc((min(100vw, var(--column)) - 40px) / 5.2));
+  padding: 10px 24px;
+  border-radius: 20px;
+}
+
+/* ActivityCard's height: title, excerpt and tags. */
+.activity {
+  min-height: 92px;
+  padding: 12px 20px;
+}
+
+/* ---- Form: the create pages' card of answer rows ---- */
+
+.card {
+  border: 2px solid #ced7c9;
+  border-radius: 22px;
+  background: var(--surface);
+  box-shadow: 0 4px 0 #ced7c9;
+  overflow: clip;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  min-height: 66px;
+  padding: 12px 18px;
+}
+
+.field + .field {
+  border-top: 1.5px solid var(--border);
+}
+
+/* ---- Activity: title block on forest green, then the reading sheet ---- */
+
+.head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.chips {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bone { animation: none; }
+}

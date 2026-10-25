@@ -18,7 +18,11 @@ export function HeaderSignIn() {
       aria-busy={pending}
       onClick={() => startTransition(() => signInWithGoogle("/"))}
     >
-      {pending ? "מעבירים…" : "התחברות"}
+      {/* Both labels share one grid cell, so the button keeps the wider one's width and the header never shifts. */}
+      <span className={styles.signInLabels}>
+        <span data-shown={!pending || undefined}>התחברות</span>
+        <span data-shown={pending || undefined}>מעבירים…</span>
+      </span>
     </button>
   );
 }

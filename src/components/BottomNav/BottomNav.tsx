@@ -1,7 +1,7 @@
 "use client";
 
 import { Bookmark, House } from "lucide-react";
-import Link from "next/link";
+import Link, { useLinkStatus } from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { useViewer } from "@/components/AppShell/viewer";
@@ -31,24 +31,16 @@ export function BottomNav() {
       {tabs.map(({ href, label, Icon, match }) => {
         const active = match(pathname);
         const locked = href === "/my" && !signedIn;
-        const content = (
-          <>
-            <span className={styles.pill}>
-              <Icon size={22} strokeWidth={1.75} aria-hidden />
-            </span>
-            <span className={styles.label}>{label}</span>
-          </>
-        );
         if (locked) {
           return (
             <button key={href} type="button" className={styles.tab} onClick={() => setPrompt(true)}>
-              {content}
+              <TabContent Icon={Icon} label={label} />
             </button>
           );
         }
         return (
           <Link key={href} href={href} className={`${styles.tab} ${active ? styles.active : ""}`} aria-current={active ? "page" : undefined}>
-            {content}
+            <LinkTabContent Icon={Icon} label={label} />
           </Link>
         );
       })}
@@ -61,4 +53,23 @@ export function BottomNav() {
     />
     </>
   );
+}
+
+type TabIcon = (typeof tabs)[number]["Icon"];
+
+function TabContent({ Icon, label, pending }: { Icon: TabIcon; label: string; pending?: boolean }) {
+  return (
+    <>
+      <span className={styles.pill} data-pending={pending || undefined}>
+        <Icon size={22} strokeWidth={1.75} aria-hidden />
+      </span>
+      <span className={styles.label}>{label}</span>
+    </>
+  );
+}
+
+/** A tab lights up as soon as it is tapped, while its page is still on the way. */
+function LinkTabContent(props: { Icon: TabIcon; label: string }) {
+  const { pending } = useLinkStatus();
+  return <TabContent {...props} pending={pending} />;
 }

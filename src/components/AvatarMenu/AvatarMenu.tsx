@@ -3,7 +3,7 @@
 import { CircleHelp, FileText, LogIn, LogOut, Mail, Share2, Shield } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState, type KeyboardEvent } from "react";
 import { useViewer } from "@/components/AppShell/viewer";
 import { signInWithGoogle, signOutAction } from "@/lib/auth/actions";
 import { shareSite } from "@/lib/shareSite";
@@ -32,23 +32,54 @@ export function AvatarMenu() {
   const viewer = useViewer();
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  // Stays true while the menu plays its closing animation after `open` turns false.
+  const [shown, setShown] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const button = useRef<HTMLButtonElement>(null);
+  const menu = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!open) return;
     const close = (e: MouseEvent) => !ref.current?.contains(e.target as Node) && setOpen(false);
     document.addEventListener("mousedown", close);
+    // Keyboard users land on the first item; arrows move between items from there.
+    menu.current?.querySelector<HTMLElement>("[role=menuitem]")?.focus();
     return () => document.removeEventListener("mousedown", close);
   }, [open]);
 
+  const toggle = () => {
+    if (!open) setShown(true);
+    setOpen(!open);
+  };
+
+  const onKeyDown = (e: KeyboardEvent) => {
+    if (!open) return;
+    if (e.key === "Escape") {
+      e.preventDefault();
+      setOpen(false);
+      button.current?.focus();
+      return;
+    }
+    // Tabbing away leaves the menu, so it closes rather than hanging open behind the focus.
+    if (e.key === "Tab") return setOpen(false);
+    const items = [...(menu.current?.querySelectorAll<HTMLElement>("[role=menuitem]") ?? [])];
+    const at = items.indexOf(document.activeElement as HTMLElement);
+    const next = { ArrowDown: at + 1, ArrowUp: at - 1, Home: 0, End: items.length - 1 }[e.key];
+    if (next === undefined || items.length === 0) return;
+    e.preventDefault();
+    items[(next + items.length) % items.length].focus();
+  };
+
   return (
-    <div className={styles.wrap} ref={ref}>
+    <div className={styles.wrap} ref={ref} onKeyDown={onKeyDown}>
       <button
+        ref={button}
         type="button"
         className={styles.avatar}
         aria-label="תפריט משתמש"
+        aria-haspopup="menu"
         aria-expanded={open}
-        onClick={() => setOpen((v) => !v)}
+        onClick={toggle}
       >
         {viewer.signedIn && viewer.image ? (
           // Google avatar URL; next/image would need remote config and Cloudflare Images.
@@ -59,8 +90,15 @@ export function AvatarMenu() {
         )}
       </button>
 
-      {open && (
-        <div className={styles.menu} role="menu">
+      {shown && (
+        <div
+          ref={menu}
+          className={styles.menu}
+          role="menu"
+          data-closing={!open || undefined}
+          inert={!open}
+          onAnimationEnd={(e) => e.target === e.currentTarget && !open && setShown(false)}
+        >
           <button
             type="button"
             role="menuitem"

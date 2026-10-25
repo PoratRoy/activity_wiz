@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { ButtonHTMLAttributes, ReactNode } from "react";
 import styles from "./Button.module.css";
+import { PendingSweep } from "./PendingSweep";
 
 type Variant = "primary" | "secondary" | "accent" | "danger";
 
@@ -41,9 +42,10 @@ export function ButtonLink({
   children,
 }: CommonProps & { href: string }) {
   return (
-    <Link href={href} className={classes(variant, block)}>
+    <Link href={href} className={classes(variant, block, styles.link)}>
       {icon}
       <span>{children}</span>
+      <PendingSweep />
     </Link>
   );
 }
