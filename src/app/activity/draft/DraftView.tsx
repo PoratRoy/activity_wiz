@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { startTransition as transition, useEffect, useRef, useState, useTransition } from "react";
 import { EditableActivityPage } from "@/components/EditableActivity/EditableActivityPage";
@@ -13,6 +12,8 @@ import { signInWithGoogle } from "@/lib/auth/actions";
 import { LIST_FULL_MESSAGE, type Draft } from "@/lib/draft";
 import { draftStore, groupStore } from "@/lib/guest/storage";
 import { markReveal } from "@/lib/reveal";
+import { completeBar, WaitScreen } from "@/app/create/generating/WaitScreen";
+import { WAIT_HANDOFF } from "@/components/Transitions/Transitions";
 import { claimDraft } from "../actions";
 import styles from "./DraftView.module.css";
 
@@ -28,6 +29,7 @@ export function DraftView() {
   const [claiming, setClaiming] = useState(false);
   const [pending, startTransition] = useTransition();
   const claimStarted = useRef(false);
+  const fill = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const d = draftStore.load();
@@ -51,7 +53,7 @@ export function DraftView() {
     claimStarted.current = true;
     setClaiming(true);
     claimDraft(draft)
-      .then((res) => {
+      .then(async (res) => {
         if (res && "error" in res) {
           setClaiming(false);
           toast(LIST_FULL_MESSAGE);
@@ -60,9 +62,12 @@ export function DraftView() {
         }
         if (!res) throw new Error("claim failed");
         draftStore.clear();
+        markReveal("saving");
+        const next = `/activity/${res.id}`;
+        router.prefetch(next);
+        await completeBar(fill.current);
         toast("נשמר לפעולות שלי");
-        markReveal();
-        router.replace(`/activity/${res.id}`);
+        router.replace(next, { transitionTypes: [WAIT_HANDOFF] });
       })
       .catch(() => {
         setClaiming(false);
@@ -74,13 +79,7 @@ export function DraftView() {
   // Back from sign-in to save: show the saving screen from the first render, so the top bar never flashes.
   if (claiming || (signedIn && params.get("claim") === "1")) {
     return (
-      <main className={styles.saving} aria-busy="true">
-        <Image className={styles.animation} src="/animations/generating.webp" width={500} height={320} alt="" unoptimized priority />
-        <div className={styles.bar} role="progressbar" aria-label="שומרים את הפעולה">
-          <div className={styles.fill} />
-        </div>
-        <p className={styles.savingText}>שומרים את הפעולה…</p>
-      </main>
+      <WaitScreen label="שומרים את הפעולה" status="שומרים את הפעולה…" fillSeconds={4} fillRef={fill} />
     );
   }
 

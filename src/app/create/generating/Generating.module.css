@@ -1,5 +1,7 @@
-/* Both views are a full-screen sage moment with no top bar, tabs or ad bar. */
+/* Both views are a full-screen sage moment with no top bar, tabs or ad bar. The screen carries the sage itself too, so
+   when it fades into the next page the colour fades with it rather than vanishing with the frame's. */
 .screen {
+  background: var(--green-light);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -18,6 +20,18 @@
   :global(body):has(.screen) {
     background: var(--green-light);
   }
+}
+
+/* Also used outside /create/generating (saving, and the activity loading after either), so the tabs and ad bar are
+   hidden here rather than by the page's address. The extra `html` outranks the AdBar's own height rule. */
+:global(html) :global(body):has(.screen) {
+  --tabbar-h: 0px;
+  --adbar-h: 0px;
+}
+
+:global(body):has(.screen) :global([data-bottom-nav]),
+:global(body):has(.screen) :global([data-ad-bar]) {
+  display: none;
 }
 
 /* Loading: only the animation, a thin bar and the AI notice. */
@@ -63,6 +77,19 @@
   background: var(--green);
   transform-origin: right;
   animation: fill 15s cubic-bezier(0.2, 0.7, 0.3, 1) forwards;
+}
+
+/* The wait is over: the bar full (90% wide, so scaled to the whole track). */
+.done {
+  animation: none;
+  transform: scaleX(1.112);
+}
+
+.status {
+  margin: 6px 0 0;
+  color: #4a5a50;
+  font-size: var(--fs-body);
+  font-weight: 500;
 }
 
 .notice {

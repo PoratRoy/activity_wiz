@@ -11,6 +11,8 @@ import { draftStore, requestStore, type GenerationRequest } from "@/lib/guest/st
 import { markReveal } from "@/lib/reveal";
 import { generateActivity } from "../actions";
 import styles from "./Generating.module.css";
+import { WAIT_HANDOFF } from "@/components/Transitions/Transitions";
+import { completeBar, WaitScreen } from "./WaitScreen";
 
 type View =
   | { kind: "loading" }
@@ -26,6 +28,7 @@ export function Generating() {
   const [view, setView] = useState<View>({ kind: "loading" });
   const [now, setNow] = useState(() => Date.now());
   const started = useRef(false);
+  const fill = useRef<HTMLDivElement>(null);
 
   const run = useCallback(
     async (req: GenerationRequest) => {
@@ -39,13 +42,14 @@ export function Generating() {
       }
       if (res.status === "ok") {
         requestStore.clear();
-        markReveal();
-        if ("id" in res) {
-          router.replace(`/activity/${res.id}`);
-        } else {
-          draftStore.save(res.draft);
-          router.replace("/activity/draft");
-        }
+        markReveal("generating");
+        if ("draft" in res) draftStore.save(res.draft);
+        const next = "id" in res ? `/activity/${res.id}` : "/activity/draft";
+        // The bar runs to full first (the page starts loading meanwhile), so the wait visibly ends before the result.
+        router.prefetch(next);
+        await completeBar(fill.current);
+        // A saved activity loads behind the same wait screen (its loading.tsx): swap to it without a fade.
+        router.replace(next, "id" in res ? { transitionTypes: [WAIT_HANDOFF] } : undefined);
         return;
       }
       if (res.status === "rate_limited") setView({ kind: "rate_limited", until: Date.now() + res.retryInSec * 1000 });
@@ -83,13 +87,7 @@ export function Generating() {
 
   if (view.kind === "loading") {
     return (
-      <main className={`${styles.screen} ${styles.loading}`} aria-busy="true">
-        <Image className={styles.animation} src="/animations/generating.webp" width={500} height={320} alt="" unoptimized priority />
-        <div className={styles.bar} role="progressbar" aria-label="יוצרים את הפעולה">
-          <div className={styles.fill} />
-        </div>
-        <p className={styles.notice}>{AI_DISCLAIMER}</p>
-      </main>
+      <WaitScreen label="יוצרים את הפעולה" note={AI_DISCLAIMER} fillRef={fill} />
     );
   }
 

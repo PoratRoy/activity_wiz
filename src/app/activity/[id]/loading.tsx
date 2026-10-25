@@ -1,5 +1,5 @@
-import { ActivitySkeleton } from "@/components/Skeleton/Skeleton";
+import { ActivityLoading } from "./ActivityLoading";
 
 export default function Loading() {
-  return <ActivitySkeleton label="הפעולה" fallback="/my" />;
+  return <ActivityLoading />;
 }
