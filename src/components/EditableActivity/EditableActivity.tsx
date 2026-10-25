@@ -1,8 +1,7 @@
 "use client";
 
 import { Check, LoaderCircle, Pencil } from "lucide-react";
-import dynamic from "next/dynamic";
-import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
+import { startTransition, useCallback, useEffect, useRef, useState, ViewTransition, type ReactNode } from "react";
 import { ActionBar, ActionButton } from "@/components/ActionBar/ActionBar";
 import barStyles from "@/components/ActionBar/ActionBar.module.css";
 import { ActivityView } from "@/components/ActivityView/ActivityView";
@@ -10,11 +9,19 @@ import viewStyles from "@/components/ActivityView/ActivityView.module.css";
 import { ChipRow, type ChipItem } from "@/components/Chip/Chip";
 import styles from "./EditableActivity.module.css";
 
-// Tiptap only downloads when the user enters edit mode.
-const ActivityEditor = dynamic(() => import("@/components/ActivityEditor/ActivityEditor"), {
-  ssr: false,
-  loading: () => <p className={styles.loading}>טוענים עורך…</p>,
-});
+type Editor = typeof import("@/components/ActivityEditor/ActivityEditor").default;
+let editorLoad: Promise<Editor> | null = null;
+
+/** Tiptap downloads once, on its own: the page starts it soon after opening, so "עריכה" switches at once. */
+function loadEditor(): Promise<Editor> {
+  editorLoad ??= import("@/components/ActivityEditor/ActivityEditor").then((m) => m.default);
+  // A failed download (offline) can be tried again on the next tap.
+  editorLoad.catch(() => (editorLoad = null));
+  return editorLoad;
+}
+
+/** How long after opening the page the editor starts downloading, so it doesn't compete with the page itself. */
+const PRELOAD_DELAY_MS = 1200;
 
 export const AUTOSAVE_DELAY_MS = 2000;
 
@@ -38,6 +45,7 @@ export function EditableActivity({
 }) {
   const [content, setContent] = useState<Content>(initial);
   const [editing, setEditing] = useState(false);
+  const [Editor, setEditor] = useState<Editor | null>(null);
   const [status, setStatus] = useState<SaveStatus>("idle");
   const pending = useRef<Content | null>(null);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -87,9 +95,32 @@ export function EditableActivity({
     };
   }, []);
 
+  useEffect(() => {
+    let alive = true;
+    const t = setTimeout(() => {
+      loadEditor()
+        .then((E) => alive && setEditor(() => E))
+        .catch(() => {});
+    }, PRELOAD_DELAY_MS);
+    return () => {
+      alive = false;
+      clearTimeout(t);
+    };
+  }, []);
+
+  // Reading and editing cross-fade (a transition, for the <ViewTransition> below). Edit mode opens once the editor is
+  // ready, so it never shows a loading line in place of the text; only an early tap waits for the download.
+  const startEditing = async () => {
+    const E = Editor ?? (await loadEditor().catch(() => null));
+    startTransition(() => {
+      if (E) setEditor(() => E);
+      setEditing(true);
+    });
+  };
+
   const finishEditing = () => {
     saveNow();
-    setEditing(false);
+    startTransition(() => setEditing(false));
   };
 
   const statusText = {
@@ -101,7 +132,7 @@ export function EditableActivity({
 
   if (editing) {
     return (
-      <>
+      <ViewTransition key="edit" enter="page-in" exit="page-out" default="none">
         <div className={barStyles.bar} data-actionbar>
           <ActionButton icon={<Pencil size={20} aria-hidden />} label="סיום עריכה" onClick={finishEditing} accent />
           <span className={`${styles.status} ${status === "error" ? styles.statusError : ""}`} role="status" data-state={status}>
@@ -114,23 +145,29 @@ export function EditableActivity({
           </span>
         </div>
         <div className={viewStyles.article} data-activity>
-          <ActivityEditor title={content.title} bodyMd={content.bodyMd} onChange={onChange} belowTitle={<ChipRow items={chips} />} />
+          {Editor ? (
+            <Editor title={content.title} bodyMd={content.bodyMd} onChange={onChange} belowTitle={<ChipRow items={chips} />} />
+          ) : (
+            <p className={styles.loading}>טוענים עורך…</p>
+          )}
         </div>
-      </>
+      </ViewTransition>
     );
   }
 
   return (
-    <ActivityView
-      title={content.title}
-      bodyMd={content.bodyMd}
-      chips={chips}
-      before={before}
-      actions={
-        <ActionBar title={content.title} bodyMd={content.bodyMd}>
-          <ActionButton icon={<Pencil size={19} aria-hidden />} label="עריכה" onClick={() => setEditing(true)} />
-        </ActionBar>
-      }
-    />
+    <ViewTransition key="read" enter="page-in" exit="page-out" default="none">
+      <ActivityView
+        title={content.title}
+        bodyMd={content.bodyMd}
+        chips={chips}
+        before={before}
+        actions={
+          <ActionBar title={content.title} bodyMd={content.bodyMd}>
+            <ActionButton icon={<Pencil size={19} aria-hidden />} label="עריכה" onClick={() => void startEditing()} />
+          </ActionBar>
+        }
+      />
+    </ViewTransition>
   );
 }

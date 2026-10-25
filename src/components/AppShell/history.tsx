@@ -19,6 +19,12 @@ export function NavigationTracker() {
   return null;
 }
 
+/** True once the app has rendered a page in this document: later pages mount on the client, not from server HTML, so
+    they may read browser storage in their first render. */
+export function appMounted(): boolean {
+  return views > 0;
+}
+
 /** True when the previous history entry is a page of this app. */
 export function canGoBackInApp(): boolean {
   return views > 1;

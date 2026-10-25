@@ -186,6 +186,13 @@ button {
 ::view-transition-new(bottom-nav),
 ::view-transition-new(ad-bar) { animation: none; }
 
+/* Coming back after a full-screen step (generating, saving), the tabs and ad bar fade in once the page has arrived;
+   going into one, they fade out with the page. */
+::view-transition-new(bottom-nav):only-child,
+::view-transition-new(ad-bar):only-child { animation: vt-fade-in 320ms ease-out 180ms both; }
+::view-transition-old(bottom-nav):only-child,
+::view-transition-old(ad-bar):only-child { display: block; animation: vt-fade-out 160ms ease-out both; }
+
 /* The masthead's green stays; the old title fades out over the new one. Entering or leaving a page without a masthead
    (home), the bar fades with the page. */
 ::view-transition-old(masthead) { animation: vt-fade-out 160ms ease-out both; }

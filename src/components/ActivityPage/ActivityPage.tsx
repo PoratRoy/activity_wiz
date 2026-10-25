@@ -13,7 +13,18 @@ import styles from "./ActivityPage.module.css";
  * (`data-collapsed`, animated in CSS), so share and copy stay one tap away while reading. The masthead's trail fades
  * out on the way there, so the compact bar is plain green.
  */
-export function ActivityPage({ label, fallback, children }: { label: string; fallback: string; children: ReactNode }) {
+export function ActivityPage({
+  label,
+  fallback,
+  reveal,
+  children,
+}: {
+  label: string;
+  fallback: string;
+  /** Plays the result reveal (see lib/reveal). */
+  reveal?: boolean;
+  children: ReactNode;
+}) {
   const page = useRef<HTMLDivElement>(null);
   const [slot, setSlot] = useState<HTMLDivElement | null>(null);
   const [collapsed, setCollapsed] = useState(false);
@@ -64,7 +75,7 @@ export function ActivityPage({ label, fallback, children }: { label: string; fal
   }, []);
 
   return (
-    <div ref={page} className={styles.page} data-activity-page data-collapsed={collapsed || undefined}>
+    <div ref={page} className={styles.page} data-activity-page data-reveal={reveal || undefined} data-collapsed={collapsed || undefined}>
       <TopBar
         fallback={fallback}
         tone="forest"

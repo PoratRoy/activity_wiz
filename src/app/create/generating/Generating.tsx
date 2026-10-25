@@ -8,6 +8,7 @@ import { SignInGate } from "@/components/SignInGate/SignInGate";
 import { TopBar } from "@/components/TopBar/TopBar";
 import { AI_DISCLAIMER, LIST_FULL_MESSAGE, type GenerateResult } from "@/lib/draft";
 import { draftStore, requestStore, type GenerationRequest } from "@/lib/guest/storage";
+import { markReveal } from "@/lib/reveal";
 import { generateActivity } from "../actions";
 import styles from "./Generating.module.css";
 
@@ -38,6 +39,7 @@ export function Generating() {
       }
       if (res.status === "ok") {
         requestStore.clear();
+        markReveal();
         if ("id" in res) {
           router.replace(`/activity/${res.id}`);
         } else {
@@ -52,6 +54,11 @@ export function Generating() {
     },
     [router],
   );
+
+  // While the activity is written, fetch the draft page (its code and frame), so the result opens whole, at once.
+  useEffect(() => {
+    router.prefetch("/activity/draft");
+  }, [router]);
 
   // Start once (refs survive React Strict Mode's double effect in development).
   useEffect(() => {
