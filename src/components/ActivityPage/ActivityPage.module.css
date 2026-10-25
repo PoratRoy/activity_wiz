@@ -375,7 +375,7 @@
    their contents come in: the block's lines one after another (banner, title, details, actions), then the sheet's
    text. About 0.8s in all, once. */
 
-.page[data-reveal] [data-activity-head] > *,
+.page[data-reveal] [data-activity-head] > :not([data-actions]),
 .page[data-reveal] [data-activity] > :first-child:not([data-activity-head]) {
   animation: reveal-line 480ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
 }
@@ -383,7 +383,10 @@
 .page[data-reveal] [data-activity] > :first-child:not([data-activity-head]) { animation-delay: 0ms; }
 .page[data-reveal] [data-activity-head] > :nth-child(1) { animation-delay: 60ms; }
 .page[data-reveal] [data-activity-head] > :nth-child(2) { animation-delay: 140ms; }
-.page[data-reveal] [data-activity-head] > :nth-child(3) { animation-delay: 220ms; }
+
+/* The actions keep their own settle-in and only wait their turn: the same animation, so when the reveal ends (and the
+   delay goes back) it isn't played a second time. */
+.page[data-reveal] [data-activity-head] [data-actions] { animation-delay: 220ms; }
 
 .page[data-reveal] [data-activity-head] + [data-reading] > * {
   animation: reveal-line 480ms cubic-bezier(0.2, 0.7, 0.2, 1) 300ms both;
@@ -397,7 +400,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .page[data-reveal] [data-activity-head] > *,
+  .page[data-reveal] [data-activity-head] > :not([data-actions]),
   .page[data-reveal] [data-activity] > :first-child:not([data-activity-head]),
   .page[data-reveal] [data-activity-head] + [data-reading] > * {
     animation: none;
