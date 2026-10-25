@@ -64,7 +64,7 @@ export function ActivityPage({ label, fallback, children }: { label: string; fal
   }, []);
 
   return (
-    <div ref={page} className={styles.page} data-collapsed={collapsed || undefined}>
+    <div ref={page} className={styles.page} data-activity-page data-collapsed={collapsed || undefined}>
       <TopBar
         fallback={fallback}
         tone="forest"

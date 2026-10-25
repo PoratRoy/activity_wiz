@@ -145,3 +145,74 @@ button {
     box-shadow: 0 12px 48px rgb(48 58 52 / 0.12), 0 0 0 1px rgb(48 58 52 / 0.06);
   }
 }
+
+/* ---- Page transitions (React <ViewTransition>, see components/Transitions) ----
+   Switching tabs cross-fades the pages; a skeleton fades out as its content rises into place. The tabs, the ad bar and
+   the green masthead never move, so the eye has a fixed frame while the content changes. */
+
+/* Named here, not in the CSS modules, which would rename them. */
+[data-bottom-nav] { view-transition-name: bottom-nav; }
+[data-ad-bar] { view-transition-name: ad-bar; }
+[data-masthead],
+[data-activity-page] > header { view-transition-name: masthead; }
+
+/* React leaves the rest of the page live under the overlay and shrinks the overlay to 0 × 0. In RTL, Chromium then draws
+   every snapshot off-screen (a blank page mid-transition), so the overlay keeps the viewport's size; it has no
+   background, and taps go through it to the new page. */
+::view-transition {
+  width: 100% !important;
+  height: 100% !important;
+  pointer-events: none;
+}
+
+/* The fixed bars: no movement and no cross-fade; they appear or vanish at once with the page that has them. */
+::view-transition-group(bottom-nav),
+::view-transition-group(ad-bar),
+::view-transition-group(masthead) {
+  animation: none;
+  z-index: 10;
+}
+::view-transition-old(bottom-nav),
+::view-transition-old(ad-bar) { display: none; }
+::view-transition-new(bottom-nav),
+::view-transition-new(ad-bar) { animation: none; }
+
+/* The masthead's green stays; the old title fades out over the new one. Entering or leaving a page without a masthead
+   (home), the bar fades with the page. */
+::view-transition-old(masthead) { animation: vt-fade-out 140ms ease-out both; }
+::view-transition-new(masthead) { animation: none; }
+::view-transition-new(masthead):only-child { animation: vt-fade-in 220ms ease-out 60ms both; }
+
+/* Pages (app/template.tsx): the old one leaves fast, the new one settles in just after. */
+::view-transition-old(.page-out) { animation: vt-fade-out 120ms ease-in both; }
+::view-transition-new(.page-in) { animation: vt-fade-in 220ms ease-out 60ms both; }
+
+/* Loading: the skeleton steps aside, then the content rises a few pixels into place. */
+::view-transition-old(.skeleton-out) { animation: vt-fade-out 150ms ease-out both; }
+::view-transition-new(.reveal-in) {
+  animation:
+    vt-fade-in 220ms ease-out 100ms both,
+    vt-rise 380ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+@keyframes vt-fade-in {
+  from {
+    opacity: 0;
+    filter: blur(2px);
+  }
+}
+@keyframes vt-fade-out {
+  to { opacity: 0; }
+}
+@keyframes vt-rise {
+  from { transform: translateY(8px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+  }
+}

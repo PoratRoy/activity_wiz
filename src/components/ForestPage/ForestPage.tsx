@@ -17,7 +17,7 @@ export function ForestPage({
 }) {
   return (
     <div className={styles.page}>
-      <div className={styles.masthead}>
+      <div className={styles.masthead} data-masthead>
         <TopBar title={title} fallback={fallback} tone="forest" backdrop={trail && <MastheadTrail />} />
       </div>
       <main className={styles.sheet}>{children}</main>

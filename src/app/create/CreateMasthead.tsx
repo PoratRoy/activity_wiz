@@ -5,7 +5,7 @@ import styles from "./create.module.css";
 /** The fixed forest bar of the create pages, with the starry trail behind the title. */
 export function CreateMasthead({ title, fallback }: { title: string; fallback?: string }) {
   return (
-    <div className={styles.masthead}>
+    <div className={styles.masthead} data-masthead>
       <TopBar title={title} fallback={fallback} tone="forest" backdrop={<MastheadTrail />} />
     </div>
   );

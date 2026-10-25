@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { CategoryCard } from "@/components/CategoryCard/CategoryCard";
 import { EmptyState } from "@/components/EmptyState/EmptyState";
 import { ForestPage } from "@/components/ForestPage/ForestPage";
+import { Reveal } from "@/components/Transitions/Transitions";
 import { TOP_ROW } from "@/data/topActivities";
 import { listCategories } from "@/lib/db/queries";
 import { categoryPath } from "@/lib/slug";
@@ -19,20 +20,22 @@ export default async function LibraryPage() {
   const categories = await listCategories();
   return (
     <ForestPage title="מאגר פעולות" trail>
-      {categories.length === 0 ? (
-        <EmptyState text="המאגר מתמלא בקרוב" />
-      ) : (
-        <ul className={`${styles.list} ${styles.rows}`}>
-          <li>
-            <CategoryCard title={TOP_ROW.title} categoryKey={TOP_ROW.imageKey} href={TOP_ROW.href} />
-          </li>
-          {categories.map((c) => (
-            <li key={c.id}>
-              <CategoryCard title={c.title} categoryKey={c.key} href={categoryPath(c)} />
+      <Reveal>
+        {categories.length === 0 ? (
+          <EmptyState text="המאגר מתמלא בקרוב" />
+        ) : (
+          <ul className={`${styles.list} ${styles.rows}`}>
+            <li>
+              <CategoryCard title={TOP_ROW.title} categoryKey={TOP_ROW.imageKey} href={TOP_ROW.href} />
             </li>
-          ))}
-        </ul>
-      )}
+            {categories.map((c) => (
+              <li key={c.id}>
+                <CategoryCard title={c.title} categoryKey={c.key} href={categoryPath(c)} />
+              </li>
+            ))}
+          </ul>
+        )}
+      </Reveal>
     </ForestPage>
   );
 }

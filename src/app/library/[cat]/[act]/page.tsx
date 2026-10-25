@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound, permanentRedirect } from "next/navigation";
 import { ActivityView } from "@/components/ActivityView/ActivityView";
 import { ActivityPage } from "@/components/ActivityPage/ActivityPage";
+import { Reveal } from "@/components/Transitions/Transitions";
 import { activityDetailChips, typeLabel } from "@/data/options";
 import { getCategory, getPublicActivity } from "@/lib/db/queries";
 import { excerpt } from "@/lib/markdown/excerpt";
@@ -66,12 +67,14 @@ export default async function PublicActivityPage({ params }: Props) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
       />
       <ViewCounter publicId={activity.id} />
-      <ActivityView
-        title={activity.title}
-        bodyMd={activity.bodyMd}
-        chips={activityDetailChips(typeLabel(null, activity.type), activity.place, activity.duration, activity.age)}
-        actions={<PublicActions publicId={activity.id} title={activity.title} bodyMd={activity.bodyMd} />}
-      />
+      <Reveal>
+        <ActivityView
+          title={activity.title}
+          bodyMd={activity.bodyMd}
+          chips={activityDetailChips(typeLabel(null, activity.type), activity.place, activity.duration, activity.age)}
+          actions={<PublicActions publicId={activity.id} title={activity.title} bodyMd={activity.bodyMd} />}
+        />
+      </Reveal>
     </ActivityPage>
   );
 }

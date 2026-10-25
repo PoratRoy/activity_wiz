@@ -5,6 +5,7 @@ import { ActivityCard } from "@/components/ActivityCard/ActivityCard";
 import { AdSlot } from "@/components/AdSlot/AdSlot";
 import { EmptyState } from "@/components/EmptyState/EmptyState";
 import { ForestPage } from "@/components/ForestPage/ForestPage";
+import { Reveal } from "@/components/Transitions/Transitions";
 import { TOP_ROW } from "@/data/topActivities";
 import { listTopPublicActivities } from "@/lib/db/queries";
 import { excerpt } from "@/lib/markdown/excerpt";
@@ -25,29 +26,31 @@ export default async function TopActivitiesPage() {
   const activities = await listTopPublicActivities(TOP_ROW.size);
   return (
     <ForestPage title={TOP_ROW.title} fallback="/library" trail>
-      {activities.length === 0 ? (
-        <EmptyState text="עדיין אין פעולות פופולריות" />
-      ) : (
-        <ul className={`${styles.list} ${styles.rows}`}>
-          {activities.map((a, i) => (
-            <Fragment key={a.id}>
-              <li>
-                <ActivityCard
-                  href={publicActivityPath(a.category, a)}
-                  title={a.title}
-                  tags={[{ icon: <Tag size={13} aria-hidden />, label: a.category.title }, ...tagsFor(a)]}
-                  subtitle={excerpt(a.bodyMd, 110)}
-                />
-              </li>
-              {i === 2 && (
+      <Reveal>
+        {activities.length === 0 ? (
+          <EmptyState text="עדיין אין פעולות פופולריות" />
+        ) : (
+          <ul className={`${styles.list} ${styles.rows}`}>
+            {activities.map((a, i) => (
+              <Fragment key={a.id}>
                 <li>
-                  <AdSlot />
+                  <ActivityCard
+                    href={publicActivityPath(a.category, a)}
+                    title={a.title}
+                    tags={[{ icon: <Tag size={13} aria-hidden />, label: a.category.title }, ...tagsFor(a)]}
+                    subtitle={excerpt(a.bodyMd, 110)}
+                  />
                 </li>
-              )}
-            </Fragment>
-          ))}
-        </ul>
-      )}
+                {i === 2 && (
+                  <li>
+                    <AdSlot />
+                  </li>
+                )}
+              </Fragment>
+            ))}
+          </ul>
+        )}
+      </Reveal>
     </ForestPage>
   );
 }

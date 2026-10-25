@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { getAccountGroup } from "@/lib/auth/session";
+import { Reveal } from "@/components/Transitions/Transitions";
 import { CreateMasthead } from "../CreateMasthead";
 import styles from "../create.module.css";
 import { ActivityForm } from "./ActivityForm";
@@ -12,7 +13,9 @@ export default async function ActivityPage() {
     <div className={styles.page}>
       <CreateMasthead title="תכנון הפעולה" fallback="/create/group" />
       <div className={styles.sheet}>
-        <ActivityForm accountGroup={accountGroup} />
+        <Reveal>
+          <ActivityForm accountGroup={accountGroup} />
+        </Reveal>
       </div>
     </div>
   );

@@ -1,6 +1,7 @@
 import type { CSSProperties, ReactNode } from "react";
 import { ActivityPage } from "@/components/ActivityPage/ActivityPage";
 import { ForestPage } from "@/components/ForestPage/ForestPage";
+import { SkeletonExit } from "@/components/Transitions/Transitions";
 import styles from "./Skeleton.module.css";
 
 /** One shimmering placeholder shape; `forest` for shapes on the dark masthead. */
@@ -11,10 +12,12 @@ export function Bone({ width, height = 14, forest }: { width: CSSProperties["wid
 /** Announces the wait once to screen readers; the shapes themselves are hidden from them. */
 export function Loading({ children }: { children: ReactNode }) {
   return (
-    <div className={styles.fade} role="status" aria-busy="true">
-      <span className={styles.srOnly}>טוען…</span>
-      <div aria-hidden>{children}</div>
-    </div>
+    <SkeletonExit>
+      <div className={styles.fade} role="status" aria-busy="true">
+        <span className={styles.srOnly}>טוען…</span>
+        <div aria-hidden>{children}</div>
+      </div>
+    </SkeletonExit>
   );
 }
 

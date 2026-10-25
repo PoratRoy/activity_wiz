@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { getAccountGroup } from "@/lib/auth/session";
+import { Reveal } from "@/components/Transitions/Transitions";
 import { CreateMasthead } from "../CreateMasthead";
 import styles from "../create.module.css";
 import { GroupForm } from "./GroupForm";
@@ -12,7 +13,9 @@ export default async function GroupPage() {
     <div className={styles.page}>
       <CreateMasthead title="הקבוצה שלי" />
       <div className={styles.sheet}>
-        <GroupForm accountGroup={accountGroup} />
+        <Reveal>
+          <GroupForm accountGroup={accountGroup} />
+        </Reveal>
       </div>
     </div>
   );
