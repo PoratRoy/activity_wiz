@@ -6,7 +6,7 @@ import { ContactForm } from "./ContactForm";
 
 export const metadata: Metadata = {
   title: "צרו קשר",
-  description: "לכל הצעה, בקשה או בעיה – דברו עם צוות ActivityWiz.",
+  description: "נשמח לשמוע מכם! אם יש לכם שאלה, הערה או בקשה – אנחנו כאן בשבילכם.",
   alternates: { canonical: "/contact" },
 };
 

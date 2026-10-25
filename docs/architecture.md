@@ -97,7 +97,9 @@ drizzle.config.ts
 - Each has `generateMetadata`: a Hebrew title (`{title} | ActivityWiz`), a description (an excerpt), `alternates.canonical`, and Open Graph in the `he_IL` locale.
 - Public activity pages include JSON-LD of type `Article` (`headline`, `inLanguage: "he"`, `datePublished`).
 - `sitemap.ts` is generated dynamically from D1: `/`, `/library`, every category and every activity.
-- `robots.ts` allows everything except `/create`, `/activity`, `/my`, `/admin` and `/api`. Those pages also set `robots: { index: false }`.
+- `robots.ts` blocks only `/admin`, `/api` and `/dev`. Personal and create pages (`/create`, `/activity`, `/my`) stay crawlable so Google can read their `robots: { index: false }`; blocking them would let linked URLs be listed without content.
+- Titles, descriptions and the shared Open Graph fields live in `src/data/seo.ts`, carried over from the old app. Category pages look up their text by the category `key`. Pages that set `openGraph` spread `OPEN_GRAPH` into it, because Next.js replaces the parent's `openGraph` whole. The share image is `public/og-image.jpg` (1200×630).
+- `public/ads.txt` and `public/BingSiteAuth.xml`, plus the Google verification and AdSense meta tags in the root layout, keep the old app's ownership checks working after the domain moves.
 - A URL whose slug doesn't match redirects to the canonical one. A missing ID shows `notFound()`.
 
 ## Environment
@@ -114,7 +116,6 @@ drizzle.config.ts
 | `GEMINI_MODEL` | var | Flash-Lite model ID |
 | `GUEST_COOKIE_SECRET` | secret | Guest cookie HMAC |
 | `SITE_URL` | var (`wrangler.jsonc`) | Runtime origin for canonicals, Open Graph, sitemap and robots. Currently `https://activitywiz.porat-roy.workers.dev`; change it when the domain moves. |
-| `NEXT_PUBLIC_ADS_ENABLED` | var | `true` shows `AdSlot` placeholders |
 
 Locally, use `.dev.vars` for Wrangler and `.env.local` for `next dev`. Under `next dev` the rate limiter uses process memory instead of the Durable Object; use `npm run preview` to exercise the real one. `initOpenNextCloudflareForDev()` in `next.config.ts` exposes the local D1 and Durable Object bindings to `next dev`. Both files are gitignored, and `.dev.vars.example` lists the names.
 

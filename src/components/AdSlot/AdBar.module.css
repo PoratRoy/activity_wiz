@@ -25,3 +25,11 @@
   font-weight: 500;
   letter-spacing: 0.3px;
 }
+
+.unit {
+  display: inline-block;
+  width: 320px;
+  height: 50px;
+  /* The bar itself lets taps through to the page; the ad must take them. */
+  pointer-events: auto;
+}

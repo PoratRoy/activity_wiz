@@ -3,6 +3,7 @@ import { notFound, permanentRedirect } from "next/navigation";
 import { ActivityView } from "@/components/ActivityView/ActivityView";
 import { ActivityPage } from "@/components/ActivityPage/ActivityPage";
 import { activityDetailChips, typeLabel } from "@/data/options";
+import { OPEN_GRAPH } from "@/data/seo";
 import { getCategory, getPublicActivity } from "@/lib/db/queries";
 import { excerpt } from "@/lib/markdown/excerpt";
 import { getSiteUrl } from "@/lib/site";
@@ -30,10 +31,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const path = publicActivityPath(category, activity);
   const description = excerpt(activity.bodyMd, 155);
   return {
-    title: `${activity.title} – ${category.title}`,
+    title: `${activity.title} – פעולה לתנועות נוער`,
     description,
     alternates: { canonical: path },
-    openGraph: { type: "article", title: activity.title, description, url: path },
+    openGraph: { ...OPEN_GRAPH, type: "article", title: activity.title, description, url: path },
   };
 }
 

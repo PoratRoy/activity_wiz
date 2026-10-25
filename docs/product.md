@@ -79,7 +79,7 @@ Google is the only sign-in method.
   There is no editing and no AI. Type is chosen by key, with generic labels: פעולת תוכן (`content`), נקודת מבט (`pointOfView`), הישרדות (`survival`), משחק (`playTime`).
 
 ### Ads and analytics
-- **R25.** One fixed ad placeholder (`AdBar`, 50px) sits above the bottom tabs on every page except landing, terms, FAQ and admin. In-content `<AdSlot>` placements render nothing. There is no analytics.
+- **R25.** One fixed ad (`AdBar`, a 320×50 AdSense unit) sits above the bottom tabs on every page except landing, terms, FAQ, admin and the generating screen. It serves real ads only on `activitywiz.com`, the domain approved in AdSense; elsewhere (workers.dev, localhost) it shows a gray placeholder. In-content `<AdSlot>` placements render nothing. There is no analytics.
 
 ## Form choices
 

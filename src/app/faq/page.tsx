@@ -5,12 +5,14 @@ import { FaqAccordion } from "./FaqAccordion";
 import { MastheadTrail } from "@/components/MastheadTrail/MastheadTrail";
 import { TopBar } from "@/components/TopBar/TopBar";
 import { ABOUT, FAQ } from "@/data/faq";
+import { MOVEMENTS, OPEN_GRAPH } from "@/data/seo";
 import styles from "./faq.module.css";
 
 export const metadata: Metadata = {
-  title: "שאלות נפוצות",
-  description: "תשובות לשאלות נפוצות על ActivityWiz: יצירת פעולות לתנועות נוער בעזרת AI, מאגר פעולות מוכנות, שמירה ושיתוף.",
+  title: "פעולות לתנועות נוער – שאלות נפוצות",
+  description: `מגוון פעולות מוכנות למדריכי נוער, לצד אפשרות ליצור פעולות מותאמות אישית בעזרת בינה מלאכותית. מתאים ל${MOVEMENTS}.`,
   alternates: { canonical: "/faq" },
+  openGraph: { ...OPEN_GRAPH, url: "/faq" },
 };
 
 export default function FaqPage() {

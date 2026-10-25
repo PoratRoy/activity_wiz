@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Rubik } from "next/font/google";
 import { AppShell } from "@/components/AppShell/AppShell";
+import { OPEN_GRAPH, SHARE_IMAGE, SITE_DESCRIPTION } from "@/data/seo";
 import { getViewer } from "@/lib/auth/session";
 import { getSiteUrl } from "@/lib/site";
 import "./globals.css";
@@ -19,8 +20,12 @@ export async function generateMetadata(): Promise<Metadata> {
     default: "ActivityWiz – פעולות לתנועות נוער",
     template: "%s | ActivityWiz",
   },
-  description: "יוצרים פעולה מוכנה לתנועת הנוער בדקה, בעזרת AI, ומאגר פעולות מוכנות למדריכים.",
-  openGraph: { locale: "he_IL", siteName: "ActivityWiz", type: "website" },
+  description: SITE_DESCRIPTION,
+  openGraph: OPEN_GRAPH,
+  twitter: { card: "summary_large_image", images: [SHARE_IMAGE] },
+  // Search Console and AdSense ownership checks, the same tokens the old app used.
+  verification: { google: "c5cOp--x7TLt0QxwSteEmgFxy79wB98EUUo_GjtFWRA" },
+  other: { "google-adsense-account": "ca-pub-9858822058074702" },
   };
 }
 

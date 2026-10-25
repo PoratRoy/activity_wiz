@@ -5,15 +5,16 @@ import Link from "next/link";
 import { preload } from "react-dom";
 import { ButtonLink } from "@/components/Button/Button";
 import { AvatarMenu } from "@/components/AvatarMenu/AvatarMenu";
+import { OPEN_GRAPH, SITE_DESCRIPTION } from "@/data/seo";
 import { getSiteUrl } from "@/lib/site";
 import { HeaderSignIn } from "./HeaderSignIn";
 import styles from "./page.module.css";
 
 export const metadata: Metadata = {
   title: { absolute: "ActivityWiz – פעולות לתנועות נוער בעזרת AI" },
-  description:
-    "יוצרים פעולה מוכנה לתנועת הנוער בדקה: בוחרים קבוצה, נושא ומשך, ומקבלים פעולה מלאה בעברית. למדריכים בצופים, בני עקיבא, השומר הצעיר ועוד.",
+  description: SITE_DESCRIPTION,
   alternates: { canonical: "/" },
+  openGraph: { ...OPEN_GRAPH, url: "/" },
 };
 
 // The scene is pre-exported at three widths (Cloudflare has no image optimizer); the browser
@@ -33,7 +34,7 @@ export default function HomePage() {
     inLanguage: "he",
     applicationCategory: "EducationalApplication",
     operatingSystem: "Web",
-    description: "יצירת פעולות לתנועות נוער בעזרת בינה מלאכותית, ומאגר פעולות מוכנות למדריכים.",
+    description: SITE_DESCRIPTION,
     offers: { "@type": "Offer", price: "0", priceCurrency: "ILS" },
   };
 
