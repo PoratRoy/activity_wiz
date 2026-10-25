@@ -17,7 +17,13 @@
   font-weight: 700;
   font-size: var(--fs-body);
   box-shadow: var(--lip) var(--btn-lip);
-  transition: transform 80ms ease, box-shadow 80ms ease;
+  /* Presses answer at once; turning enabled (a form just completed) eases its colours in. */
+  transition:
+    transform 80ms ease,
+    box-shadow 80ms ease,
+    background-color 260ms ease,
+    color 260ms ease,
+    border-color 260ms ease;
   user-select: none;
 }
 
