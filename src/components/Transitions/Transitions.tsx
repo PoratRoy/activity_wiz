@@ -21,7 +21,7 @@ export function SkeletonExit({ children }: { children: ReactNode }) {
   );
 }
 
-/** A page's content: rises into place over its skeleton once loaded. */
+/** A page's content: fades in over its skeleton once loaded (the skeleton has the same layout). */
 export function Reveal({ children }: { children: ReactNode }) {
   return (
     <ViewTransition enter="reveal-in" default="none">

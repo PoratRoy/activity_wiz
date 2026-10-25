@@ -23,6 +23,11 @@ export function GroupForm({ accountGroup }: { accountGroup: GroupInput | null })
   const [group, setGroup] = useState<GroupInput>(accountGroup ?? EMPTY);
   const [pending, startTransition] = useTransition();
 
+  // "המשך" navigates in code, which Next doesn't prefetch: fetch the next step's loading screen now, so it opens at once.
+  useEffect(() => {
+    router.prefetch("/create/activity");
+  }, [router]);
+
   // Account data wins; otherwise prefill from this browser.
   useEffect(() => {
     if (!accountGroup) {
