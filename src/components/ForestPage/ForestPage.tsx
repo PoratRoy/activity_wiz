@@ -10,7 +10,7 @@ export function ForestPage({
   trail,
   children,
 }: {
-  title: ReactNode;
+  title: string;
   fallback?: string;
   trail?: boolean;
   children: ReactNode;

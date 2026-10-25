@@ -1,5 +1,4 @@
-/* Route loading placeholders (each route's loading.tsx). Every shape has the size of what replaces it, so the page
-   only fades from placeholders to content and nothing moves. They show at once: the page transition fades them in. */
+/* Route loading screens (each route's loading.tsx): empty boxes at the real pages' sizes. */
 
 .srOnly {
   position: absolute;
@@ -8,34 +7,6 @@
   overflow: hidden;
   clip-path: inset(50%);
   white-space: nowrap;
-}
-
-/* One placeholder shape, with a slow, low-contrast sheen running right to left (the way Hebrew reads). */
-.bone {
-  display: block;
-  flex-shrink: 0;
-  max-width: 100%;
-  border-radius: 7px;
-  background: linear-gradient(90deg, #edefe8 35%, #f4f5f0 50%, #edefe8 65%);
-  background-size: 300% 100%;
-  animation: sheen 1.8s linear infinite;
-}
-
-.forest {
-  background: linear-gradient(90deg, rgb(255 255 255 / 0.1) 35%, rgb(255 255 255 / 0.16) 50%, rgb(255 255 255 / 0.1) 65%);
-  background-size: 300% 100%;
-}
-
-.inline {
-  display: inline-block;
-  vertical-align: middle;
-}
-
-.round { border-radius: 999px; }
-
-@keyframes sheen {
-  from { background-position: 0% 0; }
-  to { background-position: 100% 0; }
 }
 
 /* ---- Rows: the raised white rows of the library and "my activities", at their real heights ---- */
@@ -50,9 +21,6 @@
 }
 
 .row {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
   border: 2px solid #ced7c9;
   border-radius: 16px;
   background: var(--surface);
@@ -62,29 +30,14 @@
 /* CategoryCard. */
 .category {
   min-height: max(68px, calc((min(100vw, var(--column)) - 40px) / 5.2));
-  padding: 10px 24px;
   border-radius: 20px;
 }
 
 /* ActivityCard: title, excerpt and tags. */
-.activity {
-  gap: 6px;
-  height: 100px;
-  padding: 12px 20px;
-}
-
-.tags {
-  display: flex;
-  gap: 6px;
-  margin-top: 2px;
-}
+.activity { height: 100px; }
 
 /* MyList: title and date. */
-.saved {
-  gap: 8px;
-  height: 76px;
-  padding: 12px 20px;
-}
+.saved { height: 76px; }
 
 /* ---- Activity: the title block's lines at their real heights, then the reading sheet ---- */
 
@@ -94,48 +47,20 @@
   flex-direction: column;
 }
 
+/* One 24px title line, the 14px detail line, and the ActionBar's row. */
 .titleLine,
-.detailLine {
-  display: flex;
-  align-items: center;
-}
-
-/* One 24px title line, and the 14px detail line under it. */
+.detailLine,
+.actions { display: block; }
 .titleLine { height: 31px; }
 .detailLine { height: 21px; }
-
-/* The page's ActionBar: the wide main button, then a round icon button. */
 .actions {
-  display: flex;
-  gap: 8px;
   height: 44px;
+  margin-top: 8px;
 }
 
-.actions > :first-child {
-  flex-shrink: 1;
-  border-radius: var(--radius-sm);
-}
+/* ---- Form: one empty row of a create page's card, at its real height ---- */
 
-.body {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .bone { animation: none; }
-}
-
-/* ---- Form: one answer row of a create page's card (PickerSheet's row height) ---- */
-
-.field {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 8px;
-  min-height: 66px;
-  padding: 12px 18px;
-}
-
-/* "עוד אפשרויות": one line in a 63px row. */
-.lineRow { min-height: 63px; }
+.field { min-height: 66px; }
+.segment { min-height: 82px; }
+.input { min-height: 85px; }
+.line { min-height: 63px; }
