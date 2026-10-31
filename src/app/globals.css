@@ -37,7 +37,7 @@
   --adbar-h: 0px;
   --actionbar-h: 64px;
 
-  --font: var(--font-rubik), system-ui, sans-serif;
+  --font: var(--font-varela-round), system-ui, sans-serif;
   --fs-small: 14px;
   --fs-body: 16px;
   --fs-reading: 18px;
@@ -86,11 +86,18 @@ h3 {
 h1 {
   font-size: var(--fs-h1);
   font-weight: 700;
+  letter-spacing: 0.4px;
 }
 
 h2 {
   font-size: var(--fs-h2);
   font-weight: 700;
+  letter-spacing: 0.4px;
+}
+
+strong,
+b {
+  letter-spacing: 0.4px;
 }
 
 a {

@@ -1,15 +1,17 @@
 import type { Metadata, Viewport } from "next";
-import { Rubik } from "next/font/google";
+import { Varela_Round } from "next/font/google";
 import { AppShell } from "@/components/AppShell/AppShell";
 import { OPEN_GRAPH, SHARE_IMAGE, SITE_DESCRIPTION } from "@/data/seo";
 import { getViewer } from "@/lib/auth/session";
 import { getSiteUrl } from "@/lib/site";
 import "./globals.css";
 
-const rubik = Rubik({
+// Varela Round ships a single weight. Bold text uses the browser's synthesized bold,
+// with a little letter spacing so the heavier letters don't crowd.
+const varelaRound = Varela_Round({
   subsets: ["hebrew", "latin"],
-  weight: ["400", "500", "700"],
-  variable: "--font-rubik",
+  weight: "400",
+  variable: "--font-varela-round",
   display: "swap",
 });
 
@@ -38,7 +40,7 @@ export const viewport: Viewport = {
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const viewer = await getViewer();
   return (
-    <html lang="he" dir="rtl" className={rubik.variable}>
+    <html lang="he" dir="rtl" className={varelaRound.variable}>
       <body>
         <div className="app">
           <AppShell viewer={viewer}>{children}</AppShell>

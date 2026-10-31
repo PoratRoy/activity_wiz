@@ -21,6 +21,7 @@
   background: var(--yellow);
   box-shadow: 0 3px 0 var(--yellow-dark);
   font-weight: 700;
+  letter-spacing: 0.4px;
 }
 
 .bannerButton:active:not(:disabled) {

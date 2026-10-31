@@ -15,6 +15,7 @@
   background: var(--btn-bg);
   color: var(--btn-fg);
   font-weight: 700;
+  letter-spacing: 0.4px;
   font-size: var(--fs-body);
   box-shadow: var(--lip) var(--btn-lip);
   /* Presses answer at once; turning enabled (a form just completed) eases its colours in. */

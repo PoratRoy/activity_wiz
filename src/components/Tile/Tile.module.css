@@ -9,6 +9,7 @@
   padding: 0;
   margin-block-end: var(--space-2);
   font-weight: 700;
+  letter-spacing: 0.4px;
 }
 
 /* Visually hidden, still announced as the group name. */
@@ -48,6 +49,7 @@
   color: var(--green-dark);
   box-shadow: var(--lip) var(--green);
   font-weight: 700;
+  letter-spacing: 0.4px;
 }
 
 .selected:active {

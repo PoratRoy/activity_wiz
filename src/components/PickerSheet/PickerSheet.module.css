@@ -2,6 +2,7 @@
   display: block;
   margin-block-end: var(--space-2);
   font-weight: 700;
+  letter-spacing: 0.4px;
 }
 
 .field {
@@ -58,6 +59,7 @@
   color: var(--green-dark);
   font-size: 17px;
   font-weight: 700;
+  letter-spacing: 0.4px;
 }
 
 /* Unanswered rows invite a tap: green, not grey. */
@@ -177,6 +179,7 @@
   box-shadow: 0 3px 0 var(--green);
   color: var(--green-dark);
   font-weight: 700;
+  letter-spacing: 0.4px;
 }
 
 /* Single choice: an empty circle, filled once picked. */

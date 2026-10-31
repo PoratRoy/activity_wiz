@@ -17,7 +17,7 @@ Status: the landing page and `/create/group` have received local visual updates.
 - **Warm and readable.** White controls on warm ivory, dark readable text, one visually dominant primary action. Use sage for selected states and butter yellow for warmth.
 - **Preserve the existing structure.** Add artwork within existing hero, heading and empty-state regions without moving controls or introducing steps. Do not change field types without an explicit product decision. The approved exception is group size on `/create/group`, which now matches the movement and grade pickers.
 - **Hebrew RTL throughout.** Keep `lang="he" dir="rtl"` and logical CSS properties. Preserve existing copy unless separately approved.
-- Light mode only. Use the existing CSS Modules, shared CSS variables, Rubik and lucide-react; no new UI framework is required.
+- Light mode only. Use the existing CSS Modules, shared CSS variables, Varela Round and lucide-react; no new UI framework is required.
 
 ## Approved group page `/create/group` (2026-10-19)
 
@@ -146,12 +146,12 @@ The palette below is the current `:root` in `src/app/globals.css`; `--card-blue`
 --topbar-h: 56px;
 --tabbar-h: 64px;
 --actionbar-h: 64px;
---font: var(--font-rubik), system-ui, sans-serif;
+--font: var(--font-varela-round), system-ui, sans-serif;
 ```
 
-The landing page (`/`) alone uses Varela Round (a rounded font with a single weight, loaded in `src/app/page.tsx`; its bold title and button use the browser's synthesized bold, the logo stays regular); every other screen uses Rubik.
+Varela Round, loaded once in `src/app/layout.tsx`, ships a single 400 weight. Text set to 700 or 800 uses the browser's synthesized bold and always gets `letter-spacing: 0.4px` (0.5px on the large home title) so the heavier letters don't crowd; never use negative letter spacing on bold text. Weight 500 renders the same as 400. The ActivityWiz logo text on the home header stays at 400 with 0.6px spacing.
 
-Rubik 400/500/700: body 16px, reading 18px with 1.7 line height, H1 24px/700, H2 20px/700, supporting text 14px. Home display type can scale fluidly from 30–36px. Keep headings strong and labels quieter; avoid making every text element bold. Validate actual foreground/background pairs for readable contrast, including disabled, error and selected states. Yellow is decorative or paired with dark text, never small yellow text on white.
+Sizes: body 16px, reading 18px with 1.7 line height, H1 24px/700, H2 20px/700, supporting text 14px. Home display type can scale fluidly from 30–36px. Keep headings strong and labels quieter; avoid making every text element bold. Validate actual foreground/background pairs for readable contrast, including disabled, error and selected states. Yellow is decorative or paired with dark text, never small yellow text on white.
 
 ## Responsive shell
 
