@@ -186,18 +186,19 @@ button {
 ::view-transition-new(bottom-nav),
 ::view-transition-new(ad-bar) { animation: none; }
 
-/* Coming back after a full-screen step (generating, saving), the tabs and ad bar fade in once the page has arrived;
-   going into one, they fade out with the page. */
+/* Coming back after a full-screen step (generating, saving), the tabs and ad bar fade in with the page; going into
+   one, they fade out with it. No delay: React can't show the next page (or swap a skeleton for its content) until every
+   animation here has ended, so the longest one sets how long a navigation holds. Keep all of them at 150ms or less. */
 ::view-transition-new(bottom-nav):only-child,
-::view-transition-new(ad-bar):only-child { animation: vt-fade-in 320ms ease-out 180ms both; }
+::view-transition-new(ad-bar):only-child { animation: vt-fade-in 150ms ease-out both; }
 ::view-transition-old(bottom-nav):only-child,
-::view-transition-old(ad-bar):only-child { display: block; animation: vt-fade-out 160ms ease-out both; }
+::view-transition-old(ad-bar):only-child { display: block; animation: vt-fade-out 120ms ease-out both; }
 
 /* The masthead's green stays; the old title fades out over the new one. Entering or leaving a page without a masthead
    (home), the bar fades with the page. */
-::view-transition-old(masthead) { animation: vt-fade-out 160ms ease-out both; }
+::view-transition-old(masthead) { animation: vt-fade-out 120ms ease-out both; }
 ::view-transition-new(masthead) { animation: none; }
-::view-transition-new(masthead):only-child { animation: vt-fade-in 200ms ease-out both; }
+::view-transition-new(masthead):only-child { animation: vt-fade-in 150ms ease-out both; }
 
 /* One short, plain cross-fade for every change, with no movement: pages (the app's templates), and a skeleton handing
    over to its content. The new view fades in on top while the old one fades out more slowly underneath, so the screen
@@ -207,9 +208,13 @@ button {
 ::view-transition-group(.page-in),
 ::view-transition-group(.reveal-in) { z-index: 2; }
 ::view-transition-old(.page-out),
-::view-transition-old(.skeleton-out) { animation: vt-fade-out 220ms ease-in both; }
+::view-transition-old(.skeleton-out) { animation: vt-fade-out 150ms ease-in both; }
 ::view-transition-new(.page-in),
-::view-transition-new(.reveal-in) { animation: vt-fade-in 200ms ease-out both; }
+::view-transition-new(.reveal-in) { animation: vt-fade-in 150ms ease-out both; }
+
+/* The browser's default root cross-fade is 250ms; match the rest. */
+::view-transition-old(root),
+::view-transition-new(root) { animation-duration: 150ms; }
 
 @keyframes vt-fade-in {
   from { opacity: 0; }
