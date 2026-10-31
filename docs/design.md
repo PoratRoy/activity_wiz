@@ -210,6 +210,7 @@ Owner requirement, superseding the earlier "ads paused" rule: every page except 
 - Its height is the minimum for a real ad: 50px, the smallest standard mobile banner (320 × 50), sitting directly on the tabs.
 - While it is shown, `--adbar-h` (otherwise `0px`) adds its height to content bottom padding, sticky footers, toasts and full-height layouts, so nothing sits behind it. The create-flow continue/create buttons are sticky just above it.
 - In-content `AdSlot` placements (category list, activity view) stay no-ops; no other ad space is reserved.
+- Each area serves its own AdSense display unit, reusing the old app's units so earnings stay split per area: library, «הכי פופולרי» and categories → `activityStaticActivities`; a library activity → `activityDetails`; `/create/*` → `activityBuild`; `/activity/*` → `activityAiActivity`; `/my` → `activityMyActivities`; anything else (e.g. `/contact`) → `Desktop_Sidebar`. The map is `adSlotFor` in AdBar.
 
 ## Motion and copy
 

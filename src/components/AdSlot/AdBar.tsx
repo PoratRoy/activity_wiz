@@ -6,8 +6,28 @@ import { useEffect, useState } from "react";
 import styles from "./AdBar.module.css";
 
 const AD_CLIENT = "ca-pub-9858822058074702";
-/** The old app's display unit (its desktop sidebar); a fixed-size display unit fills a 320 × 50 bar. */
-const AD_BAR_SLOT = "6260212628";
+/**
+ * One AdSense display unit per area, reusing the old app's units so AdSense reports earnings per area as
+ * before. A fixed-size display unit fills the 320 × 50 bar. Pages without their own unit use the old
+ * desktop sidebar unit.
+ */
+const AD_SLOTS = {
+  library: "8738367503", // activityStaticActivities: library, «הכי פופולרי», categories
+  libraryActivity: "5290759275", // activityDetails: a public activity in the library
+  create: "9038432592", // activityBuild: the create forms
+  generated: "7241259487", // activityAiActivity: a generated (or saved) activity
+  my: "5975540586", // activityMyActivities
+  fallback: "6260212628", // Desktop_Sidebar: contact and anything else
+} as const;
+
+function adSlotFor(pathname: string): string {
+  const [first, , third] = pathname.split("/").filter(Boolean);
+  if (first === "library") return third ? AD_SLOTS.libraryActivity : AD_SLOTS.library;
+  if (first === "create") return AD_SLOTS.create;
+  if (first === "activity") return AD_SLOTS.generated;
+  if (first === "my") return AD_SLOTS.my;
+  return AD_SLOTS.fallback;
+}
 /**
  * AdSense only serves on the approved domain, so real ads run there and everywhere else (workers.dev,
  * localhost) keeps the placeholder. Ads start by themselves once activitywiz.com points at this app.
@@ -50,7 +70,7 @@ export function AdBar() {
             crossOrigin="anonymous"
           />
           {/* A new unit per page, as on the old site, where each page rendered its own ad. */}
-          <AdUnit key={pathname} />
+          <AdUnit key={pathname} slot={adSlotFor(pathname)} />
         </>
       ) : (
         <span className={styles.label}>פרסומת</span>
@@ -59,7 +79,7 @@ export function AdBar() {
   );
 }
 
-function AdUnit() {
+function AdUnit({ slot }: { slot: string }) {
   useEffect(() => {
     try {
       (window.adsbygoogle = window.adsbygoogle || []).push({});
@@ -71,7 +91,7 @@ function AdUnit() {
     <ins
       className={`adsbygoogle ${styles.unit}`}
       data-ad-client={AD_CLIENT}
-      data-ad-slot={AD_BAR_SLOT}
+      data-ad-slot={slot}
     />
   );
 }
