@@ -79,8 +79,8 @@ drizzle.config.ts
 ## Auth
 
 - `lib/auth/config.ts`: `NextAuth({ providers: [Google], session: { strategy: 'jwt' }, callbacks })`.
-  - `jwt({ token, profile })`: on sign-in, `upsertUserByGoogleSub(profile)` and put `token.uid = users.id`.
-  - `session({ session, token })`: `session.user.id = token.uid`.
+  - `jwt({ token, profile })`: on sign-in, `upsertUserByGoogleSub(profile)` and put `token.uid = users.id` and `token.group` (the saved group, or null). `saveGroup` refreshes `token.group` with `unstable_update`, so `getAccountGroup()` reads the cookie, not D1. Tokens from before this field fall back to a D1 read. A group saved on another device reaches this one at its next save or sign-in.
+  - `session({ session, token })`: `session.user.id = token.uid`, `session.user.group = token.group`.
 - `lib/auth/session.ts`: `getUserId()` → `string | null`.
 - `lib/auth/admin.ts`: `isAdmin(email)` parses `ADMIN_EMAILS` (a JSON string array) on each call and compares emails lowercased. If the value is missing or invalid, nobody is an admin. `requireAdmin()` redirects to `/` when the check fails.
 - The root layout reads the session on the server (`getViewer()`) and passes `{ signedIn, name, image, isAdmin }` to the client shell through `ViewerProvider`. Every page is rendered per request with no caching, so nothing leaks between users. There is no `SessionProvider`.

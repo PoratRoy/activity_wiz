@@ -1,7 +1,7 @@
 import "server-only";
 import { cache } from "react";
 import type { Viewer } from "@/components/AppShell/viewer";
-import { getUser } from "@/lib/db/queries";
+import { accountGroupOf, getUser } from "@/lib/db/queries";
 import type { GroupInput } from "@/lib/validate";
 import { isAdmin } from "./admin";
 import { auth } from "./config";
@@ -23,11 +23,12 @@ export async function getViewer(): Promise<Viewer> {
   return { signedIn: true, name: user.name, image: user.image, isAdmin: isAdmin(user), checkMessage: user.checkMessage };
 }
 
-/** The signed-in user's saved group, or null (guest or not filled yet). */
+/** The signed-in user's saved group, or null (guest or not filled yet). Read from the session cookie; sessions from
+    before the group was kept there fall back to D1 until the next saveGroup or sign-in. */
 export async function getAccountGroup(): Promise<GroupInput | null> {
-  const id = await getUserId();
-  if (!id) return null;
-  const u = await getUser(id);
-  if (!u?.movement || !u.grade || !u.groupSize || !u.gender) return null;
-  return { movement: u.movement, grade: u.grade, groupSize: u.groupSize, gender: u.gender };
+  const user = await getSessionUser();
+  if (!user) return null;
+  if (user.group !== undefined) return user.group;
+  const u = await getUser(user.id);
+  return u ? accountGroupOf(u) : null;
 }

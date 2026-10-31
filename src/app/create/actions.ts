@@ -1,6 +1,7 @@
 "use server";
 
 import { generateWithGemini } from "@/lib/ai/gemini";
+import { unstable_update } from "@/lib/auth/config";
 import { getAccountGroup, getUserId } from "@/lib/auth/session";
 import { countActivities, insertActivity, updateGroup } from "@/lib/db/queries";
 import { AI_DISCLAIMER, BODY_MAX, MAX_PERSONAL_ACTIVITIES, TITLE_MAX, type GenerateResult } from "@/lib/draft";
@@ -21,6 +22,7 @@ export async function saveGroup(group: GroupInput): Promise<{ ok: boolean }> {
   };
   if (hasErrors(validateGroup(clean))) return { ok: false };
   await updateGroup(userId, clean);
+  await unstable_update({ user: { group: clean } });
   return { ok: true };
 }
 

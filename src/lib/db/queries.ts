@@ -30,12 +30,21 @@ export type ActivityContent = { [K in keyof ActivityDetails]?: string | null } &
 
 // ---------- users ----------
 
+type GroupColumns = { movement: string | null; grade: string | null; groupSize: string | null; gender: string | null };
+
+/** The user's saved group, or null until all four fields are filled. */
+export function accountGroupOf(u: GroupColumns): Group | null {
+  if (!u.movement || !u.grade || !u.groupSize || !u.gender) return null;
+  return { movement: u.movement, grade: u.grade, groupSize: u.groupSize, gender: u.gender };
+}
+
+/** Creates or refreshes the user at sign-in; returns their id and saved group (kept in the session cookie). */
 export async function upsertUserByGoogleSub(p: {
   sub: string;
   email: string;
   name?: string | null;
   image?: string | null;
-}): Promise<string> {
+}): Promise<{ id: string; group: Group | null }> {
   const db = getDb();
   const [row] = await db
     .insert(users)
@@ -51,8 +60,14 @@ export async function upsertUserByGoogleSub(p: {
       target: users.googleSub,
       set: { email: p.email, name: p.name ?? null, image: p.image ?? null },
     })
-    .returning({ id: users.id });
-  return row.id;
+    .returning({
+      id: users.id,
+      movement: users.movement,
+      grade: users.grade,
+      groupSize: users.groupSize,
+      gender: users.gender,
+    });
+  return { id: row.id, group: accountGroupOf(row) };
 }
 
 export const getUser = cache(async (id: string) => {
