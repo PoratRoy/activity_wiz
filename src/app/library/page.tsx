@@ -5,7 +5,7 @@ import { ForestPage } from "@/components/ForestPage/ForestPage";
 import { Reveal } from "@/components/Transitions/Transitions";
 import { LIBRARY_DESCRIPTION, OPEN_GRAPH } from "@/data/seo";
 import { TOP_ROW } from "@/data/topActivities";
-import { listCategories } from "@/lib/db/queries";
+import { cachedListCategories } from "@/lib/db/libraryCache";
 import { categoryPath } from "@/lib/slug";
 import styles from "./library.module.css";
 
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 };
 
 export default async function LibraryPage() {
-  const categories = await listCategories();
+  const categories = await cachedListCategories();
   return (
     <ForestPage title="מאגר פעולות" trail>
       <Reveal>

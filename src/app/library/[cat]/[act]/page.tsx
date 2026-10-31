@@ -5,7 +5,7 @@ import { ActivityPage } from "@/components/ActivityPage/ActivityPage";
 import { Reveal } from "@/components/Transitions/Transitions";
 import { activityDetailChips, typeLabel } from "@/data/options";
 import { OPEN_GRAPH } from "@/data/seo";
-import { getPublicActivityWithCategory } from "@/lib/db/queries";
+import { cachedGetPublicActivityWithCategory } from "@/lib/db/libraryCache";
 import { excerpt } from "@/lib/markdown/excerpt";
 import { getSiteUrl } from "@/lib/site";
 import { categoryPath, parseId, publicActivityPath, sameSegment } from "@/lib/slug";
@@ -18,7 +18,7 @@ type Props = { params: Promise<{ cat: string; act: string }> };
 
 async function load(catSeg: string, actSeg: string) {
   const actId = parseId(actSeg);
-  const data = actId ? await getPublicActivityWithCategory(actId) : null;
+  const data = actId ? await cachedGetPublicActivityWithCategory(actId) : null;
   return data && data.category.id === parseId(catSeg) ? data : null;
 }
 

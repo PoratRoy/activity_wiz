@@ -3,6 +3,7 @@
 import { CATEGORY_KEY_PATTERN } from "@/data/libraryImages";
 import { AGES, DURATIONS, EQUIPMENT, GENERIC_TYPE_LABELS, NOTES_MAX, PLACES, SHABBAT, TEAMS } from "@/data/options";
 import { requireAdmin } from "@/lib/auth/admin";
+import { forgetLibrary } from "@/lib/db/libraryCache";
 import {
   countPublicActivities,
   deleteCategory,
@@ -40,7 +41,9 @@ export async function createCategory(title: string, key: string): Promise<{ id: 
   const k = str(key);
   const error = await keyError(k);
   if (error) return { error };
-  return { id: await insertCategory(t, k) };
+  const id = await insertCategory(t, k);
+  forgetLibrary();
+  return { id };
 }
 
 export async function setCategoryKey(id: string, key: string): Promise<{ ok: true } | { error: string }> {
@@ -48,13 +51,16 @@ export async function setCategoryKey(id: string, key: string): Promise<{ ok: tru
   const k = str(key);
   const error = await keyError(k, str(id));
   if (error) return { error };
-  return (await updateCategoryKey(str(id), k)) ? { ok: true } : { error: "הקטגוריה לא נמצאה" };
+  const ok = await updateCategoryKey(str(id), k);
+  forgetLibrary();
+  return ok ? { ok: true } : { error: "הקטגוריה לא נמצאה" };
 }
 
 /** Deletes the category and (FK cascade) its public activities. Personal copies are unaffected (R23). */
 export async function removeCategory(id: string): Promise<boolean> {
   await requireAdmin();
   await deleteCategory(str(id));
+  forgetLibrary();
   return true;
 }
 
@@ -62,13 +68,17 @@ export async function removeCategory(id: string): Promise<boolean> {
 export async function reorderCategories(ids: string[]): Promise<boolean> {
   await requireAdmin();
   if (!Array.isArray(ids)) return false;
-  return setCategoryOrder(ids.map(str));
+  const ok = await setCategoryOrder(ids.map(str));
+  forgetLibrary();
+  return ok;
 }
 
 export async function reorderPublicActivities(categoryId: string, ids: string[]): Promise<boolean> {
   await requireAdmin();
   if (!Array.isArray(ids)) return false;
-  return setPublicActivityOrder(str(categoryId), ids.map(str));
+  const ok = await setPublicActivityOrder(str(categoryId), ids.map(str));
+  forgetLibrary();
+  return ok;
 }
 
 export async function categoryActivityCount(id: string): Promise<number> {
@@ -157,6 +167,7 @@ export async function createPublicActivity(input: PublicActivityInput): Promise<
   const p = await prepare(input);
   if ("errors" in p) return { errors: p.errors };
   const id = await insertPublicActivity(p.categoryId, p.data);
+  forgetLibrary();
   return { id, categoryId: p.categoryId };
 }
 
@@ -165,13 +176,16 @@ export async function updatePublicActivity(id: string, input: PublicActivityInpu
   await requireAdmin();
   const p = await prepare(input);
   if ("errors" in p) return { errors: p.errors };
-  if (!(await updatePublicActivityRow(str(id), p.categoryId, p.data))) return { errors: { title: "הפעולה לא נמצאה" } };
+  const updated = await updatePublicActivityRow(str(id), p.categoryId, p.data);
+  forgetLibrary();
+  if (!updated) return { errors: { title: "הפעולה לא נמצאה" } };
   return { id: str(id), categoryId: p.categoryId };
 }
 
 export async function removePublicActivity(id: string): Promise<boolean> {
   await requireAdmin();
   await deletePublicActivity(str(id));
+  forgetLibrary();
   return true;
 }
 

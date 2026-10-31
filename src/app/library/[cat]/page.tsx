@@ -7,7 +7,7 @@ import { EmptyState } from "@/components/EmptyState/EmptyState";
 import { ForestPage } from "@/components/ForestPage/ForestPage";
 import { Reveal } from "@/components/Transitions/Transitions";
 import { OPEN_GRAPH, categorySeo } from "@/data/seo";
-import { getCategory, listPublicActivities } from "@/lib/db/queries";
+import { cachedGetCategory, cachedListPublicActivities } from "@/lib/db/libraryCache";
 import { excerpt } from "@/lib/markdown/excerpt";
 import { categoryPath, parseId, publicActivityPath, sameSegment } from "@/lib/slug";
 import styles from "../library.module.css";
@@ -19,7 +19,7 @@ type Props = { params: Promise<{ cat: string }> };
 
 async function load(segment: string) {
   const id = parseId(segment);
-  return id ? getCategory(id) : null;
+  return id ? cachedGetCategory(id) : null;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -41,7 +41,7 @@ export default async function CategoryPage({ params }: Props) {
   if (!sameSegment(segment, categoryPath(category).split("/").pop()!)) {
     permanentRedirect(categoryPath(category));
   }
-  const activities = await listPublicActivities(category.id);
+  const activities = await cachedListPublicActivities(category.id);
 
   return (
     <ForestPage title={category.title} fallback="/library" trail>

@@ -8,7 +8,7 @@ import { ForestPage } from "@/components/ForestPage/ForestPage";
 import { Reveal } from "@/components/Transitions/Transitions";
 import { MOVEMENTS, OPEN_GRAPH } from "@/data/seo";
 import { TOP_ROW } from "@/data/topActivities";
-import { listTopPublicActivities } from "@/lib/db/queries";
+import { cachedListTopPublicActivities } from "@/lib/db/libraryCache";
 import { excerpt } from "@/lib/markdown/excerpt";
 import { publicActivityPath } from "@/lib/slug";
 import styles from "../library.module.css";
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
 
 /** The most-viewed public activities from every category; each links to its page in its own category. */
 export default async function TopActivitiesPage() {
-  const activities = await listTopPublicActivities(TOP_ROW.size);
+  const activities = await cachedListTopPublicActivities(TOP_ROW.size);
   return (
     <ForestPage title={TOP_ROW.title} fallback="/library" trail>
       <Reveal>

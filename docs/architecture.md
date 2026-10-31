@@ -74,6 +74,7 @@ drizzle.config.ts
 - **Reads:** Server Components call `lib/db/queries.ts` directly.
 - **Writes:** Server Actions (`actions.ts` files). Every action re-checks the session, ownership and admin status on the server. Nothing from the client is trusted.
 - **Bindings:** `getCloudflareContext().env` (`DB`, `RATE_LIMITER`), accessed inside request scope only.
+- **Library cache:** visitor-facing library pages read through `lib/db/libraryCache.ts`, which keeps results in the Worker instance's memory for 60 seconds. Admin actions clear the instance that handled them; other instances catch up within the minute. Admin pages read D1 directly.
 - **D1 read replication:** `worker.ts` runs each request on a D1 session (`env.DB.withSession`), so reads can use a nearby replica. The session bookmark is kept in the `aw_d1` cookie (1 hour), so the next request is at least as fresh as the user's last write. Replication itself is switched on per database in the Cloudflare dashboard; with it off, all queries go to the primary. `next dev` skips `worker.ts` and always uses the primary.
 - No middleware or proxy: auth checks happen inside pages and actions.
 
