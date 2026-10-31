@@ -37,8 +37,8 @@
   min-height: 48px;
   color: var(--green-dark);
   font-size: 18px;
-  font-weight: 700;
-  letter-spacing: -0.4px;
+  font-weight: 400;
+  letter-spacing: 0.6px;
 }
 .brand img { flex-shrink: 0; border-radius: 7px; }
 .account { display: flex; align-items: center; gap: 4px; }
