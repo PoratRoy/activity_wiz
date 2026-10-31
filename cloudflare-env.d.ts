@@ -6,7 +6,7 @@ interface __BaseEnv_CloudflareEnv {
 	ASSETS: Fetcher;
 	AUTH_TRUST_HOST: "true";
 	CONTACT_TO_EMAIL: "porat.roy@gmail.com";
-	CONTACT_FROM_EMAIL: "ActivityWiz <onboarding@resend.dev>";
+	CONTACT_FROM_EMAIL: "ActivityWiz <noreply@support.activitywiz.com>";
 	NEXTJS_ENV: string;
 	SITE_URL: string;
 	NEXT_PUBLIC_ADS_ENABLED: string;

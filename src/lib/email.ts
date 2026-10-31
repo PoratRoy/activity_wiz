@@ -20,7 +20,7 @@ export async function sendEmail(p: { subject: string; text: string; replyTo: str
     method: "POST",
     headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, "Content-Type": "application/json" },
     body: JSON.stringify({
-      from: env.CONTACT_FROM_EMAIL || "ActivityWiz <onboarding@resend.dev>",
+      from: env.CONTACT_FROM_EMAIL || "ActivityWiz <noreply@support.activitywiz.com>",
       to: [env.CONTACT_TO_EMAIL || "porat.roy@gmail.com"],
       reply_to: p.replyTo,
       subject: p.subject,
