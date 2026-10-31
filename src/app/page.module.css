@@ -5,6 +5,8 @@
   min-height: calc(var(--app-height) - var(--tabbar-h) - env(safe-area-inset-bottom));
   background: var(--cream);
   color: var(--text);
+  /* Secular One ships one heavy weight; never fake a bolder one. */
+  font-synthesis-weight: none;
 }
 .main { display: flex; flex-direction: column; flex: 1; min-width: 0; }
 

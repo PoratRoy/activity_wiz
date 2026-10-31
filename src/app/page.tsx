@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Secular_One } from "next/font/google";
 import { Sparkles } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -9,6 +10,13 @@ import { OPEN_GRAPH, SITE_DESCRIPTION } from "@/data/seo";
 import { getSiteUrl } from "@/lib/site";
 import { HeaderSignIn } from "./HeaderSignIn";
 import styles from "./page.module.css";
+
+// The landing page alone uses Secular One; the rest of the app keeps Rubik.
+const secularOne = Secular_One({
+  subsets: ["hebrew", "latin"],
+  weight: "400",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: { absolute: "ActivityWiz – פעולות לתנועות נוער בעזרת AI" },
@@ -39,7 +47,7 @@ export default function HomePage() {
   };
 
   return (
-    <div className={styles.home}>
+    <div className={`${styles.home} ${secularOne.className}`}>
       <header className={styles.header}>
         <Link href="/" className={styles.brand} aria-label="ActivityWiz — בית">
           <Image src="/brand/activity-wiz-fresh-green.svg" width={28} height={28} alt="" />
