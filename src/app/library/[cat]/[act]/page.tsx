@@ -5,7 +5,7 @@ import { ActivityPage } from "@/components/ActivityPage/ActivityPage";
 import { Reveal } from "@/components/Transitions/Transitions";
 import { activityDetailChips, typeLabel } from "@/data/options";
 import { OPEN_GRAPH } from "@/data/seo";
-import { getCategory, getPublicActivity } from "@/lib/db/queries";
+import { getPublicActivityWithCategory } from "@/lib/db/queries";
 import { excerpt } from "@/lib/markdown/excerpt";
 import { getSiteUrl } from "@/lib/site";
 import { categoryPath, parseId, publicActivityPath, sameSegment } from "@/lib/slug";
@@ -18,10 +18,8 @@ type Props = { params: Promise<{ cat: string; act: string }> };
 
 async function load(catSeg: string, actSeg: string) {
   const actId = parseId(actSeg);
-  const activity = actId ? await getPublicActivity(actId) : null;
-  if (!activity || activity.categoryId !== parseId(catSeg)) return null;
-  const category = await getCategory(activity.categoryId);
-  return category ? { activity, category } : null;
+  const data = actId ? await getPublicActivityWithCategory(actId) : null;
+  return data && data.category.id === parseId(catSeg) ? data : null;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

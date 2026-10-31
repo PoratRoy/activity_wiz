@@ -312,6 +312,18 @@ export const getPublicActivity = cache(async (id: string) => {
   return (await getDb().select().from(publicActivity).where(eq(publicActivity.id, id)).get()) ?? null;
 });
 
+/** A public activity with its category, in one round trip (the library activity page needs both). */
+export const getPublicActivityWithCategory = cache(async (id: string) => {
+  return (
+    (await getDb()
+      .select({ activity: publicActivity, category: publicCategory })
+      .from(publicActivity)
+      .innerJoin(publicCategory, eq(publicCategory.id, publicActivity.categoryId))
+      .where(eq(publicActivity.id, id))
+      .get()) ?? null
+  );
+});
+
 export async function insertPublicActivity(
   categoryId: string,
   data: ActivityDetails & { title: string; bodyMd: string; age: string },
