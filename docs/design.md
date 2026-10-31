@@ -149,7 +149,7 @@ The palette below is the current `:root` in `src/app/globals.css`; `--card-blue`
 --font: var(--font-rubik), system-ui, sans-serif;
 ```
 
-The landing page (`/`) alone uses Varela Round (a rounded font with a single weight, loaded in `src/app/page.tsx`); every other screen uses Rubik.
+The landing page (`/`) alone uses Varela Round (a rounded font with a single weight, loaded in `src/app/page.tsx`; its bold title and button use the browser's synthesized bold, the logo stays regular); every other screen uses Rubik.
 
 Rubik 400/500/700: body 16px, reading 18px with 1.7 line height, H1 24px/700, H2 20px/700, supporting text 14px. Home display type can scale fluidly from 30–36px. Keep headings strong and labels quieter; avoid making every text element bold. Validate actual foreground/background pairs for readable contrast, including disabled, error and selected states. Yellow is decorative or paired with dark text, never small yellow text on white.
 
