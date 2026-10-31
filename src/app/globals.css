@@ -207,10 +207,12 @@ button {
 ::view-transition-group(.skeleton-out) { z-index: 1; }
 ::view-transition-group(.page-in),
 ::view-transition-group(.reveal-in) { z-index: 2; }
-::view-transition-old(.page-out),
-::view-transition-old(.skeleton-out) { animation: vt-fade-out 150ms ease-in both; }
-::view-transition-new(.page-in),
-::view-transition-new(.reveal-in) { animation: vt-fade-in 150ms ease-out both; }
+::view-transition-old(.page-out) { animation: vt-fade-out 150ms ease-in both; }
+::view-transition-new(.page-in) { animation: vt-fade-in 150ms ease-out both; }
+/* A skeleton handing over to its content is quicker still: the boxes are already in place, so it only needs to soften
+   the swap, and the content is what the user is waiting for. */
+::view-transition-old(.skeleton-out) { animation: vt-fade-out 90ms ease-in both; }
+::view-transition-new(.reveal-in) { animation: vt-fade-in 100ms ease-out both; }
 
 /* The browser's default root cross-fade is 250ms; match the rest. */
 ::view-transition-old(root),
