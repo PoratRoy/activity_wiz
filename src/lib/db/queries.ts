@@ -1,4 +1,5 @@
 import "server-only";
+import { cache } from "react";
 import { and, asc, count, desc, eq, gt, max, min, ne, sql } from "drizzle-orm";
 import { getDb, newId } from "./client";
 import { activity, broadcastMessage, publicActivity, publicCategory, users } from "./schema";
@@ -23,6 +24,9 @@ export type ActivityDetails = {
 
 /** Personal activities may have no details (e.g. claimed drafts with unknown values). */
 export type ActivityContent = { [K in keyof ActivityDetails]?: string | null } & { title: string; bodyMd: string };
+
+// Single-row reads below are wrapped in React `cache()`: a page and its generateMetadata (or a layout and its page)
+// asking for the same row share one D1 round trip. The cache lives for one server request only.
 
 // ---------- users ----------
 
@@ -51,9 +55,9 @@ export async function upsertUserByGoogleSub(p: {
   return row.id;
 }
 
-export async function getUser(id: string) {
+export const getUser = cache(async (id: string) => {
   return (await getDb().select().from(users).where(eq(users.id, id)).get()) ?? null;
-}
+});
 
 export async function updateGroup(userId: string, group: Group) {
   await getDb().update(users).set(group).where(eq(users.id, userId));
@@ -193,9 +197,9 @@ export async function listCategoriesWithCounts() {
     .orderBy(...categoryOrder);
 }
 
-export async function getCategory(id: string) {
+export const getCategory = cache(async (id: string) => {
   return (await getDb().select().from(publicCategory).where(eq(publicCategory.id, id)).get()) ?? null;
-}
+});
 
 export async function insertCategory(title: string, key: string): Promise<string> {
   const id = newId();
@@ -304,9 +308,9 @@ export async function listAllPublicActivityRefs() {
     .from(publicActivity);
 }
 
-export async function getPublicActivity(id: string) {
+export const getPublicActivity = cache(async (id: string) => {
   return (await getDb().select().from(publicActivity).where(eq(publicActivity.id, id)).get()) ?? null;
-}
+});
 
 export async function insertPublicActivity(
   categoryId: string,

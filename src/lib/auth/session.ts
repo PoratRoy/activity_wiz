@@ -1,14 +1,16 @@
 import "server-only";
+import { cache } from "react";
 import type { Viewer } from "@/components/AppShell/viewer";
 import { getUser } from "@/lib/db/queries";
 import type { GroupInput } from "@/lib/validate";
 import { isAdmin } from "./admin";
 import { auth } from "./config";
 
-export async function getSessionUser() {
+/** Decrypts the session cookie once per server request; the layouts and the page share the result. */
+export const getSessionUser = cache(async () => {
   const session = await auth();
   return session?.user?.id ? session.user : null;
-}
+});
 
 export async function getUserId(): Promise<string | null> {
   return (await getSessionUser())?.id ?? null;
