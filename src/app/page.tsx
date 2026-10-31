@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Fredoka } from "next/font/google";
+import { Varela_Round } from "next/font/google";
 import { Sparkles } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -11,9 +11,10 @@ import { getSiteUrl } from "@/lib/site";
 import { HeaderSignIn } from "./HeaderSignIn";
 import styles from "./page.module.css";
 
-// The landing page alone uses Fredoka; the rest of the app keeps Rubik.
-const fredoka = Fredoka({
+// The landing page alone uses Varela Round; the rest of the app keeps Rubik.
+const varelaRound = Varela_Round({
   subsets: ["hebrew", "latin"],
+  weight: "400",
   display: "swap",
 });
 
@@ -46,7 +47,7 @@ export default function HomePage() {
   };
 
   return (
-    <div className={`${styles.home} ${fredoka.className}`}>
+    <div className={`${styles.home} ${varelaRound.className}`}>
       <header className={styles.header}>
         <Link href="/" className={styles.brand} aria-label="ActivityWiz — בית">
           <Image src="/brand/activity-wiz-fresh-green.svg" width={28} height={28} alt="" />
