@@ -60,7 +60,7 @@
 .forest .title {
   color: var(--cream);
   font-size: 24px;
-  letter-spacing: -0.5px;
+  letter-spacing: 0.4px;
 }
 
 .forest .back {

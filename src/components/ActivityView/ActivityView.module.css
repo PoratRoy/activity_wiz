@@ -43,6 +43,7 @@
   color: var(--green-dark);
   font-size: var(--fs-reading);
   font-weight: 700;
+  letter-spacing: 0.4px;
 }
 
 .body ul,
@@ -61,6 +62,7 @@
 
 .body strong {
   font-weight: 700;
+  letter-spacing: 0.4px;
 }
 
 /* Step length, split out of "### 1. name (10 דק׳)" by renderMarkdown. */

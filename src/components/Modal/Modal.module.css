@@ -60,6 +60,7 @@
   min-height: 48px;
   border-radius: var(--radius);
   font-weight: 700;
+  letter-spacing: 0.4px;
   transition: transform 80ms ease, box-shadow 80ms ease;
 }
 

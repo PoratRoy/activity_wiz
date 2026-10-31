@@ -12,6 +12,7 @@
   background: var(--surface);
   font-size: var(--fs-h1);
   font-weight: 700;
+  letter-spacing: 0.4px;
   outline: none;
 }
 

@@ -65,6 +65,7 @@
 
 .active .label {
   font-weight: 700;
+  letter-spacing: 0.4px;
 }
 
 /* Tapped, its page still loading (not prefetched yet): the pill lights up at once and breathes until it arrives. */

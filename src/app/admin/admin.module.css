@@ -55,6 +55,7 @@
 
 .rowTitle {
   font-weight: 700;
+  letter-spacing: 0.4px;
 }
 
 .rowSub {
@@ -221,6 +222,7 @@
 .previewLabel {
   margin: 0 0 var(--space-2);
   font-weight: 700;
+  letter-spacing: 0.4px;
 }
 
 .preview {
