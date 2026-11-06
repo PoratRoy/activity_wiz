@@ -2,6 +2,7 @@
 
 import { X } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useId, useSyncExternalStore, useTransition } from "react";
 import { Sheet } from "react-modal-sheet";
@@ -98,6 +99,9 @@ export function SignInGate({ open, reason, onClose, redirectTo }: Props) {
           >
             {pending ? "מעבירים ל-Google…" : "המשך עם Google"}
           </Button>
+          <p className={styles.terms}>
+            בהתחברות אתם מסכימים ל<Link href="/terms">תנאי השירות ומדיניות הפרטיות</Link>
+          </p>
           <button type="button" className={styles.back} onClick={blocking ? () => router.push("/") : close}>
             {copy.back}
           </button>

@@ -49,6 +49,8 @@ export async function generateActivity(input: { group: GroupInput; activity: Act
     group = (await getAccountGroup()) ?? toGroupInput(input?.group);
   } else {
     guest = await ensureGuest();
+    // Guests must accept the terms first (R0); signing in already accepted them.
+    if (!guest.termsAt) return { status: "terms_required" };
     // 2. Trial check (R3).
     if (isTrialExpired(guest)) return { status: "trial_expired" };
     group = toGroupInput(input?.group);

@@ -25,6 +25,7 @@ Google is the only sign-in method.
 ## Rules
 
 ### Guest trial
+- **R0.** Using the app requires accepting the terms of service (`/terms`), once. Browsing never blocks: until accepted, guests see a slim, dismissible notice above the ad bar ("using the site means agreeing"). The explicit acceptance is asked before a guest's first generation, in a sheet whose button both accepts and continues («מסכימים, יוצרים את הפעולה»). Signing in with Google also accepts them (the sign-in sheet says so). The record is kept on the server: the guest cookie's `termsAt` for guests, `users.terms_accepted_at` for users, and `generateActivity` refuses guests without it.
 - **R1.** The 3-day (72-hour) trial starts when a guest **first submits and generates** an activity. Visiting, browsing or filling in forms does not start it.
 - **R2.** The trial start lives in a signed cookie. Clearing cookies resets it, which is an accepted limitation.
 - **R3.** After the trial expires, tapping Create (anywhere) opens a popup that cannot be dismissed. It contains a short line of text and a "Sign in with Google" button. The only way out is back. The library stays open.

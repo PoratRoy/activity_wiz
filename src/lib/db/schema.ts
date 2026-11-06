@@ -18,6 +18,8 @@ export const users = sqliteTable("users", {
   tokenVersion: integer("token_version").notNull().default(0),
   /** A blocked user: can't sign in, and existing sessions are refused. */
   disabled: integer("disabled", { mode: "boolean" }).notNull().default(false),
+  /** When the user accepted the terms of service; signing in with Google counts as accepting. */
+  termsAcceptedAt: integer("terms_accepted_at"),
   createdAt: integer("created_at").notNull(),
 });
 

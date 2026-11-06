@@ -21,6 +21,7 @@ There is one Cloudflare D1 database (binding `DB`) with exactly **5 tables**, de
 | `gender` | text, nullable | `בנים` / `בנות` / `מעורב` |
 | `last_seen_message_id` | text, nullable | ID of the last broadcast message the user dismissed. Any other current ID means unseen |
 | `token_version` | integer, not null, default 0 | Copied into the session cookie at sign-in. Bump it to sign the user out on every device (`src/lib/auth/revocation.ts`) |
+| `terms_accepted_at` | integer, nullable | When the user accepted the terms (R0). Set at first sign-in; users from before the column were backfilled with `created_at` (they accepted the old blocking popup) |
 | `disabled` | integer (boolean), not null, default 0 | Blocked user: sign-in is refused and existing sessions are dropped within a minute |
 | `created_at` | integer, not null | |
 
@@ -91,7 +92,7 @@ The admin's message to signed-in users (`/admin/message`). At most one row: ever
 | Data | Where | Shape |
 | --- | --- | --- |
 | Rate limit | Durable Object `RateLimiter`, one instance per key: `u:{userId}` / `g:{guestId}` (30-second window), `ip:gen:{ip}` (attempts per minute), `add:{userId}` (copies and claims), `save:{userId}` (autosave) | `lastAt` for single-window keys; `window: { start, n }` for counted keys; `expiresAt` on both. An alarm deletes the object's storage when the window ends. |
-| Guest identity + trial | Signed HttpOnly cookie `aw_guest` (HMAC with `GUEST_COOKIE_SECRET`) | `{ id, trialStart? }`. `trialStart` is set at the first generation. Max-age 1 year. |
+| Guest identity + trial | Signed HttpOnly cookie `aw_guest` (HMAC with `GUEST_COOKIE_SECRET`) | `{ id, trialStart?, termsAt? }`. `trialStart` is set at the first generation, `termsAt` when the guest accepts the terms (R0). Max-age 1 year. |
 | Group (cache) | `localStorage['aw.group']` | `{ movement, grade, groupSize, gender }` |
 | Guest draft activity | `localStorage['aw.draft']` | `{ title, bodyMd, type, subject, place, duration, equipment?, teams?, shabbat?, notes?, createdAt }` |
 | Counted views | `localStorage['aw.viewed']` | `{ [publicActivityId]: countedAt }`; entries older than a day are dropped |

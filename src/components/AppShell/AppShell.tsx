@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { AdBar } from "@/components/AdSlot/AdBar";
 import { BottomNav } from "@/components/BottomNav/BottomNav";
 import { MessageGate } from "@/components/MessageGate/MessageGate";
-import { TermsGate } from "@/components/TermsGate/TermsGate";
+import { TermsNotice } from "@/components/Terms/TermsNotice";
 import { ToastHost } from "@/components/Toast/Toast";
 import { NavigationTracker } from "./history";
 import { ViewerProvider, type Viewer } from "./viewer";
@@ -17,7 +17,7 @@ export function AppShell({ viewer, children }: { viewer: Viewer; children: React
         <AppViewport>{children}</AppViewport>
         <AdBar />
         <BottomNav />
-        <TermsGate />
+        <TermsNotice />
         <MessageGate />
       </ToastHost>
     </ViewerProvider>

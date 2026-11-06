@@ -9,8 +9,8 @@ export const GUEST_COOKIE = "aw_guest";
 export const TRIAL_MS = 72 * 60 * 60 * 1000;
 const MAX_AGE_SECONDS = 365 * 24 * 60 * 60;
 
-/** `trialStart` is set at the guest's first generation (R1). */
-export type Guest = { id: string; trialStart?: number };
+/** `trialStart` is set at the guest's first generation (R1); `termsAt` when the guest accepts the terms. */
+export type Guest = { id: string; trialStart?: number; termsAt?: number };
 
 const enc = new TextEncoder();
 
@@ -45,7 +45,9 @@ export async function decodeGuest(value: string | undefined): Promise<Guest | nu
     const ok = await crypto.subtle.verify("HMAC", await hmacKey(), fromB64url(sig), enc.encode(payload));
     if (!ok) return null;
     const g = JSON.parse(new TextDecoder().decode(fromB64url(payload))) as Guest;
-    if (typeof g.id !== "string" || (g.trialStart !== undefined && typeof g.trialStart !== "number")) return null;
+    if (typeof g.id !== "string") return null;
+    if (g.trialStart !== undefined && typeof g.trialStart !== "number") return null;
+    if (g.termsAt !== undefined && typeof g.termsAt !== "number") return null;
     return g;
   } catch {
     return null;

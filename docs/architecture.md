@@ -91,7 +91,7 @@ drizzle.config.ts
 
 ## Guest identity
 
-`lib/guest/cookie.ts` signs `{ id, trialStart? }` with HMAC-SHA256 (Web Crypto, `GUEST_COOKIE_SECRET`). The cookie is `aw_guest`: HttpOnly, Secure, SameSite=Lax, 1-year max-age. It's created on the first generation attempt. Pages under `/create/*` read it on the server to decide whether to show `SignInGate`.
+`lib/guest/cookie.ts` signs `{ id, trialStart?, termsAt? }` with HMAC-SHA256 (Web Crypto, `GUEST_COOKIE_SECRET`). The cookie is `aw_guest`: HttpOnly, Secure, SameSite=Lax, 1-year max-age. It's created on the first generation attempt or when a guest accepts the terms. Pages under `/create/*` read it on the server to decide whether to show `SignInGate`.
 
 ## Public pages and SEO
 

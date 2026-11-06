@@ -1,0 +1,118 @@
+/* react-modal-sheet renders into <body> unstyled; it owns positioning, these are the looks (as in SignInGate). */
+.root {
+  z-index: 60;
+}
+
+.backdrop {
+  background: rgb(0 0 0 / 0.45);
+  border: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.sheet {
+  right: 0;
+  max-width: var(--column);
+  margin-inline: auto;
+  overflow: hidden;
+  border-radius: 28px 28px 0 0;
+  background: var(--surface);
+}
+
+/* Desktop: sits on the app frame's bottom edge, like the sign-in sheet. */
+@media (min-width: 768px) {
+  .sheet {
+    bottom: calc(100dvh - 32px - var(--app-height)) !important;
+    border-radius: 28px 28px 32px 32px;
+  }
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+  padding-top: var(--space-3);
+  cursor: grab;
+  touch-action: none;
+}
+
+.handle {
+  width: 40px;
+  height: 5px;
+  border-radius: var(--radius-pill);
+  background: var(--border);
+}
+
+.content {
+  flex: 0 0 auto !important;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-3) var(--space-5) calc(var(--space-5) + env(safe-area-inset-bottom));
+}
+
+.title {
+  margin: 0;
+  color: var(--green-dark);
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+}
+
+.points {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.points li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.badge {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+
+.yellow {
+  background: var(--yellow-light);
+  color: var(--yellow-dark);
+}
+
+.green {
+  background: var(--green-light);
+  color: var(--green);
+}
+
+.gray {
+  background: var(--backdrop);
+  color: var(--text-muted);
+}
+
+.link {
+  color: var(--green-dark);
+  font-size: 14px;
+}
+
+.later {
+  min-height: 44px;
+  margin-top: calc(-1 * var(--space-2));
+  border: 0;
+  background: none;
+  color: var(--text-muted);
+  font: inherit;
+  font-size: 15px;
+}

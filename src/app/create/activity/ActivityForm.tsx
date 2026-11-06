@@ -1,14 +1,18 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
 import { Sparkles } from "lucide-react";
+import { useViewer } from "@/components/AppShell/viewer";
 import { Button } from "@/components/Button/Button";
 import { Collapsible } from "@/components/Collapsible/Collapsible";
 import { PickerSheet } from "@/components/PickerSheet/PickerSheet";
 import { SubjectField } from "@/components/SubjectField/SubjectField";
 import { TextArea } from "@/components/TextField/TextField";
 import { Switch } from "@/components/Switch/Switch";
+import { acceptedInThisBrowser, rememberAccepted } from "@/components/Terms/terms";
+import { TermsConsent } from "@/components/Terms/TermsConsent";
+import { useToast } from "@/components/Toast/Toast";
 import {
   asOptions,
   DURATIONS,
@@ -22,6 +26,7 @@ import {
   type TypeKey,
 } from "@/data/options";
 import { activityFormStore, groupStore, requestStore } from "@/lib/guest/storage";
+import { acceptTerms } from "@/lib/terms/actions";
 import { hasErrors, validateActivity, validateGroup, type ActivityInput, type GroupInput } from "@/lib/validate";
 import styles from "../create.module.css";
 import { TypeSelect } from "./TypeSelect";
@@ -39,7 +44,13 @@ const EMPTY: ActivityInput = {
 
 export function ActivityForm({ accountGroup }: { accountGroup: GroupInput | null }) {
   const router = useRouter();
+  const params = useSearchParams();
+  const toast = useToast();
+  const { termsAccepted } = useViewer();
   const [group, setGroup] = useState<GroupInput | null>(accountGroup);
+  // The terms sheet (R0): asked once, before a guest's first generation.
+  const [consent, setConsent] = useState(false);
+  const [accepting, setAccepting] = useState(false);
   const [form, setForm] = useState<ActivityInput>(EMPTY);
   const [ready, setReady] = useState(false);
 
@@ -64,6 +75,13 @@ export function ActivityForm({ accountGroup }: { accountGroup: GroupInput | null
     setReady(true);
   }, [accountGroup, router]);
 
+  // Sent back by the server because it has no record of the terms: ask right away.
+  useEffect(() => {
+    if (ready && params.get("terms") === "1") setConsent(true);
+  }, [ready, params]);
+
+  const closeConsent = useCallback(() => setConsent(false), []);
+
   // Keep values across back/forward navigation within the tab.
   useEffect(() => {
     if (ready) activityFormStore.save(form);
@@ -84,15 +102,35 @@ export function ActivityForm({ accountGroup }: { accountGroup: GroupInput | null
   const textError =
     (form.subject.trim() && errors.subject && `נושא: ${errors.subject}`) || (errors.notes && `הערות: ${errors.notes}`);
 
-  const onSubmit = () => {
-    if (!complete) return;
+  const generate = () => {
     const duration = isGame ? "" : form.duration;
     requestStore.save({ group, activity: { ...form, duration, subject: form.subject.trim(), notes: form.notes.trim() } });
     router.push("/create/generating");
   };
 
+  const onSubmit = async () => {
+    if (!complete) return;
+    if (termsAccepted) return generate();
+    // Accepted earlier in this browser (or in the old popup), but the server has no record yet: record it and go on.
+    if (acceptedInThisBrowser() && params.get("terms") !== "1") {
+      await acceptTerms().catch(() => false);
+      return generate();
+    }
+    setConsent(true);
+  };
+
+  const onAccept = async () => {
+    setAccepting(true);
+    const ok = await acceptTerms().catch(() => false);
+    setAccepting(false);
+    if (!ok) return toast("לא הצלחנו לשמור, נסו שוב");
+    rememberAccepted();
+    setConsent(false);
+    generate();
+  };
+
   return (
-    <form className={styles.form} onSubmit={(e) => (e.preventDefault(), onSubmit())}>
+    <form className={styles.form} onSubmit={(e) => (e.preventDefault(), void onSubmit())}>
       <div className={styles.card}>
         <div className={styles.block}>
           <TypeSelect types={movement.types} value={form.type} onChange={set("type")} />
@@ -135,6 +173,8 @@ export function ActivityForm({ accountGroup }: { accountGroup: GroupInput | null
           </p>
         )}
       </div>
+
+      <TermsConsent open={consent} pending={accepting} onAccept={() => void onAccept()} onClose={closeConsent} />
     </form>
   );
 }

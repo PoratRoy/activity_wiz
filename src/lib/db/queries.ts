@@ -38,7 +38,10 @@ export function accountGroupOf(u: GroupColumns): Group | null {
   return { movement: u.movement, grade: u.grade, groupSize: u.groupSize, gender: u.gender };
 }
 
-/** Creates or refreshes the user at sign-in; returns their id, saved group (kept in the session cookie) and session status. */
+/**
+ * Creates or refreshes the user at sign-in; returns their id, saved group (kept in the session cookie) and session
+ * status. Signing in accepts the terms (the sign-in sheet says so), so the first sign-in records the time.
+ */
 export async function upsertUserByGoogleSub(p: {
   sub: string;
   email: string;
@@ -55,10 +58,16 @@ export async function upsertUserByGoogleSub(p: {
       name: p.name ?? null,
       image: p.image ?? null,
       createdAt: Date.now(),
+      termsAcceptedAt: Date.now(),
     })
     .onConflictDoUpdate({
       target: users.googleSub,
-      set: { email: p.email, name: p.name ?? null, image: p.image ?? null },
+      set: {
+        email: p.email,
+        name: p.name ?? null,
+        image: p.image ?? null,
+        termsAcceptedAt: sql`coalesce(${users.termsAcceptedAt}, ${Date.now()})`,
+      },
     })
     .returning({
       id: users.id,

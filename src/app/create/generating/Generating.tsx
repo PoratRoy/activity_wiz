@@ -54,6 +54,8 @@ export function Generating() {
       }
       if (res.status === "rate_limited") setView({ kind: "rate_limited", until: Date.now() + res.retryInSec * 1000 });
       else if (res.status === "invalid") router.replace("/create/activity");
+      // The server has no record of the terms (e.g. cookies cleared): back to the form, which asks for them.
+      else if (res.status === "terms_required") router.replace("/create/activity?terms=1");
       else setView({ kind: res.status });
     },
     [router],

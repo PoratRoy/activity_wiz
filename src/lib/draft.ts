@@ -29,4 +29,4 @@ export type GenerateResult =
   | { status: "ok"; id: string }
   | { status: "ok"; draft: Draft }
   | { status: "rate_limited"; retryInSec: number }
-  | { status: "trial_expired" | "invalid" | "refused" | "busy" | "error" | "list_full" };
+  | { status: "trial_expired" | "terms_required" | "invalid" | "refused" | "busy" | "error" | "list_full" };

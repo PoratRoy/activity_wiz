@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { TopBar } from "@/components/TopBar/TopBar";
-import { TermsText } from "@/components/TermsGate/TermsText";
+import { TermsText } from "@/components/Terms/TermsText";
 import { TERMS_TITLE } from "@/data/terms";
 import styles from "../info.module.css";
 

@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import { useViewer } from "@/components/AppShell/viewer";
 import { Button } from "@/components/Button/Button";
 import { Modal } from "@/components/Modal/Modal";
-import { TERMS_ACCEPTED_EVENT, termsAccepted } from "@/components/TermsGate/TermsGate";
 import { TextArea } from "@/components/TextField/TextField";
 import { dismissMessage, getMessageToShow, sendMessageFeedback, type ShownMessage } from "@/lib/message/actions";
 import { MESSAGE_LIMITS } from "@/lib/message/limits";
@@ -12,11 +11,10 @@ import styles from "./MessageGate.module.css";
 
 /**
  * The admin's broadcast message (/admin/message), checked once after each sign-in and shown until the
- * user confirms, taps outside or sends feedback. Waits for the terms popup to be accepted first.
+ * user confirms, taps outside or sends feedback.
  */
 export function MessageGate() {
   const { checkMessage } = useViewer();
-  const [ready, setReady] = useState(false);
   const [message, setMessage] = useState<ShownMessage | null>(null);
   const [feedback, setFeedback] = useState("");
   const [error, setError] = useState("");
@@ -26,19 +24,12 @@ export function MessageGate() {
   const asked = useRef(false);
 
   useEffect(() => {
-    if (termsAccepted()) return setReady(true);
-    const onAccept = () => setReady(true);
-    window.addEventListener(TERMS_ACCEPTED_EVENT, onAccept);
-    return () => window.removeEventListener(TERMS_ACCEPTED_EVENT, onAccept);
-  }, []);
-
-  useEffect(() => {
-    if (!checkMessage || !ready || asked.current) return;
+    if (!checkMessage || asked.current) return;
     asked.current = true;
     getMessageToShow()
       .then(setMessage)
       .catch(() => {});
-  }, [checkMessage, ready]);
+  }, [checkMessage]);
 
   if (!message) return null;
 
