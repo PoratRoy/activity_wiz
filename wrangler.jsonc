@@ -20,13 +20,18 @@
     "bindings": [{ "name": "RATE_LIMITER", "class_name": "RateLimiter" }]
   },
   "migrations": [{ "tag": "v1", "new_sqlite_classes": ["RateLimiter"] }],
+  // activitywiz.com and www as Worker custom domains (www redirects to the apex in worker.ts).
+  "routes": [
+    { "pattern": "activitywiz.com", "custom_domain": true },
+    { "pattern": "www.activitywiz.com", "custom_domain": true }
+  ],
   "observability": {
     "enabled": true
   },
   "vars": {
     "AUTH_TRUST_HOST": "true",
     "GEMINI_MODEL": "gemini-3.5-flash-lite",
-    "SITE_URL": "https://activitywiz.porat-roy.workers.dev",
+    "SITE_URL": "https://activitywiz.com",
     "CONTACT_TO_EMAIL": "porat.roy@gmail.com",
     "CONTACT_FROM_EMAIL": "ActivityWiz <noreply@support.activitywiz.com>"
   }

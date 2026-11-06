@@ -16,6 +16,11 @@ function readBookmark(request: Request): string | null {
 
 export default {
   async fetch(request, env, ctx) {
+    const url = new URL(request.url);
+    if (url.hostname === "www.activitywiz.com") {
+      url.hostname = "activitywiz.com";
+      return Response.redirect(url.toString(), 301);
+    }
     const incoming = readBookmark(request);
     const session = env.DB.withSession(incoming ?? "first-unconstrained");
     // Drizzle only calls prepare() and batch(), which the session has; getDb() reads env.DB through OpenNext.
