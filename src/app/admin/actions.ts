@@ -19,11 +19,10 @@ import {
   updatePublicActivity as updatePublicActivityRow,
 } from "@/lib/db/queries";
 import { BODY_MAX, TITLE_MAX } from "@/lib/draft";
+import { str, trimmed } from "@/lib/input";
 import { MESSAGE_LIMITS } from "@/lib/message/limits";
 
 // Every action re-checks the admin allowlist on the server (R22); non-admins are redirected to "/".
-
-const str = (v: unknown) => (typeof v === "string" ? v.trim() : "");
 
 /** Error message for an invalid or duplicate English key, or null when it can be used. */
 async function keyError(key: string, exceptId?: string): Promise<string | null> {
@@ -36,9 +35,9 @@ async function keyError(key: string, exceptId?: string): Promise<string | null> 
 /** `key` is the English name; it also picks the category's artwork (src/data/libraryImages.ts). */
 export async function createCategory(title: string, key: string): Promise<{ id: string } | { error: string }> {
   await requireAdmin();
-  const t = str(title).slice(0, TITLE_MAX);
+  const t = trimmed(title).slice(0, TITLE_MAX);
   if (!t) return { error: "צריך שם לקטגוריה" };
-  const k = str(key);
+  const k = trimmed(key);
   const error = await keyError(k);
   if (error) return { error };
   const id = await insertCategory(t, k);
@@ -48,10 +47,10 @@ export async function createCategory(title: string, key: string): Promise<{ id: 
 
 export async function setCategoryKey(id: string, key: string): Promise<{ ok: true } | { error: string }> {
   await requireAdmin();
-  const k = str(key);
-  const error = await keyError(k, str(id));
+  const k = trimmed(key);
+  const error = await keyError(k, trimmed(id));
   if (error) return { error };
-  const ok = await updateCategoryKey(str(id), k);
+  const ok = await updateCategoryKey(trimmed(id), k);
   forgetLibrary();
   return ok ? { ok: true } : { error: "הקטגוריה לא נמצאה" };
 }
@@ -59,7 +58,7 @@ export async function setCategoryKey(id: string, key: string): Promise<{ ok: tru
 /** Deletes the category and (FK cascade) its public activities. Personal copies are unaffected (R23). */
 export async function removeCategory(id: string): Promise<boolean> {
   await requireAdmin();
-  await deleteCategory(str(id));
+  await deleteCategory(trimmed(id));
   forgetLibrary();
   return true;
 }
@@ -68,7 +67,7 @@ export async function removeCategory(id: string): Promise<boolean> {
 export async function reorderCategories(ids: string[]): Promise<boolean> {
   await requireAdmin();
   if (!Array.isArray(ids)) return false;
-  const ok = await setCategoryOrder(ids.map(str));
+  const ok = await setCategoryOrder(ids.map(trimmed));
   forgetLibrary();
   return ok;
 }
@@ -76,14 +75,14 @@ export async function reorderCategories(ids: string[]): Promise<boolean> {
 export async function reorderPublicActivities(categoryId: string, ids: string[]): Promise<boolean> {
   await requireAdmin();
   if (!Array.isArray(ids)) return false;
-  const ok = await setPublicActivityOrder(str(categoryId), ids.map(str));
+  const ok = await setPublicActivityOrder(trimmed(categoryId), ids.map(trimmed));
   forgetLibrary();
   return ok;
 }
 
 export async function categoryActivityCount(id: string): Promise<number> {
   await requireAdmin();
-  return countPublicActivities(str(id));
+  return countPublicActivities(trimmed(id));
 }
 
 export type PublicActivityInput = {
@@ -122,17 +121,17 @@ function validate(a: PublicActivityInput): FieldErrors {
 
 function clean(input: PublicActivityInput): PublicActivityInput {
   return {
-    categoryId: str(input?.categoryId),
-    title: str(input?.title),
-    bodyMd: typeof input?.bodyMd === "string" ? input.bodyMd.replace(/\r\n/g, "\n").trim() : "",
-    type: str(input?.type),
-    place: str(input?.place),
-    duration: str(input?.duration),
-    equipment: str(input?.equipment),
-    teams: str(input?.teams),
-    shabbat: str(input?.shabbat),
-    notes: str(input?.notes),
-    age: str(input?.age),
+    categoryId: trimmed(input?.categoryId),
+    title: trimmed(input?.title),
+    bodyMd: str(input?.bodyMd).replace(/\r\n/g, "\n").trim(),
+    type: trimmed(input?.type),
+    place: trimmed(input?.place),
+    duration: trimmed(input?.duration),
+    equipment: trimmed(input?.equipment),
+    teams: trimmed(input?.teams),
+    shabbat: trimmed(input?.shabbat),
+    notes: trimmed(input?.notes),
+    age: trimmed(input?.age),
   };
 }
 
@@ -176,15 +175,15 @@ export async function updatePublicActivity(id: string, input: PublicActivityInpu
   await requireAdmin();
   const p = await prepare(input);
   if ("errors" in p) return { errors: p.errors };
-  const updated = await updatePublicActivityRow(str(id), p.categoryId, p.data);
+  const updated = await updatePublicActivityRow(trimmed(id), p.categoryId, p.data);
   forgetLibrary();
   if (!updated) return { errors: { title: "הפעולה לא נמצאה" } };
-  return { id: str(id), categoryId: p.categoryId };
+  return { id: trimmed(id), categoryId: p.categoryId };
 }
 
 export async function removePublicActivity(id: string): Promise<boolean> {
   await requireAdmin();
-  await deletePublicActivity(str(id));
+  await deletePublicActivity(trimmed(id));
   forgetLibrary();
   return true;
 }
@@ -192,8 +191,8 @@ export async function removePublicActivity(id: string): Promise<boolean> {
 /** Replaces the broadcast message; every signed-in user sees it once, at their next sign-in (docs/screens.md). */
 export async function sendMessageToUsers(input: { title: string; body: string; withForm: boolean }): Promise<{ ok: true } | { error: string }> {
   await requireAdmin();
-  const title = str(input?.title).slice(0, MESSAGE_LIMITS.title);
-  const body = str(input?.body).replace(/\r\n?/g, "\n").slice(0, MESSAGE_LIMITS.body);
+  const title = trimmed(input?.title).slice(0, MESSAGE_LIMITS.title);
+  const body = trimmed(input?.body).replace(/\r\n?/g, "\n").slice(0, MESSAGE_LIMITS.body);
   if (!title) return { error: "צריך כותרת" };
   if (!body) return { error: "צריך תוכן להודעה" };
   await sendBroadcastMessage({ title, body, withForm: input?.withForm === true });

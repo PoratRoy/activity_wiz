@@ -1,6 +1,13 @@
 import "server-only";
 import { cache } from "react";
-import { getCategory, getPublicActivityWithCategory, listCategories, listPublicActivities, listTopPublicActivities } from "./queries";
+import {
+  getCategory,
+  getPublicActivityWithCategory,
+  listAllPublicActivityRefs,
+  listCategories,
+  listPublicActivities,
+  listTopPublicActivities,
+} from "./queries";
 
 // The public library as visitors see it, kept in this Worker instance's memory for a minute, so repeat visits skip D1.
 // Each instance has its own copy: an admin edit clears the copy of the instance that handled it, and the others catch up
@@ -34,3 +41,5 @@ export const cachedGetCategory = remember("category", getCategory);
 export const cachedListPublicActivities = remember("activities", listPublicActivities);
 export const cachedListTopPublicActivities = remember("top", listTopPublicActivities);
 export const cachedGetPublicActivityWithCategory = remember("activity", getPublicActivityWithCategory);
+/** Every public activity's id, title, category and date, for the sitemap (crawlers fetch it often). */
+export const cachedListAllPublicActivityRefs = remember("refs", listAllPublicActivityRefs);

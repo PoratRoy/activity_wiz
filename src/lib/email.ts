@@ -6,10 +6,12 @@ export const oneLine = (v: unknown) => String(v ?? "").replace(/[\u0000-\u001f\u
 /** Multi-line text: keeps line breaks and tabs, drops other control characters. */
 export const multiLine = (v: unknown) => String(v ?? "").replace(/\r\n?/g, "\n").replace(/[\u0000-\u0008\u000b-\u001f\u007f-\u009f]/g, "").trim();
 
-/** Whether emails can be sent at all (RESEND_API_KEY is set). */
+/** Whether emails can be sent at all: the Resend key and both addresses are configured (wrangler.jsonc, secrets). */
 export function canSendEmail(): boolean {
-  if (getEnv().RESEND_API_KEY) return true;
-  console.error("sendEmail: RESEND_API_KEY is not set");
+  const env = getEnv();
+  const missing = (["RESEND_API_KEY", "CONTACT_FROM_EMAIL", "CONTACT_TO_EMAIL"] as const).filter((k) => !env[k]);
+  if (missing.length === 0) return true;
+  console.error(`sendEmail: not configured, missing ${missing.join(", ")}`);
   return false;
 }
 
@@ -20,8 +22,8 @@ export async function sendEmail(p: { subject: string; text: string; replyTo: str
     method: "POST",
     headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, "Content-Type": "application/json" },
     body: JSON.stringify({
-      from: env.CONTACT_FROM_EMAIL || "ActivityWiz <noreply@support.activitywiz.com>",
-      to: [env.CONTACT_TO_EMAIL || "porat.roy@gmail.com"],
+      from: env.CONTACT_FROM_EMAIL,
+      to: [env.CONTACT_TO_EMAIL],
       reply_to: p.replyTo,
       subject: p.subject,
       text: p.text,

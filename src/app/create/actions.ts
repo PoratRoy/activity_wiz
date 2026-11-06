@@ -6,21 +6,21 @@ import { getAccountGroup, getUserId } from "@/lib/auth/session";
 import { countActivities, insertActivity, updateGroup } from "@/lib/db/queries";
 import { AI_DISCLAIMER, BODY_MAX, MAX_PERSONAL_ACTIVITIES, TITLE_MAX, type GenerateResult } from "@/lib/draft";
 import { ensureGuest, isTrialExpired, writeGuest, type Guest } from "@/lib/guest/cookie";
+import { toActivityInput, toGroupInput } from "@/lib/input";
 import { clientIp, hitBurstLimit, hitRateLimit } from "@/lib/rate-limit";
 import { hasErrors, removeLinks, validateActivity, validateGroup, type ActivityInput, type GroupInput } from "@/lib/validate";
 import { buildGeneration } from "@/prompts/build";
+
+// A guide saves their group a few times at most; this only stops scripted floods of D1 writes.
+const GROUP_SAVES_PER_MINUTE = 10;
 
 /** Saves the signed-in user's one group. Guests keep it in localStorage only. */
 export async function saveGroup(group: GroupInput): Promise<{ ok: boolean }> {
   const userId = await getUserId();
   if (!userId) return { ok: true };
-  const clean: GroupInput = {
-    movement: String(group.movement),
-    grade: String(group.grade),
-    groupSize: String(group.groupSize),
-    gender: String(group.gender),
-  };
+  const clean = toGroupInput(group);
   if (hasErrors(validateGroup(clean))) return { ok: false };
+  if (!(await hitBurstLimit(`group:${userId}`, GROUP_SAVES_PER_MINUTE, 60_000)).ok) return { ok: false };
   await updateGroup(userId, clean);
   await unstable_update({ user: { group: clean } });
   return { ok: true };
@@ -46,16 +46,16 @@ export async function generateActivity(input: { group: GroupInput; activity: Act
   let guest: Guest | null = null;
   let group: GroupInput;
   if (userId) {
-    group = (await getAccountGroup()) ?? pickGroup(input.group);
+    group = (await getAccountGroup()) ?? toGroupInput(input?.group);
   } else {
     guest = await ensureGuest();
     // 2. Trial check (R3).
     if (isTrialExpired(guest)) return { status: "trial_expired" };
-    group = pickGroup(input.group);
+    group = toGroupInput(input?.group);
   }
 
   // 3. Validate.
-  const activity = pickActivity(input.activity);
+  const activity = toActivityInput(input?.activity);
   if (hasErrors(validateGroup(group)) || hasErrors(validateActivity(activity, group.movement))) {
     return { status: "invalid" };
   }
@@ -110,22 +110,4 @@ export async function generateActivity(input: { group: GroupInput; activity: Act
   };
   if (userId) return { status: "ok", id: await insertActivity(userId, content) };
   return { status: "ok", draft: { ...content, createdAt: Date.now() } };
-}
-
-function pickGroup(g: GroupInput): GroupInput {
-  return { movement: String(g?.movement ?? ""), grade: String(g?.grade ?? ""), groupSize: String(g?.groupSize ?? ""), gender: String(g?.gender ?? "") };
-}
-
-function pickActivity(a: ActivityInput): ActivityInput {
-  const s = (v: unknown) => (typeof v === "string" ? v : "");
-  return {
-    type: s(a?.type),
-    subject: s(a?.subject),
-    place: s(a?.place),
-    duration: a?.type === "playTime" ? "" : s(a?.duration),
-    equipment: s(a?.equipment),
-    teams: s(a?.teams),
-    shabbat: s(a?.shabbat),
-    notes: s(a?.notes),
-  };
 }

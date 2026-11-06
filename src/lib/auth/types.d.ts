@@ -21,6 +21,8 @@ declare module "next-auth" {
 declare module "next-auth/jwt" {
   interface JWT {
     uid?: string;
+    /** users.token_version at sign-in; a lower value than the row's means the session was revoked. */
+    tv?: number;
     verified?: boolean;
     checkMessage?: boolean;
     group?: GroupInput | null;

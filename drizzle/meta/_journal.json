@@ -85,6 +85,13 @@
       "when": 1792739399067,
       "tag": "0011_public_activity_views",
       "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "6",
+      "when": 1793952358219,
+      "tag": "0012_user_revocation",
+      "breakpoints": true
     }
   ]
 }

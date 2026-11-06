@@ -3,9 +3,9 @@
 import { usePathname } from "next/navigation";
 import Script from "next/script";
 import { useEffect, useState } from "react";
+import { ADSENSE_CLIENT as AD_CLIENT, AD_HOSTS } from "@/data/brand";
 import styles from "./AdBar.module.css";
 
-const AD_CLIENT = "ca-pub-9858822058074702";
 /**
  * One AdSense display unit per area, reusing the old app's units so AdSense reports earnings per area as
  * before. A fixed-size display unit fills the 320 × 50 bar. Pages without their own unit use the old
@@ -32,7 +32,6 @@ function adSlotFor(pathname: string): string {
  * AdSense only serves on the approved domain, so real ads run there and everywhere else (workers.dev,
  * localhost) keeps the placeholder. Ads start by themselves once activitywiz.com points at this app.
  */
-const AD_HOSTS = ["activitywiz.com", "www.activitywiz.com"];
 
 /** Pages that never show the ad bar: landing, terms, FAQ, admin and the generating screen. */
 const EXCLUDED = ["/terms", "/faq", "/admin", "/create/generating"];

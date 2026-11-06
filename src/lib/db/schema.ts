@@ -14,6 +14,10 @@ export const users = sqliteTable("users", {
   gender: text("gender"),
   /** ID of the last broadcast message this user dismissed; a different current ID means it's unseen. */
   lastSeenMessageId: text("last_seen_message_id"),
+  /** Bumped to sign the user out everywhere: a session cookie carrying an older version is refused. */
+  tokenVersion: integer("token_version").notNull().default(0),
+  /** A blocked user: can't sign in, and existing sessions are refused. */
+  disabled: integer("disabled", { mode: "boolean" }).notNull().default(false),
   createdAt: integer("created_at").notNull(),
 });
 

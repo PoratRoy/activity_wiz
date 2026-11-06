@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Varela_Round } from "next/font/google";
 import { AppShell } from "@/components/AppShell/AppShell";
+import { ADSENSE_CLIENT } from "@/data/brand";
 import { OPEN_GRAPH, SHARE_IMAGE, SITE_DESCRIPTION } from "@/data/seo";
 import { getViewer } from "@/lib/auth/session";
 import { getSiteUrl } from "@/lib/site";
@@ -27,7 +28,7 @@ export async function generateMetadata(): Promise<Metadata> {
   twitter: { card: "summary_large_image", images: [SHARE_IMAGE] },
   // Search Console and AdSense ownership checks, the same tokens the old app used.
   verification: { google: "c5cOp--x7TLt0QxwSteEmgFxy79wB98EUUo_GjtFWRA" },
-  other: { "google-adsense-account": "ca-pub-9858822058074702" },
+  other: { "google-adsense-account": ADSENSE_CLIENT },
   };
 }
 

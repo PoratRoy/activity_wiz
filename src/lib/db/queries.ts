@@ -38,13 +38,13 @@ export function accountGroupOf(u: GroupColumns): Group | null {
   return { movement: u.movement, grade: u.grade, groupSize: u.groupSize, gender: u.gender };
 }
 
-/** Creates or refreshes the user at sign-in; returns their id and saved group (kept in the session cookie). */
+/** Creates or refreshes the user at sign-in; returns their id, saved group (kept in the session cookie) and session status. */
 export async function upsertUserByGoogleSub(p: {
   sub: string;
   email: string;
   name?: string | null;
   image?: string | null;
-}): Promise<{ id: string; group: Group | null }> {
+}): Promise<{ id: string; group: Group | null; tokenVersion: number; disabled: boolean }> {
   const db = getDb();
   const [row] = await db
     .insert(users)
@@ -66,8 +66,21 @@ export async function upsertUserByGoogleSub(p: {
       grade: users.grade,
       groupSize: users.groupSize,
       gender: users.gender,
+      tokenVersion: users.tokenVersion,
+      disabled: users.disabled,
     });
-  return { id: row.id, group: accountGroupOf(row) };
+  return { id: row.id, group: accountGroupOf(row), tokenVersion: row.tokenVersion, disabled: row.disabled };
+}
+
+/** What decides whether the user's session cookies are still accepted; null when the user no longer exists. */
+export async function getSessionStatus(id: string): Promise<{ tokenVersion: number; disabled: boolean } | null> {
+  return (
+    (await getDb()
+      .select({ tokenVersion: users.tokenVersion, disabled: users.disabled })
+      .from(users)
+      .where(eq(users.id, id))
+      .get()) ?? null
+  );
 }
 
 export const getUser = cache(async (id: string) => {

@@ -1,15 +1,15 @@
 import type { MetadataRoute } from "next";
 import { TOP_ROW } from "@/data/topActivities";
-import { listAllPublicActivityRefs, listCategories } from "@/lib/db/queries";
+import { cachedListAllPublicActivityRefs, cachedListCategories } from "@/lib/db/libraryCache";
 import { getSiteUrl } from "@/lib/site";
 import { categoryPath, publicActivityPath } from "@/lib/slug";
 
 export const dynamic = "force-dynamic";
 
-/** Home, library, the «הכי פופולרי» page, every category and every public activity, read from D1 on each request. */
+/** Home, library, the «הכי פופולרי» page, every category and every public activity, read through the library cache (a minute per Worker instance). */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = getSiteUrl();
-  const [categories, activities] = await Promise.all([listCategories(), listAllPublicActivityRefs()]);
+  const [categories, activities] = await Promise.all([cachedListCategories(), cachedListAllPublicActivityRefs()]);
   const byId = new Map(categories.map((c) => [c.id, c]));
   // A list page changes when an activity is added to it, so its date is its newest activity's.
   const newest = new Map<string, number>();

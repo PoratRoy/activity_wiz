@@ -4,11 +4,12 @@ import { Copy, Share2 } from "lucide-react";
 import { createContext, useContext, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { useToast } from "@/components/Toast/Toast";
+import { PUBLIC_SITE_URL } from "@/data/brand";
 import { toPlainText } from "@/lib/markdown/toPlain";
 import { toWhatsApp } from "@/lib/markdown/toWhatsApp";
 import styles from "./ActionBar.module.css";
 
-const CREDIT = "נוצר בעזרת:\nhttps://activitywiz.com";
+const CREDIT = `נוצר בעזרת:\n${PUBLIC_SITE_URL}`;
 
 /**
  * Where a page's top bar shows the compact copy of the actions once the title block scrolls under it

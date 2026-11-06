@@ -20,6 +20,8 @@ There is one Cloudflare D1 database (binding `DB`) with exactly **5 tables**, de
 | `group_size` | text, nullable | e.g. `10-20` |
 | `gender` | text, nullable | `בנים` / `בנות` / `מעורב` |
 | `last_seen_message_id` | text, nullable | ID of the last broadcast message the user dismissed. Any other current ID means unseen |
+| `token_version` | integer, not null, default 0 | Copied into the session cookie at sign-in. Bump it to sign the user out on every device (`src/lib/auth/revocation.ts`) |
+| `disabled` | integer (boolean), not null, default 0 | Blocked user: sign-in is refused and existing sessions are dropped within a minute |
 | `created_at` | integer, not null | |
 
 ## `activity` (personal)
