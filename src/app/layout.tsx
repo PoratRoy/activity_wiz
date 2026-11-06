@@ -3,7 +3,8 @@ import { Varela_Round } from "next/font/google";
 import { AppShell } from "@/components/AppShell/AppShell";
 import { ADSENSE_CLIENT } from "@/data/brand";
 import { OPEN_GRAPH, SHARE_IMAGE, SITE_DESCRIPTION } from "@/data/seo";
-import { getViewer } from "@/lib/auth/session";
+import { Clarity } from "@/components/Clarity/Clarity";
+import { getAccountGroup, getViewer } from "@/lib/auth/session";
 import { getSiteUrl } from "@/lib/site";
 import "./globals.css";
 
@@ -39,12 +40,15 @@ export const viewport: Viewport = {
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const viewer = await getViewer();
+  const [viewer, group] = await Promise.all([getViewer(), getAccountGroup()]);
   return (
     <html lang="he" dir="rtl" className={varelaRound.variable}>
       <body>
         <div className="app">
-          <AppShell viewer={viewer}>{children}</AppShell>
+          <AppShell viewer={viewer}>
+            {children}
+            <Clarity movement={group?.movement} />
+          </AppShell>
         </div>
       </body>
     </html>

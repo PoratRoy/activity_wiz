@@ -20,13 +20,17 @@ const ADSENSE = [
   "https://www.gstatic.com",
 ].join(" ");
 
+// Microsoft Clarity: the tag loads from www.clarity.ms, its script from scripts.clarity.ms, and it uploads
+// recordings to *.clarity.ms. Its tracking pixels (c.clarity.ms, c.bing.com) are covered by img-src https:.
+const CLARITY = ["https://www.clarity.ms", "https://*.clarity.ms"].join(" ");
+
 const csp = [
   "default-src 'self'",
-  `script-src 'self' 'unsafe-inline'${process.env.NODE_ENV === "development" ? " 'unsafe-eval'" : ""} ${ADSENSE}`,
+  `script-src 'self' 'unsafe-inline'${process.env.NODE_ENV === "development" ? " 'unsafe-eval'" : ""} ${ADSENSE} ${CLARITY}`,
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob: https:",
   "font-src 'self' data:",
-  `connect-src 'self' ${ADSENSE}`,
+  `connect-src 'self' ${ADSENSE} ${CLARITY}`,
   `frame-src ${ADSENSE}`,
   "frame-ancestors 'none'",
   "object-src 'none'",
