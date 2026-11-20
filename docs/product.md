@@ -1,5 +1,32 @@
 # Product
 
+<!-- impeccable:product-schema 1 -->
+
+## Platform
+
+web
+
+## Users
+
+Guides (מדריכים) in Israeli youth movements, usually teenagers aged 15–18 who lead groups of younger kids. They prepare on their phone, often the evening before a meeting, and open the activity again while running it. The job: get a complete activity that fits their group and their movement, fast.
+
+## Positioning
+
+- **Fits each movement.** The form speaks each movement's own language: its activity types and their names (פעולת תוכן, זמן צופיות, מתודת הצפה…, see `src/data/movements.json`), so the result matches how that movement runs meetings. A general chatbot doesn't know these.
+- **AI plus a curated library.** Besides generating, a library of ready-made activities by category that anyone can open without signing in.
+- **Free, Hebrew, phone-first.** Free to use, fully in Hebrew and right-to-left, made for a teenager preparing on a phone.
+
+## Evidence on Hand
+
+None yet: no usage numbers, testimonials, reviews or movement partnerships. Future pages must not invent any. Real assets: the logo (`public/brand/`), the illustrations (`public/illustrations/`), the category artwork (`public/library/`) and the library's real activities.
+
+## Product Principles
+
+1. **Phone first, the night before.** Every flow is judged on a phone, by a teenager short on time.
+2. **The movement's words, not generic ones.** Labels and types follow the guide's movement.
+3. **Reading while leading.** An activity page is read mid-meeting: large, scannable, steps and timings first.
+4. **Never block browsing.** The library stays open to everyone; sign-in is asked only to save.
+
 ## Concept
 
 ActivityWiz is a free web app for guides (מדריכים) in Israeli youth movements such as צופים and השומר הצעיר. Guides are usually teenagers aged 15–18 who lead groups of younger kids. They usually prepare on their phone, often the evening before a meeting, and open the activity again while running it.
@@ -80,7 +107,7 @@ Google is the only sign-in method.
   There is no editing and no AI. Type is chosen by key, with generic labels: פעולת תוכן (`content`), נקודת מבט (`pointOfView`), הישרדות (`survival`), משחק (`playTime`).
 
 ### Ads and analytics
-- **R25.** One fixed ad (`AdBar`, a 320×50 AdSense unit, a separate unit per area) sits above the bottom tabs on every page except landing, terms, FAQ, admin and the generating screen. It serves real ads only on `activitywiz.com`, the domain approved in AdSense; elsewhere (workers.dev, localhost) it shows a gray placeholder. In-content `<AdSlot>` placements render nothing. There is no analytics.
+- **R25.** One fixed ad (`AdBar`, a 320×50 AdSense unit, a separate unit per area) sits above the bottom tabs on every page except landing, terms, FAQ, admin and the generating screen. It serves real ads only on `activitywiz.com`, the domain approved in AdSense; elsewhere (workers.dev, localhost) it shows a gray placeholder. In-content `<AdSlot>` placements render nothing. Analytics: Microsoft Clarity (`src/components/Clarity`), the same project the old app used.
 
 ## Form choices
 
@@ -188,4 +215,6 @@ When the movement changes, keep the selected type if the new movement has it; ot
 
 ## Out of scope for v1
 
-About/FAQ/contact/privacy pages (v2), analytics, real ads, dark mode, AI refinement of an activity, multiple groups, editing public activities, search.
+A privacy page, dark mode, AI refinement of an activity, multiple groups, editing public activities, search.
+
+Shipped since this list was written: the FAQ (`/faq`), contact (`/contact`) and terms (`/terms`) pages, Microsoft Clarity analytics, and real AdSense ads on `activitywiz.com` (R25).
