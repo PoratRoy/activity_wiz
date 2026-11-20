@@ -1,8 +1,10 @@
 # Migration: activitywiz.com from Firebase Hosting to the Cloudflare Worker
 
-Goal: serve the new app (today at `https://activitywiz.porat-roy.workers.dev`) on `https://activitywiz.com`,
+Goal: serve the new app (today at `https://activitywiz.porat.workers.dev`, Porat Dev account) on `https://activitywiz.com`,
 301-redirect every old URL (e.g. `/he/youth`) to its closest new page, and shut down Firebase completely.
-The domain's DNS is already on Cloudflare, so the move is a DNS + Worker change, not a domain transfer.
+The domain's DNS is already on Cloudflare, in the same account as the Worker (Porat Dev, `9c530885…`), so the move is a DNS + Worker change, not a domain transfer.
+
+**Status (2026-11-20):** the cutover is prepared on branch `cutover-porat-dev`: custom domains, `SITE_URL`, and www + workers.dev → apex 301s in `worker.ts`. `scripts/check-legacy-redirects.sh [base]` tests all 173 old URLs (`scripts/legacy-urls.txt`); it passes on workers.dev.
 Planned downtime budget: up to 1 day. Done right, the real gap is a few minutes.
 
 ---
@@ -83,11 +85,12 @@ Planned downtime budget: up to 1 day. Done right, the real gap is a few minutes.
     Cloudflare creates the DNS record and issues the certificate (usually a few minutes).
     Or merge the commit from step 12 with the `routes` entry and let Workers Builds deploy it.
 17. **Merge/deploy the `SITE_URL` change** (step 12) so canonicals and the sitemap point to the new domain.
-18. **www → apex:** Rules → Redirect Rules → `www.activitywiz.com/*` → `https://activitywiz.com/${1}`,
-    301, preserve query string.
-19. **workers.dev:** stop it from serving a duplicate site — set `"workers_dev": false` (and
-    `"preview_urls": false`) in `wrangler.jsonc`, or redirect it to the apex. Do this after the custom
-    domain works.
+18. **www → apex:** handled in `worker.ts` (301, path and query kept). No Redirect Rule needed.
+19. **workers.dev:** `worker.ts` 301s `activitywiz.porat.workers.dev` to the apex, so there is no duplicate site.
+    Version preview URLs still work for testing. Also delete the old `activitywiz` Worker in the porat.roy
+    account: its `activitywiz.porat-roy.workers.dev` is a full duplicate with its own canonicals.
+19b. **Firebase web.app / firebaseapp.com:** only *after* activitywiz.com serves the Worker, deploy a Firebase
+    Hosting release that 301s `/:path*` to `https://activitywiz.com/:path*`. Doing it earlier makes a redirect loop.
 
 ## Phase 5 — Verify (same day)
 

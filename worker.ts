@@ -17,8 +17,11 @@ function readBookmark(request: Request): string | null {
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
-    if (url.hostname === "www.activitywiz.com") {
+    // One public host for SEO: www and the production workers.dev address both 301 to the apex.
+    // Version preview URLs (<version>-activitywiz.porat.workers.dev) are left alone for testing.
+    if (url.hostname === "www.activitywiz.com" || url.hostname === "activitywiz.porat.workers.dev") {
       url.hostname = "activitywiz.com";
+      url.protocol = "https:";
       return Response.redirect(url.toString(), 301);
     }
     const incoming = readBookmark(request);
