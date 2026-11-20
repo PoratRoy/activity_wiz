@@ -1,0 +1,4 @@
+Firebase DNS records removed from activitywiz.com on 2026-11-20 (cutover to the Worker).
+Rollback: remove the Worker custom domains activitywiz.com and www.activitywiz.com, then re-create:
+A      activitywiz.com      199.36.158.100           Proxied  TTL Auto
+CNAME  www.activitywiz.com  activity-wizard.web.app  Proxied  TTL Auto
