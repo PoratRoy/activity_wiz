@@ -49,3 +49,6 @@ next-env.d.ts
 
 # Image-generator working files
 /output/
+
+# taste-skill working files
+/.taste-skill/
