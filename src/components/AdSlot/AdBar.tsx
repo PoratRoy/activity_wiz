@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import Script from "next/script";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ADSENSE_CLIENT as AD_CLIENT, AD_HOSTS } from "@/data/brand";
 import styles from "./AdBar.module.css";
 
@@ -42,9 +42,13 @@ function showsAdBar(pathname: string) {
 
 declare global {
   interface Window {
-    adsbygoogle?: unknown[];
+    /** A plain queue until adsbygoogle.js runs; then AdSense's own object with `loaded: true`. */
+    adsbygoogle?: unknown[] & { loaded?: boolean };
   }
 }
+
+/** Fired once adsbygoogle.js has run, so units mounted before that can request their ad. */
+const ADS_READY_EVENT = "activitywiz:adsbygoogle-ready";
 
 /**
  * Fixed ad directly above the bottom tabs, sized for the smallest standard mobile banner
@@ -67,6 +71,7 @@ export function AdBar() {
             src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${AD_CLIENT}`}
             strategy="afterInteractive"
             crossOrigin="anonymous"
+            onReady={() => { window.dispatchEvent(new Event(ADS_READY_EVENT)); }}
           />
           {/* A new unit per page, as on the old site, where each page rendered its own ad. */}
           <AdUnit key={pathname} slot={adSlotFor(pathname)} />
@@ -79,15 +84,25 @@ export function AdBar() {
 }
 
 function AdUnit({ slot }: { slot: string }) {
+  const ref = useRef<HTMLModElement>(null);
   useEffect(() => {
-    try {
-      (window.adsbygoogle = window.adsbygoogle || []).push({});
-    } catch {
-      // A blocked or failed AdSense script leaves the bar empty.
-    }
+    // A push queued before adsbygoogle.js has run is dropped on a cold first visit (the unit stays
+    // empty), so request the ad only once the script is ready. Client-side navigations find it loaded.
+    const fill = () => {
+      if (!ref.current || ref.current.hasAttribute("data-adsbygoogle-status")) return;
+      try {
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
+      } catch {
+        // A blocked or failed AdSense script leaves the bar empty.
+      }
+    };
+    if (window.adsbygoogle?.loaded) fill();
+    else window.addEventListener(ADS_READY_EVENT, fill);
+    return () => window.removeEventListener(ADS_READY_EVENT, fill);
   }, []);
   return (
     <ins
+      ref={ref}
       className={`adsbygoogle ${styles.unit}`}
       data-ad-client={AD_CLIENT}
       data-ad-slot={slot}
