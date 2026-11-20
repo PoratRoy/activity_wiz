@@ -117,7 +117,7 @@ drizzle.config.ts
 | `GEMINI_API_KEY` | secret | Paid key |
 | `GEMINI_MODEL` | var | Flash-Lite model ID |
 | `GUEST_COOKIE_SECRET` | secret | Guest cookie HMAC |
-| `SITE_URL` | var (`wrangler.jsonc`) | Runtime origin for canonicals, Open Graph, sitemap and robots. Currently `https://activitywiz.porat-roy.workers.dev`; change it when the domain moves. |
+| `SITE_URL` | var (`wrangler.jsonc`) | Runtime origin for canonicals, Open Graph, sitemap and robots. Currently `https://activitywiz.porat.workers.dev`; change it when the domain moves. |
 
 Locally, use `.dev.vars` for Wrangler and `.env.local` for `next dev`. Under `next dev` the rate limiter uses process memory instead of the Durable Object; use `npm run preview` to exercise the real one. `initOpenNextCloudflareForDev()` in `next.config.ts` exposes the local D1 and Durable Object bindings to `next dev`. Both files are gitignored, and `.dev.vars.example` lists the names.
 
