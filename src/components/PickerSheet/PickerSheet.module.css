@@ -64,9 +64,10 @@
 
 /* Unanswered rows invite a tap: green, not grey. */
 .rowPlaceholder {
-  color: var(--green);
+  /* Softer than a picked value (bold dark green) so it reads as a prompt; 92% green on white still passes AA (4.6:1). */
+  color: color-mix(in srgb, var(--green) 92%, white);
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 400;
 }
 
 .rowArrow {
@@ -86,12 +87,12 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Always half the screen: short lists leave room below, long ones scroll inside. */
+/* Always two thirds of the screen: short lists leave room below, long ones scroll inside. */
 .sheet {
   right: 0;
   max-width: var(--column);
-  height: 50dvh !important;
-  max-height: 50dvh !important;
+  height: 66.67dvh !important;
+  max-height: 66.67dvh !important;
   margin-inline: auto;
   border-radius: 26px 26px 0 0;
   background: var(--cream);
@@ -146,7 +147,7 @@
   flex-direction: column;
   gap: 10px;
   margin: 0;
-  /* At least a fifth of the sheet (50dvh) stays empty under the last option, so the list never ends at the edge. */
+  /* At least a fifth of the sheet (of the sheet) stays empty under the last option, so the list never ends at the edge. */
   padding: 0 0 max(10dvh, calc(24px + env(safe-area-inset-bottom)));
   list-style: none;
 }
@@ -206,4 +207,15 @@
 @media (prefers-reduced-motion: reduce) {
   .item { transition: none; }
   .item:active { transform: none; }
+}
+
+/* Fades the list out before the sheet's bottom edge so options never touch the screen edge. */
+.fade {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: calc(40px + env(safe-area-inset-bottom));
+  border-radius: 0;
+  background: linear-gradient(to bottom, rgb(250 248 241 / 0), var(--cream));
+  pointer-events: none;
 }

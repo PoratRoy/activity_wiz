@@ -1,7 +1,7 @@
 /* Floats above the ad bar and tabs, inside the app column (the frame's transform anchors it on desktop). */
 .notice {
   position: fixed;
-  bottom: calc(var(--tabbar-h) + var(--adbar-h) + var(--space-2) + env(safe-area-inset-bottom));
+  bottom: calc(var(--tabbar-h) + var(--adbar-h) + var(--space-2) - 5px + env(safe-area-inset-bottom));
   inset-inline: 0;
   z-index: 30;
   display: flex;

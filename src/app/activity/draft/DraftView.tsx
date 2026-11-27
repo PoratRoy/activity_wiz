@@ -96,7 +96,7 @@ export function DraftView() {
     </div>
   ) : (
     <div className={styles.banner}>
-      <span>רוצים לשמור את הפעולה?</span>
+      <span>לשמירה אוטומטית של הפעולה</span>
       <button
         type="button"
         className={styles.bannerButton}

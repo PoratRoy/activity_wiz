@@ -71,6 +71,7 @@ export function OptionSheet({ open, onClose, label, options, value, onChange, cl
             ))}
           </ul>
         </Sheet.Content>
+        <div className={styles.fade} aria-hidden />
       </Sheet.Container>
       <Sheet.Backdrop className={styles.backdrop} onTap={close} />
     </Sheet>
